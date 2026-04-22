@@ -12,7 +12,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="de" suppressHydrationWarning>
       <body className="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <ThemeProvider>
           <SessionProviderWrapper session={session}>
             
             <nav className="bg-blue-900 dark:bg-slate-900 text-white p-4 shadow-md border-b border-transparent dark:border-slate-800">
