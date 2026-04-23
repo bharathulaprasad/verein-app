@@ -6,6 +6,7 @@ import { formatWhatsAppNumber } from "@/lib/utils";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import WhatsAppCard from "@/components/WhatsAppCard";
+import EventRsvpButton from "@/components/EventRsvpButton";
 
 export default async function Home() {
   
@@ -18,6 +19,9 @@ export default async function Home() {
     where: { date: { gte: new Date() } },
     orderBy: { date: "asc" },
     take: 6,
+    include: {
+      attendees: true, 
+    }
   });
   
   const boardMembers = await prisma.boardMember.findMany({
@@ -81,27 +85,47 @@ export default async function Home() {
 
         <div className="grid md:grid-cols-2 gap-6">
           {/* Dynamic Events from Database */}
+          {/* Dynamic Events from Database */}
           {upcomingEvents.length === 0 ? (
             <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 p-6 rounded-lg shadow-sm flex items-center justify-center text-gray-500 dark:text-gray-400 transition-colors">
               Derzeit keine weiteren Sonderveranstaltungen geplant.
             </div>
           ) : (
-            upcomingEvents.map((event) => (
-              <div key={event.id} className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 p-6 rounded-lg shadow-sm transition-colors">
-                <h3 className="text-xl font-bold text-blue-900 dark:text-blue-400">{event.title}</h3>
-                <p className="text-gray-600 dark:text-gray-400 mt-2 text-sm">{event.description}</p>
-                <div className="mt-4 space-y-2 text-sm text-gray-700 dark:text-gray-300">
-                  <p className="flex items-center">
-                    <CalendarDays className="w-4 h-4 mr-2 text-blue-500 dark:text-blue-400" />
-                    {new Date(event.date).toLocaleDateString("de-DE", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute:'2-digit' })} Uhr
-                  </p>
-                  <p className="flex items-center">
-                    <MapPin className="w-4 h-4 mr-2 text-blue-500 dark:text-blue-400" />
-                    {event.location}
-                  </p>
+            upcomingEvents.map((event) => {
+              
+              // ✨ CHECK IF CURRENT USER IS IN THE "ATTENDEES" LIST ✨
+              const isParticipating = session?.user?.id 
+                ? event.attendees.some((attendee: any) => attendee.userId === session.user.id) 
+                : false;
+
+              return (
+                <div key={event.id} className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 p-6 rounded-lg shadow-sm transition-colors flex flex-col justify-between">
+                  <div>
+                    <h3 className="text-xl font-bold text-blue-900 dark:text-blue-400">{event.title}</h3>
+                    <p className="text-gray-600 dark:text-gray-400 mt-2 text-sm">{event.description}</p>
+                    <div className="mt-4 space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                      <p className="flex items-center">
+                        <CalendarDays className="w-4 h-4 mr-2 text-blue-500 dark:text-blue-400" />
+                        {new Date(event.date).toLocaleDateString("de-DE", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute:'2-digit' })} Uhr
+                      </p>
+                      <p className="flex items-center">
+                        <MapPin className="w-4 h-4 mr-2 text-blue-500 dark:text-blue-400" />
+                        {event.location}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* ✨ RENDER THE RSVP BUTTON HERE ✨ */}
+                  <EventRsvpButton 
+                    eventId={event.id}
+                    initialIsParticipating={isParticipating}
+                    participantCount={event.attendees.length} // Pass the length of attendees
+                    isLoggedIn={!!session}
+                  />
+                  
                 </div>
-              </div>
-            ))
+              );
+            })
           )}
         </div>
       </section>
