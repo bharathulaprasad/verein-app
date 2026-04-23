@@ -4,7 +4,6 @@ import { useState } from "react";
 import { Calendar, Mail, User, CheckCircle2, Circle } from "lucide-react";
 import { toggleMessageReadStatus } from "./actions";
 
-// Define the type based on your Prisma model
 type ContactMessage = {
   id: string;
   name: string;
@@ -15,43 +14,41 @@ type ContactMessage = {
 };
 
 export default function MessageCard({ msg }: { msg: ContactMessage }) {
-  // Store the read status locally for instant UI updates
   const [isRead, setIsRead] = useState(msg.isRead);
 
   const handleToggle = async () => {
-    // 1. Optimistic Update: Instantly change the UI
     setIsRead(!isRead);
-
-    // 2. Update Database in the background
     try {
       await toggleMessageReadStatus(msg.id, isRead);
     } catch (error) {
       console.error("Failed to update status", error);
-      // Revert if the server action fails
       setIsRead(isRead);
       alert("Fehler beim Aktualisieren des Status.");
     }
   };
 
   return (
-    <div className={`bg-white dark:bg-slate-900 p-6 rounded-xl shadow-sm border flex flex-col md:flex-row gap-6 transition-colors relative overflow-hidden ${
-      isRead ? "border-gray-200 dark:border-slate-800 opacity-80" : "border-amber-200 dark:border-amber-900/50"
+    // 🍓 CHANGED: Beautiful white/translucent cards with rose-tinted borders
+    <div className={`bg-white/90 backdrop-blur-md dark:bg-slate-900/80 p-6 rounded-2xl shadow-sm flex flex-col md:flex-row gap-6 transition-all duration-300 relative overflow-hidden ${
+      isRead 
+        ? "border border-rose-100 dark:border-rose-900/30 opacity-75 hover:opacity-100" 
+        : "border-2 border-rose-300 dark:border-rose-500/50 shadow-rose-100 dark:shadow-rose-900/20 shadow-lg scale-[1.01]"
     }`}>
       
-      {/* Unread indicator line */}
-      {!isRead && <div className="absolute left-0 top-0 bottom-0 w-1 bg-amber-500"></div>}
+      {/* 🍓 CHANGED: Vibrant strawberry unread indicator */}
+      {!isRead && <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-rose-400 to-pink-500"></div>}
 
-      {/* Meta Info (Sender & Date) */}
-      <div className="md:w-1/3 space-y-3 border-b md:border-b-0 md:border-r border-gray-100 dark:border-slate-800 pb-4 md:pb-0 md:pr-6">
-        <p className="flex items-center text-gray-800 dark:text-gray-200 font-semibold">
-          <User className="w-4 h-4 mr-2 text-slate-400" /> {msg.name}
+      {/* Meta Info */}
+      <div className="md:w-1/3 space-y-3 border-b md:border-b-0 md:border-r border-rose-100 dark:border-rose-900/30 pb-4 md:pb-0 md:pr-6">
+        <p className="flex items-center text-gray-800 dark:text-gray-200 font-bold">
+          <User className="w-4 h-4 mr-2 text-rose-400" /> {msg.name}
         </p>
         <p className="flex items-center text-sm text-gray-600 dark:text-gray-400">
-          <Mail className="w-4 h-4 mr-2 text-slate-400" /> 
-          <a href={`mailto:${msg.email}`} className="hover:text-blue-500 truncate">{msg.email}</a>
+          <Mail className="w-4 h-4 mr-2 text-rose-400" /> 
+          <a href={`mailto:${msg.email}`} className="hover:text-rose-500 transition-colors truncate">{msg.email}</a>
         </p>
         <p className="flex items-center text-sm text-gray-500 dark:text-gray-500">
-          <Calendar className="w-4 h-4 mr-2 text-slate-400" /> 
+          <Calendar className="w-4 h-4 mr-2 text-rose-400" /> 
           {new Date(msg.createdAt).toLocaleDateString("de-DE", { 
             day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' 
           })} Uhr
@@ -60,21 +57,21 @@ export default function MessageCard({ msg }: { msg: ContactMessage }) {
 
       {/* The Actual Message & Buttons */}
       <div className="md:w-2/3 flex flex-col">
-        <p className={`text-gray-700 dark:text-gray-300 whitespace-pre-wrap flex-grow ${
-            isRead ? "font-normal" : "font-medium"
+        <p className={`text-gray-700 dark:text-gray-300 whitespace-pre-wrap flex-grow leading-relaxed ${
+            isRead ? "font-normal" : "font-medium text-gray-900 dark:text-gray-100"
         }`}>
           {msg.message}
         </p>
          
-        <div className="mt-4 pt-4 border-t border-gray-50 dark:border-slate-800/50 flex flex-wrap gap-3 justify-end">
+        <div className="mt-6 pt-4 border-t border-rose-50 dark:border-rose-900/30 flex flex-wrap gap-3 justify-end">
           
-          {/* NEW Toggle Button */}
+          {/* 🍓 CHANGED: Strawberry themed toggle buttons */}
           <button 
             onClick={handleToggle}
-            className={`flex items-center gap-2 text-sm font-semibold py-2 px-4 rounded-lg transition-colors ${
+            className={`flex items-center gap-2 text-sm font-semibold py-2 px-4 rounded-xl transition-all active:scale-95 ${
               isRead 
-                ? "bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-slate-700" 
-                : "bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-900/40"
+                ? "bg-gray-50 dark:bg-slate-800 text-gray-500 dark:text-gray-400 hover:bg-rose-50 hover:text-rose-600 border border-gray-200 dark:border-gray-700" 
+                : "bg-rose-100 dark:bg-rose-900/40 text-rose-700 dark:text-rose-300 hover:bg-rose-200 dark:hover:bg-rose-900/60"
             }`}
           >
             {isRead ? (
@@ -84,10 +81,10 @@ export default function MessageCard({ msg }: { msg: ContactMessage }) {
             )}
           </button>
 
-          {/* Existing Answer Button */}
+          {/* 🍓 CHANGED: Vibrant gradient reply button */}
           <a 
             href={`mailto:${msg.email}?subject=Re: Ihre Anfrage an den SVS NBG e.V.`}
-            className="flex items-center gap-2 text-sm bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 font-semibold py-2 px-4 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors"
+            className="flex items-center gap-2 text-sm bg-gradient-to-r from-rose-500 to-pink-500 text-white font-semibold py-2 px-5 rounded-xl hover:from-rose-600 hover:to-pink-600 transition-all shadow-md shadow-rose-200 dark:shadow-none active:scale-95"
           >
             Antworten
           </a>

@@ -88,7 +88,7 @@ async function main() {
       title: "Sommerfest der Siedlervereinigung",
       description: "Unser jährliches Sommerfest mit Grillen, Getränken und Musik für die ganze Familie.",
       date: new Date("2026-07-15T14:00:00Z"), 
-      location: "Vereinsgelände Siemens Nürnberg",
+      location: "Siedlerfestplatz Vereinsgelände Siemens Nürnberg",
     },
   });
 
@@ -104,12 +104,22 @@ async function main() {
   // Example Event 3
   await prisma.event.create({
     data: {
-      title: "website update 2026",
-      description: "Besprechung mit Thomas Konradt für Anforderung",
-      date: new Date("2026-04-23T11:00:00Z"),
-      location: "Hepersdorfer straase 1b",
+      title: "Weihnachtsfeier der Siedlervereinigung",
+      description: "Unser jährliches Weihnachtsfeier mit Gluehwein-und-Kinderpunsch für die ganze Familie.",
+      date: new Date("2026-12-20T17:00:00Z"),
+      location: "Siedlerfestplatz Vereinsgelände Siemens Nürnberg",
     },
   });
+  // Example Event 4
+  await prisma.event.create({
+    data: {
+      title: "SVS Kinderfest",
+      description: "Unser jährliches Kinderfest für die ganze Familie, bei dem Kinder spielen und Spaß haben können, während Eltern die gemeinsame Zeit genießen und sich austauschen.",
+      date: new Date("2026-07-04T10:00:00Z"),
+      location: "Siedlerfestplatz Vereinsgelände Siemens Nürnberg",
+    },
+  });
+
 
   console.log("Events added successfully!");
 }
