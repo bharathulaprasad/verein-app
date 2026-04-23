@@ -2,7 +2,8 @@ import prisma from "@/lib/prisma";
 import Link from "next/link";
 import { CalendarDays, MapPin, Mail, Phone, Users } from "lucide-react";
 import ContactForm from "@/components/ContactForm";
-
+import { formatWhatsAppNumber } from "@/lib/utils";
+import WhatsAppCard from "@/components/WhatsAppCard";
 export default async function Home() {
   // Fetch ALL data from the database
   const upcomingEvents = await prisma.event.findMany({
@@ -110,6 +111,31 @@ export default async function Home() {
       <ContactForm />
     </div>
 
+    // 1. Data Fetching
+          const chairman = await prisma.boardMember.findFirst({
+            where: {role: "1. Vorsitzender" },
+          select: {phone: true, name: true }
+  });
+
+  // 2. Data Formatting
+  const whatsappNumber = formatWhatsAppNumber(chairman?.phone);
+  const chairmanName = chairman?.name ? chairman.name.split(' ')[0] : "Vorstand";
+
+  // 3. Rendering
+  return (
+    <div className="container mx-auto p-4">
+      
+      {/* Imagine your other homepage sections are here */}
+      <h1 className="text-4xl font-bold text-center my-8">Willkommen beim SVS NBG e.V.</h1>
+      
+      {/* ✨ RENDER THE COMPONENT CLEANLY ✨ */}
+      <WhatsAppCard 
+        whatsappNumber={whatsappNumber} 
+        chairmanName={chairmanName} 
+      />
+
+    </div>
+  );
     {/* Right Column: Board Members */}
     <div className="space-y-6">
       <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200 mb-4">Ihre Ansprechpartner</h3>
