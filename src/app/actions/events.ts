@@ -8,7 +8,7 @@ import { revalidatePath } from "next/cache";
 export async function toggleEventParticipation(eventId: string) {
   const session = await getServerSession(authOptions);
   
-  if (!session || !session.user?.id) {
+  if (!session || !session.user) {
     throw new Error("Sie müssen eingeloggt sein.");
   }
 
