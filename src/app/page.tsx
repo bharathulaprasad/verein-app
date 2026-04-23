@@ -27,14 +27,23 @@ export default async function Home() {
   const vereinInfo = await prisma.vereinInfo.findFirst();
 
   // ✨ WHATSAPP DATEN ABFRAGEN UND FORMATIEREN
-  const chairman = await prisma.boardMember.findFirst({
-    where: { role: "1. Vorsitzender" }, // Achtung: Prüfe, ob es in deiner DB wirklich "role" und "1. Vorsitzender" heißt!
-    select: { phone: true, name: true }
+  const chairman1 = await prisma.boardMember.findFirst({
+    where: { role: { startsWith: "1. Vorsitzend" } }, // Achtung: Prüfe, ob es in deiner DB wirklich "role" und "1. Vorsitzender" heißt!
+    select: { role:true, phone: true, name: true }
   });
 
-  const whatsappNumber = formatWhatsAppNumber(chairman?.phone);
-  const chairmanName = chairman?.name ? chairman.name.split(' ')[0] : "1. Vorsitzender";
+    const chairman2 = await prisma.boardMember.findFirst({
+    where: { role: { startsWith: "2. Vorsitzend" } }, // Achtung: Prüfe, ob es in deiner DB wirklich "role" und "2. Vorsitzende" heißt!
+    select: { role:true, phone: true, name: true }
+  });
 
+  const whatsappNumber1 = formatWhatsAppNumber(chairman1?.phone);
+  const whatsappNumber2 = formatWhatsAppNumber(chairman2?.phone);
+  const chairmanName1 = chairman1?.name ? chairman1.name.split(' ')[0] : "Vorstand";
+  const chairmanName2 = chairman2?.name ? chairman2.name.split(' ')[0] : "Vorstand";
+
+  const role1 = chairman1?.role || "1. Vorstand";
+  const role2 = chairman2?.role || "2. Vorstand";
   // ==========================================
   // 2. HTML & DESIGN (Alles im return!)
   // ==========================================
@@ -110,11 +119,24 @@ export default async function Home() {
         </p>
 
         {/* ✨ WHATSAPP KARTE (Wird nur gerendert, wenn User EINGELOGGT ist UND eine Nummer existiert) */}
-        {session && (
-          <WhatsAppCard 
-            whatsappNumber={whatsappNumber} 
-            chairmanName={chairmanName} 
-          />
+        {session && (whatsappNumber1 || whatsappNumber2) && (
+          <div className="grid md:grid-cols-2 gap-4 mb-8">
+            {whatsappNumber1 && (
+              <WhatsAppCard 
+                whatsappNumber={whatsappNumber1} 
+                chairmanName={chairmanName1} 
+                roleTitle={role1} // e.g., "1. Vorsitzender"
+              />
+            )}
+            
+            {whatsappNumber2 && (
+              <WhatsAppCard 
+                whatsappNumber={whatsappNumber2} 
+                chairmanName={chairmanName2} 
+                roleTitle={role2} // e.g., "2. Vorsitzende"
+              />
+            )}
+          </div>
         )}
 
         <div className="grid lg:grid-cols-2 gap-12 mt-8">

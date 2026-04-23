@@ -4,9 +4,10 @@ import React from 'react';
 interface WhatsAppCardProps {
   whatsappNumber: string | null;
   chairmanName: string;
+  role: string; // z.B. "1. Vorsitzender" oder "2. Vorsitzende"
 }
 
-export default function WhatsAppCard({ whatsappNumber, chairmanName }: WhatsAppCardProps) {
+export default function WhatsAppCard({ whatsappNumber, chairmanName, role }: WhatsAppCardProps) {
   // If there is no number, don't render the card at all!
   if (!whatsappNumber) return null;
 
@@ -18,7 +19,7 @@ export default function WhatsAppCard({ whatsappNumber, chairmanName }: WhatsAppC
           Haben Sie dringende Fragen?
         </h3>
         <p className="text-slate-600 dark:text-slate-400">
-          Erreichen Sie unseren 1. Vorstand ({chairmanName}) direkt per WhatsApp. Wir antworten in der Regel innerhalb weniger Stunden.
+          Erreichen Sie unseren {role} ({chairmanName}) direkt per WhatsApp. Wir antworten in der Regel innerhalb weniger Stunden.
         </p>
       </div>
 
