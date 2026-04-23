@@ -13,7 +13,7 @@ export default async function Dashboard() {
   // Safely fetch secure user data using Prisma 7
   const user = await prisma.user.findUnique({
     where: { email: session.user?.email as string },
-    include: { email:true, events: { include: { event: true } } }
+    include: {  events: { include: { event: true } } }
   });
 
   return (
