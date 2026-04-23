@@ -17,8 +17,8 @@ export default async function AdminDashboard() {
  });
 
  return (
-  // Meta Background Gray
-  <div className="max-w-4xl mx-auto py-12 px-4 sm:px-6 transition-colors duration-600">
+  
+   <div className="py-8 px-0 sm:px-4 font-sans transition-colors duration-300">
    <div className="max-w-3xl mx-auto space-y-4">
      
     
