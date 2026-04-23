@@ -18,28 +18,28 @@ export default async function AdminDashboard() {
  });
 
  return (
-  // 🍓 CHANGED: Added a full-page soft strawberry background (rose-50)
-  <div className="min-h-screen bg-rose-50 dark:bg-rose-950 py-12 px-4 transition-colors duration-300">
+  // ✨ Pleasant, subtle sky-blue tinted background
+  <div className="min-h-screen bg-sky-50/50 py-12 px-4 font-sans">
    <div className="max-w-5xl mx-auto space-y-8">
      
-    {/* 🍓 CHANGED: Vibrant pink border and gradient icon */}
-    <div className="flex items-center space-x-4 mb-8 border-b border-rose-200 dark:border-rose-900/50 pb-6">
-     <div className="p-3 bg-white dark:bg-rose-900/50 rounded-2xl shadow-sm border border-rose-100 dark:border-rose-800">
-       <Inbox className="w-8 h-8 text-rose-500 dark:text-rose-400" />
+    {/* ✨ Soft, welcoming header */}
+    <div className="flex items-center space-x-5 mb-8 border-b border-slate-200 pb-6">
+     <div className="p-3.5 bg-white rounded-2xl shadow-sm border border-slate-100">
+       <Inbox className="w-8 h-8 text-indigo-500" />
      </div>
      <div>
-      <h1 className="text-3xl font-extrabold text-gray-900 dark:text-rose-50 tracking-tight">
+      {/* Softer slate-800 instead of harsh black */}
+      <h1 className="text-3xl font-bold text-slate-800 tracking-tight">
         Vorstand Postfach
       </h1>
-      <p className="text-rose-600/80 dark:text-rose-300/80 font-medium mt-1">
+      <p className="text-slate-500 mt-1">
         Alle Nachrichten aus dem Kontaktformular
       </p>
      </div>
     </div>
 
     {messages.length === 0 ? (
-     // 🍓 CHANGED: Soft tinted empty state
-     <div className="bg-white/80 backdrop-blur-sm dark:bg-rose-900/20 p-12 rounded-2xl border border-rose-100 dark:border-rose-800/50 text-center text-rose-400 dark:text-rose-300/70 shadow-sm transition-colors">
+     <div className="bg-white p-12 rounded-2xl border border-slate-100 text-center text-slate-500 shadow-sm">
       Keine neuen Nachrichten vorhanden.
      </div>
     ) : (
