@@ -18,7 +18,7 @@ export async function toggleMessageReadStatus(id: string, currentStatus: boolean
     data: { isRead: !currentStatus },
   });
 
-  revalidatePath("/admin"); 
+  revalidatePath("/", "layout"); // Refresh the homepage to update the unread message count
 }
 
 // ✨ ADD THIS NEW FUNCTION ✨
@@ -34,5 +34,5 @@ export async function deleteMessage(id: string) {
     where: { id },
   });
 
-  revalidatePath("/admin"); // Refresh the page list
+  revalidatePath("/", "layout"); // Refresh the homepage to update the unread message count
 }

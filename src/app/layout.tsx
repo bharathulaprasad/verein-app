@@ -7,10 +7,18 @@ import ThemeToggle from "@/components/ThemeToggle";
 import CookieBanner from "@/components/CookieBanner";
 import Link from 'next/link';
 import Image from 'next/image';
+import prisma from "@/lib/prisma";
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const session = await getServerSession(authOptions);
-
+  const userRole = (session?.user as any)?.role;
+  const isAdminOrVorstand = userRole === "ADMIN" || userRole === "VORSTAND";
+  let unreadCount = 0;
+  if (isAdminOrVorstand) {
+    unreadCount = await prisma.contactMessage.count({
+      where: { isRead: false }
+    });
+  }
   return (
     <html lang="de" suppressHydrationWarning>
       <body className="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-600">
@@ -43,7 +51,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                   {((session?.user as any)?.role === "ADMIN" || (session?.user as any)?.role === "VORSTAND") && (
                     <>
                       <Link href="/admin" className="text-amber-400 hover:text-amber-300 font-bold transition-colors">
-                        Postfach
+                        Postfach ({unreadCount})
                       </Link>
                       <Link href="/admin/events" className="text-amber-400 hover:text-amber-300 font-bold transition-colors">
                         Termine
