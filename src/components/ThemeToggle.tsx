@@ -1,6 +1,6 @@
 "use client";
 
-import { useTheme } from "next-themes";
+import { useTheme } from "./ThemeProvider"; // <-- Import from our own file!
 import { useEffect, useState } from "react";
 import { Sun, Moon } from "lucide-react"; // Make sure lucide-react is installed
 
