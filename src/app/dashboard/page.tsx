@@ -44,6 +44,8 @@ export default async function Dashboard() {
             <li key={e.eventId} className="p-4 bg-blue-50/50 border border-blue-100 rounded-md flex justify-between">
               <span className="font-bold text-blue-900">{e.event.title}</span> 
               <span className="text-slate-600">{new Date(e.event.date).toLocaleDateString("de-DE")}</span>
+              <span className="text-slate-600">{new Date(e.event.date).toLocaleTimeString("de-DE")}</span>
+              <span className="font-bold text-blue-900">{e.event.location}</span> 
             </li>
           ))}
         </ul>
