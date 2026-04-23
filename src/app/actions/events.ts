@@ -12,7 +12,7 @@ export async function toggleEventParticipation(eventId: string) {
     throw new Error("Sie müssen eingeloggt sein.");
   }
 
-  const userId = session.user.id as string;
+  const userId = (session?.user as any)?.id;
 
   // 1. Check if the user is already attending this specific event
   // We use findUnique with the composite key (eventId_userId)

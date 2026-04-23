@@ -94,8 +94,9 @@ export default async function Home() {
             upcomingEvents.map((event) => {
               
               // ✨ CHECK IF CURRENT USER IS IN THE "ATTENDEES" LIST ✨
-              const isParticipating = session?.user?.id 
-                ? event.attendees.some((attendee: any) => attendee.userId === session.user.id) 
+              const userId = (session?.user as any)?.id;
+                const isParticipating = userId 
+                ? event.attendees.some((attendee: any) => attendee.userId === userId) 
                 : false;
 
               return (
