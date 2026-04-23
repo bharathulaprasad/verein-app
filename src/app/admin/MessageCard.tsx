@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { User, CheckCircle2, Circle } from "lucide-react";
-import { toggleMessageReadStatus } from "./actions";
+import { User, CheckCircle2, Circle, Trash2 } from "lucide-react"; // ✨ Added Trash2
+import { toggleMessageReadStatus, deleteMessage } from "./actions"; // ✨ Added deleteMessage
 
 type ContactMessage = {
   id: string;
@@ -15,6 +15,7 @@ type ContactMessage = {
 
 export default function MessageCard({ msg }: { msg: ContactMessage }) {
   const [isRead, setIsRead] = useState(msg.isRead);
+  const [isDeleted, setIsDeleted] = useState(false); // ✨ Added deleted state
 
   const handleToggle = async () => {
     setIsRead(!isRead);
@@ -26,6 +27,28 @@ export default function MessageCard({ msg }: { msg: ContactMessage }) {
       alert("Fehler beim Aktualisieren des Status.");
     }
   };
+
+  const handleDelete = async () => {
+    // 1. Ask for confirmation so they don't click it by accident
+    const confirmed = confirm("Möchten Sie diese Nachricht wirklich löschen?");
+    if (!confirmed) return;
+
+    // 2. Optimistic Update: Instantly hide the card!
+    setIsDeleted(true);
+
+    // 3. Delete from database
+    try {
+      await deleteMessage(msg.id);
+    } catch (error) {
+      console.error("Failed to delete message", error);
+      // Revert the UI if the server failed
+      setIsDeleted(false);
+      alert("Fehler beim Löschen der Nachricht.");
+    }
+  };
+
+  // ✨ If it is deleted, don't render the card at all!
+  if (isDeleted) return null;
 
   return (
     <div className={`p-4 sm:p-5 rounded-xl border transition-colors duration-200 ${
@@ -65,24 +88,39 @@ export default function MessageCard({ msg }: { msg: ContactMessage }) {
         </p>
       </div>
          
-      <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-700 flex flex-wrap gap-2 justify-end">
+      <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-700 flex flex-wrap gap-2 justify-between items-center">
+        
+        {/* ✨ NEW: Delete Button (Placed on the left using mr-auto) */}
         <button 
-          onClick={handleToggle}
-          className="flex items-center gap-1.5 text-[15px] font-medium py-1.5 px-3.5 rounded-lg transition-colors bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700"
+          onClick={handleDelete}
+          className="flex items-center gap-1.5 text-[15px] font-medium py-1.5 px-3.5 rounded-lg transition-colors text-red-600 bg-red-50 hover:bg-red-100 dark:bg-red-900/20 dark:text-red-400 dark:hover:bg-red-900/40 mr-auto"
+          title="Nachricht löschen"
         >
-          {isRead ? (
-            <><Circle className="w-4 h-4" /> Als ungelesen markieren</>
-          ) : (
-            <><CheckCircle2 className="w-4 h-4" /> Als gelesen markieren</>
-          )}
+          <Trash2 className="w-4 h-4" /> 
+          <span className="hidden sm:inline">Löschen</span> {/* Hides text on tiny phones to save space */}
         </button>
 
-        <a 
-          href={`mailto:${msg.email}?subject=Re: Ihre Anfrage an den SVS NBG e.V.`}
-          className="flex items-center gap-1.5 text-[15px] bg-blue-600 text-white font-medium py-1.5 px-3.5 rounded-lg hover:bg-blue-700 transition-colors"
-        >
-          Antworten
-        </a>
+        {/* Existing Action Buttons (Placed on the right) */}
+        <div className="flex gap-2">
+          <button 
+            onClick={handleToggle}
+            className="flex items-center gap-1.5 text-[15px] font-medium py-1.5 px-3.5 rounded-lg transition-colors bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700"
+          >
+            {isRead ? (
+              <><Circle className="w-4 h-4" /> Als ungelesen markieren</>
+            ) : (
+              <><CheckCircle2 className="w-4 h-4" /> Als gelesen markieren</>
+            )}
+          </button>
+
+          <a 
+            href={`mailto:${msg.email}?subject=Re: Ihre Anfrage an den SVS NBG e.V.`}
+            className="flex items-center gap-1.5 text-[15px] bg-blue-600 text-white font-medium py-1.5 px-3.5 rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            Antworten
+          </a>
+        </div>
+
       </div>
     </div>
   );
