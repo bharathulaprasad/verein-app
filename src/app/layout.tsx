@@ -23,12 +23,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                   <Image 
                     src="/logo.png" /* <-- Make sure your file in public folder is named logo.png */
                     alt="SVS NBG e.V. Logo" 
-                    width={44} 
-                    height={44} 
+                    width={66} 
+                    height={66} 
                     className="rounded-full bg-white object-contain p-0.5 shadow-sm"
                     priority
                   />
-                  <span className="text-xl font-bold hidden sm:block">SVS NBG e.V.</span>
+                  <span className="text-xl font-bold hidden sm:block">Siedlervereinigung Siemens Nürnberg e.V.</span>
                 </Link>
                 {/* ✨ END OF LOGO SECTION */}
                 
