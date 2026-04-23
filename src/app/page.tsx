@@ -61,7 +61,7 @@ export default async function Home() {
               <CalendarDays className="w-4 h-4 mr-2" /> Jeden 2. Dienstag im Monat, 15:00 Uhr
             </p>
             <p className="text-gray-700 dark:text-gray-300 mt-1 flex items-center">
-              <MapPin className="w-4 h-4 mr-2" /> Katjas Cafè, Trierer Str. 52, 90469 Nürnberg
+              <MapPin className="w-4 h-4 mr-2" /> Der Beck, Trierer Str. 171, 90469 Nürnberg
             </p>
           </div>
 
