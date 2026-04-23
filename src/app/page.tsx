@@ -53,8 +53,8 @@ export default async function Home() {
         </div>
 
         <div className="grid md:grid-cols-2 gap-6">
-          {/* Static Recurring Event */}
-          <div className="bg-amber-50 dark:bg-amber-950/30 border-l-4 border-amber-500 dark:border-amber-600 p-6 rounded-r-lg shadow-sm transition-colors">
+          {/* Static Recurring Event 
+            <div className="bg-amber-50 dark:bg-amber-950/30 border-l-4 border-amber-500 dark:border-amber-600 p-6 rounded-r-lg shadow-sm transition-colors">
             <h3 className="text-xl font-bold text-amber-900 dark:text-amber-500">! Wichtiger Termin !</h3>
             <p className="text-amber-800 dark:text-amber-400 font-semibold mt-2 text-lg">SVS - Kaffeerunden</p>
             <p className="text-gray-700 dark:text-gray-300 mt-1 flex items-center">
@@ -64,6 +64,7 @@ export default async function Home() {
               <MapPin className="w-4 h-4 mr-2" /> Der Beck - Hornbach, Trierer Str. 171, 90469 Nürnberg
             </p>
           </div>
+          */}
 
           {/* Dynamic Events from Database */}
           {upcomingEvents.length === 0 ? (
