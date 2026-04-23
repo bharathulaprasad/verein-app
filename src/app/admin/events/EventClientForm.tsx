@@ -14,7 +14,6 @@ export default function EventClientForm() {
     setLoading(false);
   };
 
-  // Shared input styling so we don't repeat classes
   const inputStyles = "w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:border-blue-500 dark:focus:border-blue-500 rounded-lg text-[15px] text-slate-900 dark:text-white outline-none transition-colors";
 
   return (
@@ -32,12 +31,12 @@ export default function EventClientForm() {
               name="title" 
               required 
               type="text" 
-              placeholder="z.B. Jahreshauptversammlung"
+              placeholder="z.B. Kaffeerunde"
               className={inputStyles}
             />
           </div>
           <div>
-            <label className="block text-[13px] font-semibold text-slate-600 dark:text-slate-400 mb-1">Datum & Uhrzeit *</label>
+            <label className="block text-[13px] font-semibold text-slate-600 dark:text-slate-400 mb-1">Erstes Datum & Uhrzeit *</label>
             <input 
               name="date" 
               required 
@@ -47,21 +46,34 @@ export default function EventClientForm() {
           </div>
         </div>
 
-        <div>
-          <label className="block text-[13px] font-semibold text-slate-600 dark:text-slate-400 mb-1">Ort (Optional)</label>
-          <input 
-            name="location" 
-            type="text" 
-            placeholder="z.B. Vereinsheim"
-            className={inputStyles}
-          />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-[13px] font-semibold text-slate-600 dark:text-slate-400 mb-1">Ort (Optional)</label>
+            <input 
+              name="location" 
+              type="text" 
+              placeholder="z.B. Vereinsheim"
+              className={inputStyles}
+            />
+          </div>
+          
+          {/* ✨ NEW RECURRENCE DROPDOWN ✨ */}
+          <div>
+            <label className="block text-[13px] font-semibold text-slate-600 dark:text-slate-400 mb-1">Wiederholung</label>
+            <select name="recurrence" className={inputStyles}>
+              <option value="none">Einmaliger Termin</option>
+              <option value="weekly">Wöchentlich (für 12 Wochen)</option>
+              <option value="monthly">Monatlich (am gleichen Datum, z.B. immer am 15.)</option>
+              <option value="monthly_weekday">Monatlich (am gleichen Wochentag, z.B. jeden 2. Dienstag)</option>
+            </select>
+          </div>
         </div>
 
         <div>
           <label className="block text-[13px] font-semibold text-slate-600 dark:text-slate-400 mb-1">Beschreibung (Optional)</label>
           <textarea 
             name="description" 
-            rows={3}
+            rows={2}
             placeholder="Weitere Details zum Termin..."
             className={`${inputStyles} resize-none`}
           />
