@@ -4,8 +4,12 @@ import { CalendarDays, MapPin, Mail, Phone, Users } from "lucide-react";
 import ContactForm from "@/components/ContactForm";
 import { formatWhatsAppNumber } from "@/lib/utils";
 import WhatsAppCard from "@/components/WhatsAppCard";
+
 export default async function Home() {
-  // Fetch ALL data from the database
+  // ==========================================
+  // 1. DATENBANK-ABFRAGEN (Alles oben!)
+  // ==========================================
+  
   const upcomingEvents = await prisma.event.findMany({
     where: { date: { gte: new Date() } },
     orderBy: { date: "asc" },
@@ -18,6 +22,18 @@ export default async function Home() {
   
   const vereinInfo = await prisma.vereinInfo.findFirst();
 
+  // ✨ WHATSAPP DATEN ABFRAGEN UND FORMATIEREN
+  const chairman = await prisma.boardMember.findFirst({
+    where: { role: "1. Vorsitzender" }, // Achtung: Prüfe, ob es in deiner DB wirklich "role" und "1. Vorsitzender" heißt!
+    select: { phone: true, name: true }
+  });
+
+  const whatsappNumber = formatWhatsAppNumber(chairman?.phone);
+  const chairmanName = chairman?.name ? chairman.name.split(' ')[0] : "Vorstand";
+
+  // ==========================================
+  // 2. HTML & DESIGN (Alles im return!)
+  // ==========================================
   return (
     <div className="space-y-16 transition-colors duration-300">
       
@@ -31,19 +47,16 @@ export default async function Home() {
           Wir sind Mitglied im Verband Wohneigentum Bezirksverband Mittelfranken e.V. und bestehen seit der Mitte der 1930er Jahre. Mit verschiedenen Veranstaltungen für unsere Mitglieder, Freunde und Bekannte halten wir ein aktives Vereinsleben aufrecht.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-4">
-		  
-		  <Link href="/about" className="bg-blue-600 dark:bg-blue-500 text-white px-8 py-3 rounded-lg font-bold shadow-md hover:bg-blue-500 dark:hover:bg-blue-400 transition">
-			Mehr über uns erfahren
-		  </Link>
-		  
-		  <Link href="/api/auth/signin" className="bg-blue-800 dark:bg-slate-800 text-white px-8 py-3 rounded-lg font-bold shadow hover:bg-blue-700 dark:hover:bg-slate-700 transition">
-			Mitglieder Login
-		  </Link>
-		  
-		  <a href="#kontakt" className="bg-white dark:bg-slate-900 text-blue-800 dark:text-blue-400 border-2 border-blue-800 dark:border-blue-600 px-8 py-3 rounded-lg font-bold shadow hover:bg-blue-50 dark:hover:bg-slate-800 transition">
-			Kontakt
-		  </a>
-		</div>
+          <Link href="/about" className="bg-blue-600 dark:bg-blue-500 text-white px-8 py-3 rounded-lg font-bold shadow-md hover:bg-blue-500 dark:hover:bg-blue-400 transition">
+            Mehr über uns erfahren
+          </Link>
+          <Link href="/api/auth/signin" className="bg-blue-800 dark:bg-slate-800 text-white px-8 py-3 rounded-lg font-bold shadow hover:bg-blue-700 dark:hover:bg-slate-700 transition">
+            Mitglieder Login
+          </Link>
+          <a href="#kontakt" className="bg-white dark:bg-slate-900 text-blue-800 dark:text-blue-400 border-2 border-blue-800 dark:border-blue-600 px-8 py-3 rounded-lg font-bold shadow hover:bg-blue-50 dark:hover:bg-slate-800 transition">
+            Kontakt
+          </a>
+        </div>
       </section>
 
       {/* 2. AKTUELLES & TERMINE (EVENTS) */}
@@ -54,19 +67,6 @@ export default async function Home() {
         </div>
 
         <div className="grid md:grid-cols-2 gap-6">
-          {/* Static Recurring Event 
-            <div className="bg-amber-50 dark:bg-amber-950/30 border-l-4 border-amber-500 dark:border-amber-600 p-6 rounded-r-lg shadow-sm transition-colors">
-            <h3 className="text-xl font-bold text-amber-900 dark:text-amber-500">! Wichtiger Termin !</h3>
-            <p className="text-amber-800 dark:text-amber-400 font-semibold mt-2 text-lg">SVS - Kaffeerunden</p>
-            <p className="text-gray-700 dark:text-gray-300 mt-1 flex items-center">
-              <CalendarDays className="w-4 h-4 mr-2" /> Jeden 2. Dienstag im Monat, 15:00 Uhr
-            </p>
-            <p className="text-gray-700 dark:text-gray-300 mt-1 flex items-center">
-              <MapPin className="w-4 h-4 mr-2" /> Der Beck - Hornbach, Trierer Str. 171, 90469 Nürnberg
-            </p>
-          </div>
-          */}
-
           {/* Dynamic Events from Database */}
           {upcomingEvents.length === 0 ? (
             <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 p-6 rounded-lg shadow-sm flex items-center justify-center text-gray-500 dark:text-gray-400 transition-colors">
@@ -95,67 +95,50 @@ export default async function Home() {
 
       {/* 3. KONTAKT & VORSTAND (Dynamic from DB) */}
       <section id="kontakt" className="max-w-6xl mx-auto mt-16 pt-8 border-t border-gray-200 dark:border-slate-800 transition-colors">
-  <div className="flex items-center space-x-3 mb-8">
-    <Users className="text-blue-600 dark:text-blue-400 w-8 h-8" />
-    <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100">Kontakt & Vorstand</h2>
-  </div>
-  
-  <p className="text-gray-700 dark:text-gray-300 mb-8 max-w-3xl">
-    Haben Sie Fragen an die Siedlervereinigung? Nutzen Sie unser Kontaktformular oder melden Sie sich direkt bei einem unserer Vorstände. E-Mail: <a href={`mailto:${vereinInfo?.contactEmail || "svs_nbg@web.de"}`} className="text-blue-600 dark:text-blue-400 font-semibold hover:underline">{vereinInfo?.contactEmail || "svs_nbg@web.de"}</a>
-  </p>
+        
+        <div className="flex items-center space-x-3 mb-8">
+          <Users className="text-blue-600 dark:text-blue-400 w-8 h-8" />
+          <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100">Kontakt & Vorstand</h2>
+        </div>
+        
+        <p className="text-gray-700 dark:text-gray-300 mb-4 max-w-3xl">
+          Haben Sie Fragen an die Siedlervereinigung? Nutzen Sie unser Kontaktformular oder melden Sie sich direkt bei einem unserer Vorstände. E-Mail: <a href={`mailto:${vereinInfo?.contactEmail || "svs_nbg@web.de"}`} className="text-blue-600 dark:text-blue-400 font-semibold hover:underline">{vereinInfo?.contactEmail || "svs_nbg@web.de"}</a>
+        </p>
 
-  <div className="grid lg:grid-cols-2 gap-12">
-    
-    {/* Left Column: The New Contact Form */}
-    <div>
-      <ContactForm />
-    </div>
+        {/* ✨ WHATSAPP KARTE (Wird nur gerendert, wenn eine Nummer vorhanden ist) */}
+        <WhatsAppCard 
+          whatsappNumber={whatsappNumber} 
+          chairmanName={chairmanName} 
+        />
 
-    // 1. Data Fetching
-          const chairman = await prisma.boardMember.findFirst({
-            where: {role: "1. Vorsitzender" },
-          select: {phone: true, name: true }
-  });
+        <div className="grid lg:grid-cols-2 gap-12 mt-8">
+          
+          {/* Left Column: The New Contact Form */}
+          <div>
+            <ContactForm />
+          </div>
 
-  // 2. Data Formatting
-  const whatsappNumber = formatWhatsAppNumber(chairman?.phone);
-  const chairmanName = chairman?.name ? chairman.name.split(' ')[0] : "Vorstand";
-
-  // 3. Rendering
-  return (
-    <div className="container mx-auto p-4">
-      
-      {/* Imagine your other homepage sections are here */}
-      <h1 className="text-4xl font-bold text-center my-8">Willkommen beim SVS NBG e.V.</h1>
-      
-      {/* ✨ RENDER THE COMPONENT CLEANLY ✨ */}
-      <WhatsAppCard 
-        whatsappNumber={whatsappNumber} 
-        chairmanName={chairmanName} 
-      />
-
-    </div>
-  );
-    {/* Right Column: Board Members */}
-    <div className="space-y-6">
-      <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200 mb-4">Ihre Ansprechpartner</h3>
-      <div className="grid sm:grid-cols-2 gap-4">
-        {boardMembers.map((member) => (
-          <div key={member.id} className="bg-white dark:bg-slate-900 p-5 rounded-xl shadow-sm border border-gray-200 dark:border-slate-800 transition-colors">
-            <h4 className="font-bold text-blue-900 dark:text-blue-400 text-sm uppercase tracking-wider">{member.role}</h4>
-            <p className="text-lg font-semibold text-gray-900 dark:text-white mt-1">{member.name}</p>
-            <div className="mt-3 space-y-1 text-sm text-gray-600 dark:text-gray-400">
-              <p className="flex items-center"><Phone className="w-4 h-4 mr-2 text-slate-400" /> {member.phone}</p>
-              <p className="flex items-center"><MapPin className="w-4 h-4 mr-2 text-slate-400" /> {member.address}</p>
-              <p className="flex items-center"><Mail className="w-4 h-4 mr-2 text-slate-400" /> <a href={`mailto:${member.email}`} className="hover:text-blue-500 truncate">{member.email}</a></p>
+          {/* Right Column: Board Members */}
+          <div className="space-y-6">
+            <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200 mb-4">Ihre Ansprechpartner</h3>
+            <div className="grid sm:grid-cols-2 gap-4">
+              {boardMembers.map((member) => (
+                <div key={member.id} className="bg-white dark:bg-slate-900 p-5 rounded-xl shadow-sm border border-gray-200 dark:border-slate-800 transition-colors">
+                  <h4 className="font-bold text-blue-900 dark:text-blue-400 text-sm uppercase tracking-wider">{member.role}</h4>
+                  <p className="text-lg font-semibold text-gray-900 dark:text-white mt-1">{member.name}</p>
+                  <div className="mt-3 space-y-1 text-sm text-gray-600 dark:text-gray-400">
+                    <p className="flex items-center"><Phone className="w-4 h-4 mr-2 text-slate-400" /> {member.phone}</p>
+                    <p className="flex items-center"><MapPin className="w-4 h-4 mr-2 text-slate-400" /> {member.address}</p>
+                    <p className="flex items-center"><Mail className="w-4 h-4 mr-2 text-slate-400" /> <a href={`mailto:${member.email}`} className="hover:text-blue-500 truncate">{member.email}</a></p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
-        ))}
-      </div>
-    </div>
-    
-  </div>
-</section>
+          
+        </div>
+      </section>
+
     </div>
   );
 }
