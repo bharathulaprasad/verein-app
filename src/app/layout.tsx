@@ -46,7 +46,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
                   <Link href="/" className="hover:text-blue-300 dark:hover:text-blue-400 font-medium transition-colors">Startseite</Link>
                   <Link href="/about" className="hover:text-blue-300 dark:hover:text-blue-400 font-medium transition-colors">Über uns</Link>
-
+                  <Link href="/contact" className="hover:text-blue-300 dark:hover:text-blue-400 font-medium transition-colors">Kontakt</Link>
                   {/* ONLY SHOW ADMIN LINK IF USER IS VORSTAND OR ADMIN */}
                   {((session?.user as any)?.role === "ADMIN" || (session?.user as any)?.role === "VORSTAND") && (
                     <>
