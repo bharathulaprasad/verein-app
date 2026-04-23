@@ -32,8 +32,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                   <Image
                     src="/logo.png" /* <-- Make sure your file in public folder is named logo.png */
                     alt="SVS NBG e.V. Logo"
-                    width={66}
-                    height={66}
+                    width={86}
+                    height={86}
                     className="rounded-full bg-white object-contain p-0.5 shadow-sm"
                     priority
                   />
