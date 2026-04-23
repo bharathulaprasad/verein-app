@@ -3,9 +3,13 @@ import Link from "next/link";
 import { CalendarDays, MapPin, Mail, Phone, Users } from "lucide-react";
 import ContactForm from "@/components/ContactForm";
 import { formatWhatsAppNumber } from "@/lib/utils";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import WhatsAppCard from "@/components/WhatsAppCard";
 
 export default async function Home() {
+  
+  const session = await getServerSession(authOptions);
   // ==========================================
   // 1. DATENBANK-ABFRAGEN (Alles oben!)
   // ==========================================
@@ -29,7 +33,7 @@ export default async function Home() {
   });
 
   const whatsappNumber = formatWhatsAppNumber(chairman?.phone);
-  const chairmanName = chairman?.name ? chairman.name.split(' ')[0] : "Vorstand";
+  const chairmanName = chairman?.name ? chairman.name.split(' ')[0] : "1. Vorsitzender";
 
   // ==========================================
   // 2. HTML & DESIGN (Alles im return!)
@@ -105,11 +109,13 @@ export default async function Home() {
           Haben Sie Fragen an die Siedlervereinigung? Nutzen Sie unser Kontaktformular oder melden Sie sich direkt bei einem unserer Vorstände. E-Mail: <a href={`mailto:${vereinInfo?.contactEmail || "svs_nbg@web.de"}`} className="text-blue-600 dark:text-blue-400 font-semibold hover:underline">{vereinInfo?.contactEmail || "svs_nbg@web.de"}</a>
         </p>
 
-        {/* ✨ WHATSAPP KARTE (Wird nur gerendert, wenn eine Nummer vorhanden ist) */}
-        <WhatsAppCard 
-          whatsappNumber={whatsappNumber} 
-          chairmanName={chairmanName} 
-        />
+        {/* ✨ WHATSAPP KARTE (Wird nur gerendert, wenn User EINGELOGGT ist UND eine Nummer existiert) */}
+        {session && (
+          <WhatsAppCard 
+            whatsappNumber={whatsappNumber} 
+            chairmanName={chairmanName} 
+          />
+        )}
 
         <div className="grid lg:grid-cols-2 gap-12 mt-8">
           
