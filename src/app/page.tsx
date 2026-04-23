@@ -119,6 +119,7 @@ export default async function Home() {
             <p className="text-lg font-semibold text-gray-900 dark:text-white mt-1">{member.name}</p>
             <div className="mt-3 space-y-1 text-sm text-gray-600 dark:text-gray-400">
               <p className="flex items-center"><Phone className="w-4 h-4 mr-2 text-slate-400" /> {member.phone}</p>
+              <p className="flex items-center"><MapPin className="w-4 h-4 mr-2 text-slate-400" /> {member.address}</p>
               <p className="flex items-center"><Mail className="w-4 h-4 mr-2 text-slate-400" /> <a href={`mailto:${member.email}`} className="hover:text-blue-500 truncate">{member.email}</a></p>
             </div>
           </div>
