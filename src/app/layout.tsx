@@ -3,7 +3,8 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]/route";
 import SessionProviderWrapper from "@/components/SessionProviderWrapper";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import ThemeToggle from "@/components/ThemeToggle"; // 
+import ThemeToggle from "@/components/ThemeToggle"; 
+import CookieBanner from "@/components/CookieBanner"; 
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -12,7 +13,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html lang="de" suppressHydrationWarning>
-      <body className="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
+      <body className="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-600">
         <ThemeProvider>
           <SessionProviderWrapper session={session}>
             
@@ -65,9 +66,39 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               {children}
             </main>
 
-            <footer className="bg-slate-900 dark:bg-black text-slate-400 text-center p-6 mt-auto border-t dark:border-slate-800">
-              © {new Date().getFullYear()} Siedlervereinigung Siemens Nürnberg e.V.
+            <footer className="bg-slate-900 dark:bg-black text-slate-400 p-6 mt-auto border-t dark:border-slate-800">
+              <div className="container mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+                
+                {/* Copyright Text */}
+                <div className="text-sm text-center md:text-left">
+                  © {new Date().getFullYear()} Siedlervereinigung Siemens Nürnberg e.V.
+                </div>
+                
+                {/* Legal Links */}
+                <div className="flex flex-wrap justify-center gap-4 md:space-x-6 text-sm">
+                  <Link href="/impressum" className="hover:text-white transition-colors">Impressum</Link>
+                  <Link href="/datenschutz" className="hover:text-white transition-colors">Datenschutz</Link>
+                  <Link href="/disclaimer" className="hover:text-white transition-colors">
+                    Disclaimer
+                  </Link>
+                  
+                  {/* ✨ LINK TO YOUR PDF */}
+                  {/* Note: We use a standard <a> tag here, not <Link>, so the browser opens the PDF properly */}
+                  <a 
+                    href="/disclaimer.pdf" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="hover:text-white transition-colors flex items-center gap-1"
+                  >
+                    Disclaimer (PDF)
+                  </a>
+                </div>
+
+              </div>
             </footer>
+            
+            {/* INSERT THE COOKIE BANNER */}
+            <CookieBanner />
             
           </SessionProviderWrapper>
         </ThemeProvider>
