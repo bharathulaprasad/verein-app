@@ -5,6 +5,7 @@ import SessionProviderWrapper from "@/components/SessionProviderWrapper";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import ThemeToggle from "@/components/ThemeToggle"; // 
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const session = await getServerSession(authOptions);
@@ -18,7 +19,18 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <nav className="bg-blue-900 dark:bg-slate-900 text-white p-4 shadow-md border-b border-transparent dark:border-slate-800">
               <div className="container mx-auto flex justify-between items-center">
                 {/* Brand Logo / Name */}
-                <Link href="/" className="text-xl font-bold">SVS NBG e.V.</Link>
+                <Link href="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
+                  <Image 
+                    src="/logo.png" /* <-- Make sure your file in public folder is named logo.png */
+                    alt="SVS NBG e.V. Logo" 
+                    width={44} 
+                    height={44} 
+                    className="rounded-full bg-white object-contain p-0.5 shadow-sm"
+                    priority
+                  />
+                  <span className="text-xl font-bold hidden sm:block">SVS NBG e.V.</span>
+                </Link>
+                {/* ✨ END OF LOGO SECTION */}
                 
                 {/* Navigation Links */}
                 <div className="flex items-center space-x-4 md:space-x-6">
