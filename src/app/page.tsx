@@ -125,7 +125,7 @@ export default async function Home() {
               <WhatsAppCard 
                 whatsappNumber={whatsappNumber1} 
                 chairmanName={chairmanName1} 
-                roleTitle={role1} // e.g., "1. Vorsitzender"
+                role={role1} // e.g., "1. Vorsitzender"
               />
             )}
             
@@ -133,7 +133,7 @@ export default async function Home() {
               <WhatsAppCard 
                 whatsappNumber={whatsappNumber2} 
                 chairmanName={chairmanName2} 
-                roleTitle={role2} // e.g., "2. Vorsitzende"
+                role={role2} // e.g., "2. Vorsitzende"
               />
             )}
           </div>
