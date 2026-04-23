@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Calendar, Mail, User, CheckCircle2, Circle } from "lucide-react";
+import { User, CheckCircle2, Circle } from "lucide-react";
 import { toggleMessageReadStatus } from "./actions";
 
 type ContactMessage = {
@@ -28,67 +28,68 @@ export default function MessageCard({ msg }: { msg: ContactMessage }) {
   };
 
   return (
-    <div className={`bg-white p-6 rounded-2xl flex flex-col md:flex-row gap-6 transition-all duration-300 relative overflow-hidden ${
+    <div className={`p-4 sm:p-5 rounded-lg shadow-[0_1px_2px_rgba(0,0,0,0.1)] transition-colors duration-200 ${
       isRead 
-        ? "border border-slate-100 shadow-sm opacity-90" 
-        : "border border-indigo-100 shadow-md shadow-indigo-100/50"
+        ? "bg-white" 
+        : "bg-[#E7F3FF]" // Meta's exact unread notification blue
     }`}>
       
-      {/* ✨ Calming Indigo Unread Indicator */}
-      {!isRead && <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-indigo-400"></div>}
-
-      {/* Meta Info */}
-      <div className="md:w-1/3 space-y-3 border-b md:border-b-0 md:border-r border-slate-100 pb-4 md:pb-0 md:pr-6">
-        <p className="flex items-center text-slate-700 font-semibold">
-          <User className="w-4 h-4 mr-2 text-indigo-300" /> {msg.name}
-        </p>
-        <p className="flex items-center text-sm text-slate-500">
-          <Mail className="w-4 h-4 mr-2 text-indigo-300" /> 
-          <a href={`mailto:${msg.email}`} className="hover:text-indigo-500 transition-colors truncate">{msg.email}</a>
-        </p>
-        <p className="flex items-center text-sm text-slate-400">
-          <Calendar className="w-4 h-4 mr-2 text-indigo-300" /> 
-          {new Date(msg.createdAt).toLocaleDateString("de-DE", { 
-            day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' 
-          })} Uhr
-        </p>
+      {/* HEADER: Avatar, Name, Timestamp (Facebook Style) */}
+      <div className="flex items-center space-x-3 mb-3">
+        {/* Fake Avatar Circle */}
+        <div className="w-10 h-10 rounded-full bg-[#E4E6EB] flex items-center justify-center flex-shrink-0">
+          <User className="w-6 h-6 text-[#65676B]" />
+        </div>
+        
+        <div className="flex flex-col">
+          <p className="text-[#050505] font-semibold text-[15px] leading-tight">
+            {msg.name}
+          </p>
+          <div className="flex items-center text-[#65676B] text-[13px] mt-0.5 space-x-1">
+            <span>
+              {new Date(msg.createdAt).toLocaleDateString("de-DE", { 
+                day: '2-digit', month: 'long', hour: '2-digit', minute: '2-digit' 
+              })} Uhr
+            </span>
+            <span>·</span>
+            <a href={`mailto:${msg.email}`} className="hover:underline text-[#65676B]">
+              {msg.email}
+            </a>
+          </div>
+        </div>
       </div>
 
-      {/* The Actual Message & Buttons */}
-      <div className="md:w-2/3 flex flex-col">
-        {/* Softer slate-600 text for easier reading */}
-        <p className={`text-slate-600 whitespace-pre-wrap flex-grow leading-relaxed ${
-            isRead ? "font-normal" : "font-medium text-slate-800"
+      {/* BODY: The Actual Message */}
+      <div className="mt-2 pl-0 sm:pl-13"> {/* Indent slightly on desktop to align with text */}
+        <p className={`text-[15px] whitespace-pre-wrap leading-relaxed ${
+            isRead ? "text-[#050505]" : "text-[#050505] font-medium"
         }`}>
           {msg.message}
         </p>
+      </div>
          
-        <div className="mt-6 pt-4 border-t border-slate-50 flex flex-wrap gap-3 justify-end">
-          
-          {/* Toggle Button */}
-          <button 
-            onClick={handleToggle}
-            className={`flex items-center gap-2 text-sm font-medium py-2.5 px-4 rounded-xl transition-colors ${
-              isRead 
-                ? "bg-slate-50 text-slate-500 hover:bg-slate-100" 
-                : "bg-indigo-50 text-indigo-600 hover:bg-indigo-100"
-            }`}
-          >
-            {isRead ? (
-              <><Circle className="w-4 h-4" /> Als ungelesen markieren</>
-            ) : (
-              <><CheckCircle2 className="w-4 h-4" /> Als gelesen markieren</>
-            )}
-          </button>
+      {/* FOOTER: Facebook Style Buttons */}
+      <div className="mt-4 pt-4 border-t border-[#CED0D4]/50 flex flex-wrap gap-2 justify-end">
+        
+        {/* Meta Secondary Gray Button */}
+        <button 
+          onClick={handleToggle}
+          className="flex items-center gap-1.5 text-[15px] font-semibold py-1.5 px-3.5 rounded-md transition-colors bg-[#E4E6EB] text-[#050505] hover:bg-[#D8DADF]"
+        >
+          {isRead ? (
+            <><Circle className="w-4 h-4" /> Als ungelesen markieren</>
+          ) : (
+            <><CheckCircle2 className="w-4 h-4" /> Als gelesen markieren</>
+          )}
+        </button>
 
-          {/* ✨ Pleasant Indigo Primary Button */}
-          <a 
-            href={`mailto:${msg.email}?subject=Re: Ihre Anfrage an den SVS NBG e.V.`}
-            className="flex items-center gap-2 text-sm bg-indigo-500 text-white font-medium py-2.5 px-6 rounded-xl hover:bg-indigo-600 transition-colors active:scale-95 shadow-sm shadow-indigo-200"
-          >
-            Antworten
-          </a>
-        </div>
+        {/* Meta Primary Blue Button */}
+        <a 
+          href={`mailto:${msg.email}?subject=Re: Ihre Anfrage an den SVS NBG e.V.`}
+          className="flex items-center gap-1.5 text-[15px] bg-[#0866FF] text-white font-semibold py-1.5 px-3.5 rounded-md hover:bg-[#1877F2] transition-colors"
+        >
+          Antworten
+        </a>
       </div>
 
     </div>
