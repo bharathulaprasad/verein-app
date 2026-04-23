@@ -18,7 +18,7 @@ export default async function AdminDashboard() {
 
  return (
   // Meta Background Gray
-  <div className="min-h-screen bg-[#F0F2F5] py-8 px-0 sm:px-4 font-sans">
+  <div className="py-8 px-0 sm:px-4 font-sans transition-colors duration-300">
    <div className="max-w-3xl mx-auto space-y-4">
      
     {/* Meta Style Page Header */}
