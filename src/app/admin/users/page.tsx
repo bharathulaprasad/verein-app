@@ -19,10 +19,10 @@ export default async function AdminUsersPage() {
   return (
     <div className="container mx-auto p-4 max-w-5xl">
       <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-        User Access Management
+        Benutzerverwaltung
       </h1>
       <p className="text-gray-500 mt-2">
-        View and change the roles of registered users.
+        Rollen und Berechtigungen der registrierten Benutzer verwalten
       </p>
       
       {/* Client Component for the interactive table */}
