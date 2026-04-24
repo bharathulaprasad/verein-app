@@ -52,9 +52,9 @@ export default function UserManagementClient({ initialUsers }: { initialUsers: U
         </div>
       )}
 
-    <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm mx-4 sm:mx-0">
+    <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 shadow-sm mx-4 sm:mx-0">
       <table className="w-full text-sm text-left text-gray-500">
-        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-800 dark:text-gray-300">
+        <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">
           <tr>
             <th scope="col" className="px-6 py-3">Name</th>
             <th scope="col" className="px-6 py-3">Email</th>
