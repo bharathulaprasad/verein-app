@@ -50,7 +50,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                   {/* ONLY SHOW ADMIN LINK IF USER IS VORSTAND OR ADMIN */}
                   {((session?.user as any)?.role === "ADMIN" || (session?.user as any)?.role === "VORSTAND") && (
                     <>
-                      <Link href="/admin" className="text-amber-400 hover:text-amber-300 font-bold transition-colors">
+                      <Link href="/admin/postfach" className="text-amber-400 hover:text-amber-300 font-bold transition-colors">
                         Postfach 
                         {/* Only show the red circle if there is actually 1 or more unread messages */}
                         {unreadCount > 0 && (
@@ -61,6 +61,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                       </Link>
                       <Link href="/admin/events" className="text-amber-400 hover:text-amber-300 font-bold transition-colors">
                         Termine
+                      </Link>
+                    </>
+                  )}
+                  {((session?.user as any)?.role === "ADMIN" ) && (
+                    <>
+                      
+                      <Link href="/admin/users" className="text-blue-600 font-bold">
+                        Benutzer verwalten
                       </Link>
                     </>
                   )}
