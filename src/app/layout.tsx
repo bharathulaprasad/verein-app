@@ -26,7 +26,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <ThemeProvider>
           <SessionProviderWrapper session={session}>
             <SurpriseBackground /> {/* ✨ Add the surprise background component here! */}
-            <nav className="bg-blue-900 dark:bg-slate-900 text-white p-4 shadow-md border-b border-transparent dark:border-slate-800">
+            <nav className="bg-blue-700 dark:bg-slate-900/60 backdrop-blur-[0.5px] text-white p-4 shadow-md border-b border-transparent dark:border-slate-800 transition-all duration-300">
               <div className="container mx-auto flex justify-between items-center">
                 {/* Brand Logo / Name */}
                 <Link href="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
