@@ -23,7 +23,7 @@ export default async function AdminDashboard() {
      
     
     <div className="mb-4 px-4 sm:px-0">
-      <h1 className="text-2xl font-bold text-slate-900 dark:text-white"> 
+      <h1 className="text-2xl tracking-tight font-bold text-slate-900 dark:text-white"> 
         Vorstand Postfach
       </h1>
       <p className="text-[#65676B] text-[15px] mt-1">
