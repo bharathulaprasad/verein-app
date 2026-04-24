@@ -45,7 +45,8 @@ export default async function AdminEventsPage() {
                 <div key={event.id} className="bg-white dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm flex justify-between items-center">
                   <div>
                     <h3 className="font-semibold text-slate-900 dark:text-white text-[16px]">{event.title}</h3>
-                    <h3 className="font-semibold text-slate-500 dark:text-white text-[16px]">{event.description}</h3>
+                    <h3 className="block text-[13px] font-semibold text-slate-600 dark:text-slate-400 mb-1">{event.description}</h3>
+                    
                     <div className="flex items-center text-slate-500 dark:text-slate-400 text-[13px] mt-1 space-x-3">
                       <span className="flex items-center">
                         <Calendar className="w-3.5 h-3.5 mr-1" />
