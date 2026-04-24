@@ -63,15 +63,15 @@ export default function UserManagementClient({ initialUsers }: { initialUsers: U
         </thead>
         <tbody>
           {users.map((user) => (
-            <tr key={user.id} className="bg-white border-b dark:bg-gray-900 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">
-              <td className="px-6 py-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500">{user.name || 'Kein Name'}</td>
-              <td className="px-6 py-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500">{user.email}</td>
-              <td className="px-6 py-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500">
+            <tr key={user.id} className="bg-white border-b hover:bg-gray-50">
+              <td className="px-6 py-4">{user.name || 'Kein Name'}</td>
+              <td className="px-6 py-4">{user.email}</td>
+              <td className="px-6 py-4">
                 <select
                   value={user.role}
                   onChange={(e) => handleRoleChange(user.id, e.target.value)}
                   disabled={isPending}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 >
                   {/* Replace these options with your actual Prisma Role enum values */}
                   <option value="GUEST">Guest</option>
