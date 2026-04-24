@@ -52,9 +52,9 @@ export default function UserManagementClient({ initialUsers }: { initialUsers: U
         </div>
       )}
 
-    <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 shadow-sm mx-4 sm:mx-0">
+    <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm mx-4 sm:mx-0">
       <table className="w-full text-sm text-left text-gray-500">
-        <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">
+        <thead className="text-xs text-gray-700 uppercase bg-gray-50">
           <tr>
             <th scope="col" className="px-6 py-3">Name</th>
             <th scope="col" className="px-6 py-3">Email</th>
@@ -63,7 +63,7 @@ export default function UserManagementClient({ initialUsers }: { initialUsers: U
         </thead>
         <tbody>
           {users.map((user) => (
-            <tr key={user.id} className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 shadow-md mb-4">
+            <tr key={user.id} className="bg-white border-b hover:bg-gray-50">
               <td className="px-6 py-4 font-medium text-gray-900">{user.name || 'Kein Name'}</td>
               <td className="px-6 py-4">{user.email}</td>
               <td className="px-6 py-4">
