@@ -83,7 +83,7 @@ export default function ContactForm() {
         
         {/* Email Field (Pre-filled, disabled, and greyed out!) */}
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">E-Mail Adresse (Google/Facebook)</label>
+          <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">E-Mail Adresse (Google)</label>
           <input 
             type="email" id="email" name="email" 
             defaultValue={session.user?.email || ""} 

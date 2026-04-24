@@ -8,6 +8,7 @@ import CookieBanner from "@/components/CookieBanner";
 import Link from 'next/link';
 import Image from 'next/image';
 import prisma from "@/lib/prisma";
+import SurpriseBackground from '@/components/SurpriseBackground';
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const session = await getServerSession(authOptions);
@@ -88,7 +89,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 </div>
               </div>
             </nav>
-
+            <SurpriseBackground />
             <main className="flex-grow container mx-auto p-4 mt-8">
               {children}
             </main>
