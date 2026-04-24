@@ -93,7 +93,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             
             
               <main className="flex-grow container mx-auto p-4 mt-8">
-              <div className="bg-white/60 dark:bg-slate-900/60 backdrop-blur-sm border border-white/50 dark:border-slate-700/50 p-6 sm:p-8 rounded-2xl shadow-2xl transition-all duration-300">
+              <div className="bg-white/60 dark:bg-slate-900/60 backdrop-blur-[6px] border border-white/50 dark:border-slate-700/50 p-6 sm:p-8 rounded-2xl shadow-2xl transition-all duration-300">
                 {children}
               </div>
               </main>
