@@ -13,24 +13,31 @@ type User = {
 export default function UserManagementClient({ initialUsers }: { initialUsers: User[] }) {
   const [users, setUsers] = useState(initialUsers);
   const [isPending, startTransition] = useTransition();
-
+  const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
   const handleRoleChange = async (userId: string, newRole: string) => {
     // Optimistic UI Update
     setUsers(users.map(u => u.id === userId ? { ...u, role: newRole } : u));
-
+    setMessage({ type: 'success', text: 'Erfolgreich gespeichert!' });
+    setTimeout(() => setMessage(null), 3000);
     startTransition(async () => {
       try {
         await updateUserRole(userId, newRole as any);
       } catch (error) {
-        alert(error instanceof Error ? error.message : "Failed to update role");
         // Revert on failure
         setUsers(initialUsers);
+        alert(error instanceof Error ? error.message : "Failed to update role");
+        
+        setMessage({ 
+          type: 'error', 
+          text: error instanceof Error ? error.message : 'Fehler beim Speichern.' 
+        });
+        setTimeout(() => setMessage(null), 5000);
       }
     });
   };
 
   return (
-    <div className="overflow-x-auto shadow-md sm:rounded-lg mt-6">
+    <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm mx-4 sm:mx-0">
       <table className="w-full text-sm text-left text-gray-500">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50">
           <tr>
