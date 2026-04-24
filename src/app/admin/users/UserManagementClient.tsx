@@ -37,6 +37,21 @@ export default function UserManagementClient({ initialUsers }: { initialUsers: U
   };
 
   return (
+    <div className="mt-6">
+      
+      {/* 4. Display the message banner if it exists */}
+      {message && (
+        <div 
+          className={`mb-4 p-4 text-sm rounded-lg font-medium transition-all ${
+            message.type === 'success' 
+              ? 'bg-green-100 text-green-800 border border-green-200' 
+              : 'bg-red-100 text-red-800 border border-red-200'
+          }`}
+        >
+          {message.text}
+        </div>
+      )}
+
     <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm mx-4 sm:mx-0">
       <table className="w-full text-sm text-left text-gray-500">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50">
@@ -49,7 +64,7 @@ export default function UserManagementClient({ initialUsers }: { initialUsers: U
         <tbody>
           {users.map((user) => (
             <tr key={user.id} className="bg-white border-b hover:bg-gray-50">
-              <td className="px-6 py-4 font-medium text-gray-900">{user.name || 'No Name'}</td>
+              <td className="px-6 py-4 font-medium text-gray-900">{user.name || 'Kein Name'}</td>
               <td className="px-6 py-4">{user.email}</td>
               <td className="px-6 py-4">
                 <select
@@ -69,6 +84,7 @@ export default function UserManagementClient({ initialUsers }: { initialUsers: U
           ))}
         </tbody>
       </table>
+    </div>
     </div>
   );
 }
