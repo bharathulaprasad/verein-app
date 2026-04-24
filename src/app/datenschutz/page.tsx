@@ -1,6 +1,6 @@
 export const metadata = {
-  title: "Datenschutz | SVS NBG e.V.",
-  description: "Datenschutzerklärung der Siedlervereinigung Siemens Nürnberg e.V.",
+  title: "SVS NBG e.V.",
+  description: "Siedlervereinigung Siemens Nürnberg e.V.",
 };
 
 export default function DatenschutzPage() {
