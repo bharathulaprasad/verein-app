@@ -98,7 +98,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               </div>
               </main>
              
-            <footer className="bg-slate-900 dark:bg-black text-slate-400 p-6 mt-auto border-t dark:border-slate-800">
+            <footer className="bg-white/60 dark:bg-slate-900/60 border border-white/50 dark:border-slate-700/50 p-6 sm:p-8 rounded-2xl shadow-2xl transition-all duration-300">
               <div className="container mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
 
                 {/* Copyright Text */}
