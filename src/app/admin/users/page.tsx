@@ -18,9 +18,7 @@ export default async function AdminUsersPage() {
 
   return (
     <div className="container mx-auto p-4 max-w-5xl">
-      
-      
-      <h1 className="text-2xl font-bold text-slate-900 dark:text-white"> 
+      <h1 className="text-3xl font-bold tracking-tight text-gray-900">
         Benutzerverwaltung
       </h1>
       <p className="text-gray-500 mt-2">
