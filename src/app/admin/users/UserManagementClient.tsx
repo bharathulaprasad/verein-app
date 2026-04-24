@@ -63,7 +63,7 @@ export default function UserManagementClient({ initialUsers }: { initialUsers: U
         </thead>
         <tbody>
           {users.map((user) => (
-            <tr key={user.id} className="bg-white border-b hover:bg-gray-50">
+            <tr key={user.id} className="bg-white border-b hover:bg-gray-50 dark:border-slate-700 ">
               <td className="px-6 py-4">{user.name || 'Kein Name'}</td>
               <td className="px-6 py-4">{user.email}</td>
               <td className="px-6 py-4">
