@@ -54,6 +54,7 @@ export default function UserManagementClient({ initialUsers }: { initialUsers: U
                   {/* Replace these options with your actual Prisma Role enum values */}
                   <option value="GUEST">Guest</option>
                   <option value="MEMBER">Member</option>
+                  <option value="VORSTAND">Vorstand</option>
                   <option value="ADMIN">Admin</option>
                 </select>
               </td>
