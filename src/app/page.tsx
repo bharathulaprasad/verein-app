@@ -4,7 +4,7 @@ import { CalendarDays, MapPin, Mail, Phone, Users } from "lucide-react";
 import ContactForm from "@/components/ContactForm";
 import { formatWhatsAppNumber } from "@/lib/utils";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth"; 
 import WhatsAppCard from "@/components/WhatsAppCard";
 import EventRsvpButton from "@/components/EventRsvpButton";
 
