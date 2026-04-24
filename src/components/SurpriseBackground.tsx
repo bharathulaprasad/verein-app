@@ -15,7 +15,7 @@ export default function SurpriseBackground() {
     // const randomUrl = `https://picsum.photos/1920/1080?random=${cacheBuster}`
 
     // OPTION B: Random, but restricted to nice themes like "nature" or "landscape" (Recommended)
-    const randomUrl = `https://loremflickr.com/1920/1080/nuremberg,germany?random=${cacheBuster}`
+    const randomUrl = `https://loremflickr.com/3840/2160/nuremberg,germany?random=${cacheBuster}`
 
     // Set the image
     setBgImage(randomUrl)
