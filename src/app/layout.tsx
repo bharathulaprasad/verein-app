@@ -90,10 +90,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               </div>
             </nav>
             <SurpriseBackground />
-            <main className="flex-grow container mx-auto p-4 mt-8">
-              {children}
-            </main>
-
+             {/* Wrap your children (your pages) in a relative container so they sit on top of the background */}
+            <div className="relative z-10 flex flex-col min-h-screen">
+              <main className="flex-grow container mx-auto p-4 mt-8">
+                {children}
+              </main>
+            </div>     
             <footer className="bg-slate-900 dark:bg-black text-slate-400 p-6 mt-auto border-t dark:border-slate-800">
               <div className="container mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
 
