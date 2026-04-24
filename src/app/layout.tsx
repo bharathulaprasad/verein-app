@@ -22,7 +22,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   }
   return (
     <html lang="de" suppressHydrationWarning>
-      <body className="text-slate-900 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-600">
+      <body className="bg-slate-50 text-slate-900 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-600">
         <ThemeProvider>
           <SessionProviderWrapper session={session}>
             <SurpriseBackground /> {/* ✨ Add the surprise background component here! */}
@@ -93,7 +93,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             
             
               <main className="flex-grow container mx-auto p-4 mt-8">
+              <div className="bg-white/90 dark:bg-slate-900/90 p-6 rounded-xl shadow-lg">
                 {children}
+              </div>
               </main>
              
             <footer className="bg-slate-900 dark:bg-black text-slate-400 p-6 mt-auto border-t dark:border-slate-800">
