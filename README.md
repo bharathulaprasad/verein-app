@@ -45,3 +45,49 @@ npx prisma db pull
 
 ## To push prisma
 npx prisma db pull
+
+
+## Step by Step instructions after buying a domain, adding your purchased domain to Vercel. to host the same website.
+Step 1: Add the Domain to Vercel
+Go to your Vercel Dashboard and click on your project.
+Click on the Settings tab at the top.
+On the left sidebar, click on Domains.
+Type in your new domain (e.g., yourdomain.com) and click Add.
+Vercel will usually ask if you want to add the www version as well and redirect it. It is highly recommended to click Add for both (so yourdomain.com and www.yourdomain.com both work).
+Step 2: Connect your Domain (DNS Settings)
+Once you add the domain, Vercel will show an "Invalid Configuration" error. This is normal! It just means your domain provider (where you bought the domain, like GoDaddy, Namecheap, or Hostinger) doesn't know about Vercel yet.
+
+Vercel will show you exactly what DNS Records you need to add. You have two ways to do this:
+
+Method A: Using A-Records & CNAME (Recommended & Safest)
+Log in to the website where you bought your domain, find the DNS Management or DNS Settings page, and add these two records:
+
+For the root domain (yourdomain.com):
+Type: A
+Name/Host: @ (or leave blank depending on provider)
+Value/Points to: 76.76.21.21 (Vercel's IP address)
+For the www subdomain (www.yourdomain.com):
+Type: CNAME
+Name/Host: www
+Value/Points to: cname.vercel-dns.com
+Method B: Using Nameservers (Easier)
+Alternatively, Vercel might give you two Nameservers (e.g., ns1.vercel-dns.com and ns2.vercel-dns.com). You can go to your domain provider, find "Nameservers", switch them to "Custom", and paste Vercel's nameservers there. (Note: If you have custom email like info@yourdomain.com already set up, use Method A instead so you don't break your email).
+
+Step 3: Wait a few minutes
+Once you save the settings at your domain provider, go back to Vercel. Within 5 to 15 minutes, the red errors will turn into Green Checkmarks, and your website will be live on your new domain!
+
+Because your app uses NextAuth (Auth.js) and a database for logins and admin roles, changing your domain will break your login system until you update two things:
+
+1. Update Vercel Environment Variables:
+Go to Vercel > Settings > Environment Variables. Find NEXTAUTH_URL and change it from the old .vercel.app URL to your new custom domain:
+
+Key: NEXTAUTH_URL
+Value: https://www.yourdomain.com (Make sure it starts with https://)
+2. Update your OAuth Providers (Google, GitHub, etc.):
+If your users log in with Google, GitHub, or another provider, those providers will block the new domain for security reasons until you whitelist it.
+
+Go to your Google Cloud Console (or GitHub developer settings).
+Find your OAuth app credentials.
+Add your new domain to the Authorized JavaScript origins: https://www.yourdomain.com
+Add your new domain to the Authorized redirect URIs: https://www.yourdomain.com/api/auth/callback/google (replace google with your specific provider).
+After you do this, go to Vercel and Redeploy your app one last time so it picks up the new NEXTAUTH_URL. Your admin panel and custom domain will work perfectly!
