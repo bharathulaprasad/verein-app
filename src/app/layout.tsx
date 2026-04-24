@@ -22,10 +22,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   }
   return (
     <html lang="de" suppressHydrationWarning>
-      <body className="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-600">
+      <body className="text-slate-900 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-600">
         <ThemeProvider>
           <SessionProviderWrapper session={session}>
-
+            <SurpriseBackground /> {/* ✨ Add the surprise background component here! */}
             <nav className="bg-blue-900 dark:bg-slate-900 text-white p-4 shadow-md border-b border-transparent dark:border-slate-800">
               <div className="container mx-auto flex justify-between items-center">
                 {/* Brand Logo / Name */}
@@ -89,13 +89,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 </div>
               </div>
             </nav>
-            <SurpriseBackground />
-             {/* Wrap your children (your pages) in a relative container so they sit on top of the background */}
-            <div className="relative z-10 flex flex-col min-h-screen">
+           
+            
+            
               <main className="flex-grow container mx-auto p-4 mt-8">
                 {children}
               </main>
-            </div>     
+             
             <footer className="bg-slate-900 dark:bg-black text-slate-400 p-6 mt-auto border-t dark:border-slate-800">
               <div className="container mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
 
