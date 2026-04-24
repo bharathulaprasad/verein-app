@@ -32,8 +32,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                   <Image
                     src="/logo.png" /* <-- Make sure your file in public folder is named logo.png */
                     alt="SVS NBG e.V. Logo"
-                    width={86}
-                    height={86}
+                    width={100}
+                    height={100}
                     className="rounded-full bg-white object-contain p-0.5 shadow-sm"
                     priority
                   />
@@ -50,7 +50,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                   {/* ONLY SHOW ADMIN LINK IF USER IS VORSTAND OR ADMIN */}
                   {((session?.user as any)?.role === "ADMIN" || (session?.user as any)?.role === "VORSTAND") && (
                     <>
-                      <Link href="/admin/postfach" className="text-amber-400 hover:text-amber-300 font-bold transition-colors">
+                      <Link href="/admin/postfach" className="text-amber-400 hover:text-blue-200 dark:hover:text-blue-300 font-medium transition-colors">
                         Postfach 
                         {/* Only show the red circle if there is actually 1 or more unread messages */}
                         {unreadCount > 0 && (
@@ -59,7 +59,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                           </span>
                         )}
                       </Link>
-                      <Link href="/admin/events" className="text-amber-400 hover:text-amber-300 font-bold transition-colors">
+                      <Link href="/admin/events" className="text-amber-400 hover:text-blue-200 dark:hover:text-blue-300 font-medium transition-colors">
                         Termine
                       </Link>
                     </>
@@ -67,7 +67,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                   {((session?.user as any)?.role === "ADMIN" ) && (
                     <>
                       
-                      <Link href="/admin/users" className="text-blue-600 font-bold">
+                      <Link href="/admin/users" className="text-amber-400 hover:text-blue-300 dark:hover:text-blue-400 font-medium transition-colors">
                         Benutzer verwalten
                       </Link>
                     </>
