@@ -38,7 +38,7 @@ export default function SurpriseBackground() {
           it might be pure white or pure black. This frosted glass layer ensures 
           your text is ALWAYS readable in Hell or Dunkel mode!) 
       */}
-      <div className="absolute inset-0 bg-white/40 dark:bg-gray-950/65 transition-colors duration-300" />
+      <div className="absolute inset-0 bg-white/20 dark:bg-gray-950/40 transition-colors duration-300" />
       
     </div>
   )
