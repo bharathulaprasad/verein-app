@@ -75,7 +75,7 @@ export default function VisitorStats() {
       <p className="text-gray-600 dark:text-gray-300 text-sm text-center">
         Diese Startseite wurde{' '}
         <span className="font-extrabold text-blue-700 dark:text-blue-400 text-lg inline-block w-[45px] text-center ml-1">
-          <CountUp start={0} end={count} duration={2.5} separator="." />
+          <CountUp start={0} end={count} duration={5} separator="." />
         </span>{' '}
         Mal besucht.
       </p>
