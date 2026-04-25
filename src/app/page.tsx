@@ -119,7 +119,8 @@ export default async function Home() {
                   z=15 ist der perfekte Zoom-Faktor, um die ganze Siedlung zu sehen! 
                 */}
                 <iframe 
-                  src="https://maps.google.com/maps?q=Kettlersiedlung,%2090469%20N%C3%BCrnberg&t=k&z=15&ie=UTF8&iwloc=&output=embed" 
+                  //src="https://maps.google.com/maps?q=Kettlersiedlung,%2090469%20N%C3%BCrnberg&t=k&z=15&ie=UTF8&iwloc=&output=embed" 
+                  src="https://www.google.com/maps/embed?pb=!4v1700000000000!6m8!1m7!1s8M_9y3r1BfWdG9pQ!2m2!1d49.3979!2d11.1094!3f0!4f0!5f0.7820865974627469"
                   width="100%" 
                   height="100%" 
                   style={{ border: 0 }} 
