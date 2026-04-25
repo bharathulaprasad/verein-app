@@ -67,6 +67,28 @@ npx prisma migrate dev --name add_visitor_counter
 5. and to see the table created run this command 
 npx prisma db push
 
+## About environment variables
+# Environment variables declared in this file are NOT automatically loaded by Prisma.
+# Please add `import "dotenv/config";` to your `prisma.config.ts` file, or use the Prisma CLI with Bun
+# to load environment variables from .env files: https://pris.ly/prisma-config-env-vars.
+
+# Prisma supports the native connection string format for PostgreSQL, MySQL, SQLite, SQL Server, MongoDB and CockroachDB.
+# See the documentation for all the connection string options: https://pris.ly/d/connection-strings
+
+# The following `prisma+postgres` URL is similar to the URL produced by running a local Prisma Postgres
+# server with the `prisma dev` CLI command, when not choosing any non-default ports or settings. The API key, unlike the
+# one found in a remote Prisma Postgres URL, does not contain any sensitive information.
+
+in order to run this program, it is required to have .env, with the following variables set
+DATABASE_URL=A long string which is connection string to connect to your db
+NEXTAUTH_SECRET=some deep secret to pass with Oauth to work with
+# NEXTAUTH_URL="http://localhost:3000" if you intend to run locally
+NEXTAUTH_URL=your real hosting location
+
+GOOGLE_CLIENT_ID=your google client id to connect to
+GOOGLE_CLIENT_SECRET=your google client secret
+
+
 ## Step by Step instructions after buying a domain, adding your purchased domain to Vercel. to host the same website.
 Step 1: Add the Domain to Vercel
 Go to your Vercel Dashboard and click on your project.
