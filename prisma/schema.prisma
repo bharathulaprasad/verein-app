@@ -136,3 +136,12 @@ model PageStat {
   count     Int      @default(0)
   updatedAt DateTime @updatedAt
 }
+
+model LoginLog {
+  id        String   @id @default(cuid())
+  userId    String   // The ID or Email of the user
+  userName  String?  // The name of the user
+  city      String?
+  country   String?
+  createdAt DateTime @default(now())
+}

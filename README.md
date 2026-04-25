@@ -64,6 +64,8 @@ For this create a folder for example prisma/migrations/0_init
 3. Add Schema changes like adding new table like PageStat table in to schema.prisma and run command
 npx prisma migrate dev --name add_visitor_counter
 4. finally run npx prisma migrate deploy
+5. and to see the table created run this command 
+npx prisma db push
 
 ## Step by Step instructions after buying a domain, adding your purchased domain to Vercel. to host the same website.
 Step 1: Add the Domain to Vercel

@@ -19,13 +19,14 @@ export default function VisitorStats() {
       try {
         const locRes = await fetch('https://ipapi.co/json/');
         const locData = await locRes.json();
+        console.log("Location API Response:", locData); 
         if (locData.city && locData.country_name) {
           setLocation(`${locData.city}, ${locData.country_name}`);
         } else {
-          setLocation('einem unbekannten Ort'); // Changed to German to match your site
+          setLocation('einem unbekannten Ort! - – Vielleicht haben Sie einen Adblocker eingeschaltet, Wenn Sie die Statistiken sehen möchten bitte deaktivieren'); // Changed to German to match your site
         }
       } catch {
-        setLocation('einem unbekannten Ort');
+        setLocation('einem unbekannten Ort! - – Vielleicht haben Sie einen Adblocker eingeschaltet, Wenn Sie die Statistiken sehen möchten bitte deaktivieren');
       }
 
       try {
