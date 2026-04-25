@@ -74,11 +74,12 @@ export default async function Home() {
     <div className="space-y-16 transition-colors duration-300">
       
       {/* 1. HERO SECTION */}
+      
       <section className="relative overflow-hidden py-12 lg:py-20 bg-blue-50 dark:bg-slate-900/50 rounded-3xl shadow-sm border border-blue-100 dark:border-slate-800 mt-6 transition-colors">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col lg:flex-row items-center gap-12 lg:gap-8">
           
-          {/* LINKE SPALTE: Text & Buttons */}
-          <div className="w-full lg:w-1/2 text-center lg:text-left flex flex-col items-center lg:items-start">
+          {/* LINKE SPALTE: Text & Buttons (Jetzt etwas breiter: w-7/12) */}
+          <div className="w-full lg:w-7/12 text-center lg:text-left flex flex-col items-center lg:items-start">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-blue-900 dark:text-blue-400 mb-6 leading-tight">
               Herzlich Willkommen bei der <br />
               <span className="text-blue-600 dark:text-blue-500">Siedlervereinigung Siemens Nürnberg e.V.</span>
@@ -93,7 +94,7 @@ export default async function Home() {
                 Mehr erfahren
               </Link>
               
-              {/* Dynamischer Button: Artikel schreiben (Logged In) oder Login (Gast) */}
+              {/* Dynamischer Button */}
               {session ? (
                 <Link href="/blog/new" className="bg-green-600 dark:bg-green-500 text-white px-6 py-3 rounded-lg font-bold shadow-md hover:bg-green-500 transition-colors flex items-center">
                   <span className="mr-2">📝</span> Artikel schreiben
@@ -110,17 +111,16 @@ export default async function Home() {
             </div>
           </div>
 
-          {/* RECHTE SPALTE: Interaktive 3D-Schwebe-Karte */}
-          <div className="w-full lg:w-1/2 flex justify-center mt-8 lg:mt-0">
+          {/* RECHTE SPALTE: 20% kleinere 3D-Karte (Jetzt schmaler: w-5/12) */}
+          <div className="w-full lg:w-5/12 flex justify-center mt-8 lg:mt-0">
             
-            {/* Der Container mit der 3D-Perspektive */}
-            <div className="relative w-full max-w-md lg:max-w-lg group [perspective:1000px] z-10">
+            {/* max-w-sm und lg:max-w-[400px] limitieren die Größe exakt! */}
+            <div className="relative w-full max-w-sm lg:max-w-[400px] group [perspective:1000px] z-10">
               
-              {/* Die eigentliche Karte, die sich beim Hovern neigt */}
-              <div className="relative bg-white dark:bg-slate-800 p-3 rounded-2xl shadow-2xl border border-gray-200 dark:border-slate-700 transition-all duration-500 ease-out [transform-style:preserve-3d] group-hover:[transform:rotateX(8deg)_rotateY(-12deg)_scale(1.02)]">
+              <div className="relative bg-white dark:bg-slate-800 p-2.5 rounded-2xl shadow-xl border border-gray-200 dark:border-slate-700 transition-all duration-500 ease-out [transform-style:preserve-3d] group-hover:[transform:rotateX(8deg)_rotateY(-12deg)_scale(1.02)]">
                 
-                {/* Das Iframe (Google Maps Satellit t=k) */}
-                <div className="relative w-full h-64 sm:h-80 lg:h-96 rounded-xl overflow-hidden bg-gray-200 dark:bg-slate-700 shadow-inner">
+                {/* Höhe auf h-56 sm:h-64 lg:h-[300px] reduziert */}
+                <div className="relative w-full h-56 sm:h-64 lg:h-[300px] rounded-xl overflow-hidden bg-gray-200 dark:bg-slate-700 shadow-inner">
                   <iframe 
                     src="https://maps.google.com/maps?q=Kettlersiedlung,%2090469%20N%C3%BCrnberg&t=k&z=16&ie=UTF8&iwloc=&output=embed" 
                     width="100%" 
@@ -133,23 +133,23 @@ export default async function Home() {
                   ></iframe>
                 </div>
                 
-                {/* Info-Text unter der Karte */}
-                <div className="p-4 flex items-center justify-center lg:justify-start">
-                  <MapPin className="w-5 h-5 text-blue-600 dark:text-blue-400 mr-2 animate-bounce" />
-                  <p className="text-gray-800 dark:text-gray-200 text-sm md:text-base font-medium">
-                    Unsere Heimat: Kettlersiedlung, Nürnberg
+                {/* Info-Text (etwas kleiner gemacht mit text-sm) */}
+                <div className="p-3 flex items-center justify-center lg:justify-start">
+                  <MapPin className="w-4 h-4 text-blue-600 dark:text-blue-400 mr-2 animate-bounce" />
+                  <p className="text-gray-800 dark:text-gray-200 text-sm font-medium">
+                    Heimat: Kettlersiedlung, Nürnberg
                   </p>
                 </div>
 
-                {/* 3D Pop-Out Badge (Postleitzahl schwebt ÜBER der Karte beim Hovern) */}
-                <div className="absolute -bottom-4 -right-4 bg-blue-600 dark:bg-blue-500 text-white py-2 px-5 rounded-xl shadow-xl font-bold text-lg border-2 border-white dark:border-slate-800 transition-transform duration-500 ease-out [transform:translateZ(30px)] group-hover:[transform:translateZ(60px)_translateY(-8px)]">
+                {/* 3D Pop-Out Badge */}
+                <div className="absolute -bottom-3 -right-3 bg-blue-600 dark:bg-blue-500 text-white py-1.5 px-4 rounded-xl shadow-lg font-bold text-sm md:text-base border-2 border-white dark:border-slate-800 transition-transform duration-500 ease-out [transform:translateZ(20px)] group-hover:[transform:translateZ(40px)_translateY(-5px)]">
                   90469
                 </div>
 
               </div>
               
-              {/* Dekorativer Schatten auf dem Boden (zieht sich zusammen beim Hovern) */}
-              <div className="absolute -bottom-10 left-12 right-12 h-10 bg-black/10 dark:bg-black/30 blur-2xl rounded-full transition-all duration-500 group-hover:opacity-70 group-hover:scale-90 -z-10"></div>
+              {/* Boden-Schatten angepasst */}
+              <div className="absolute -bottom-8 left-10 right-10 h-8 bg-black/10 dark:bg-black/30 blur-xl rounded-full transition-all duration-500 group-hover:opacity-70 group-hover:scale-90 -z-10"></div>
 
             </div>
           </div>
