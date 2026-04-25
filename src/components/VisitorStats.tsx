@@ -53,7 +53,7 @@ export default function VisitorStats() {
 
   if (!hasLoaded) {
     return (
-      <div className="p-6 mt-12 rounded-xl border border-gray-200 dark:border-slate-800 bg-gray-50 dark:bg-slate-800/50 text-center animate-pulse text-gray-500 dark:text-gray-400">
+      <div className="p-4 mt-8 max-w-sm mx-auto rounded-xl border border-gray-200 dark:border-slate-800 bg-gray-50 dark:bg-slate-800/50 text-center animate-pulse text-xs text-gray-500 dark:text-gray-400">
         Statistiken werden geladen...
       </div>
     );
