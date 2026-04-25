@@ -145,3 +145,18 @@ model LoginLog {
   country   String?
   createdAt DateTime @default(now())
 }
+
+model Article {
+  id          String   @id @default(cuid())
+  title       String
+  content     String   @db.Text // Use @db.Text for long blog posts
+  imageUrl    String?  // Optional cover image URL
+  isPublished Boolean  @default(false) // True = Public, False = Draft
+  
+  // Author Info (Saved automatically via Next-Auth)
+  authorId    String
+  authorName  String?
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
