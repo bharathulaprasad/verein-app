@@ -31,10 +31,11 @@ export default async function ArticlePage({
       canEdit = true;
     } else {
       const dbUser = await prisma.user.findUnique({
-        where: { email: session.user.email as string }
+        where: { email: session.user.email }
       });
       if (dbUser?.role === "VORSTAND" || dbUser?.role === "ADMIN") {
         canEdit = true;
+      }
     }
   }
 
@@ -48,7 +49,7 @@ export default async function ArticlePage({
         {/* EDIT BUTTON (Only visible to Author or Vorstand) */}
         {canEdit && (
           <Link href={`/blog/${article.id}/edit`} className="bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-lg font-bold shadow transition flex items-center text-sm">
-            <Edit className="w-4 h-4 mr-2" /> Blog bearbeiten
+            <Edit className="w-4 h-4 mr-2" /> Artikel bearbeiten
           </Link>
         )}
       </div>
