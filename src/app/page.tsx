@@ -12,6 +12,14 @@ import VisitorStats from "@/components/VisitorStats";
 export default async function Home() {
   
   const session = await getServerSession(authOptions);
+  let isAdminOrVorstand = false;
+  if (session?.user?.email) {
+    const dbUser = await prisma.user.findUnique({
+      where: { email: session.user.email as string },
+      select: { role: true }
+    });
+    isAdminOrVorstand = dbUser?.role === "VORSTAND" || dbUser?.role === "ADMIN";
+  }
   // ==========================================
   // 1. DATENBANK-ABFRAGEN (Alles oben!)
   // ==========================================
@@ -21,9 +29,14 @@ export default async function Home() {
     orderBy: { date: "asc" },
     take: 6,
     include: {
-      attendees: true, 
+      attendees: {
+        include: {
+          user: true 
+        }
+      }
     }
   });
+  
   
   const boardMembers = await prisma.boardMember.findMany({
     orderBy: { order: "asc" },
@@ -136,6 +149,29 @@ export default async function Home() {
                     participantCount={event.attendees.length} // Pass the length of attendees
                     isLoggedIn={!!session}
                   />
+                  {/* ✨ NEW: VORSTAND / ADMIN ONLY - TEILNEHMERLISTE ✨ */}
+                  {isAdminOrVorstand && event.attendees.length > 0 && (
+                    <div className="mt-4 pt-4 border-t border-gray-200 dark:border-slate-800">
+                      {/* <details> creates a native, clickable HTML dropdown! */}
+                      <details className="group">
+                        <summary className="cursor-pointer text-sm font-bold text-amber-600 dark:text-amber-500 hover:text-amber-700 flex items-center outline-none">
+                          <span className="mr-2">📋</span>
+                          Teilnehmerliste ({event.attendees.length})
+                          <span className="ml-auto transition-transform group-open:rotate-180">▼</span>
+                        </summary>
+                        
+                        <ul className="mt-3 space-y-2 text-sm text-gray-700 dark:text-gray-300 bg-amber-50 dark:bg-amber-900/10 p-4 rounded-lg border border-amber-100 dark:border-amber-900/30 max-h-48 overflow-y-auto">
+                          {event.attendees.map((attendee: any) => (
+                            <li key={attendee.id} className="flex items-center">
+                              <span className="w-1.5 h-1.5 bg-amber-500 rounded-full mr-2"></span>
+                              {/* Safely get the name, depending on your exact DB structure */}
+                              {attendee.user?.name || attendee.userName || attendee.user?.email || "Unbekanntes Mitglied"}
+                            </li>
+                          ))}
+                        </ul>
+                      </details>
+                    </div>
+                  )}
                   
                 </div>
               );
