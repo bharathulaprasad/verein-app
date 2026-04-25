@@ -129,3 +129,10 @@ model ContactMessage {
   isRead    Boolean  @default(false) // So the board knows if it was answered
   createdAt DateTime @default(now())
 }
+
+model PageStat {
+  id        String   @id @default(cuid())
+  pageName  String   @unique // e.g., "home"
+  count     Int      @default(0)
+  updatedAt DateTime @updatedAt
+}

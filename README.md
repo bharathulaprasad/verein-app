@@ -46,6 +46,24 @@ npx prisma db pull
 ## To push prisma
 npx prisma db pull
 
+## How to add Schema incrementally
+When the db is already in production, but now if you like to add a new Schema table, then use command
+npx prisma migrate dev 
+example: npx prisma migrate dev  --name add_page_stats_table
+Then this will not clean up any db tables rathen compares.
+Prisma compares your schema to your local database, sees that only PageStat is new, and creates a .sql migration file that literally just says CREATE TABLE "PageStat".... It does not overwrite your existing data.
+
+## Afterwards incremental deploy the migrated 
+npx prisma migrate deploy
+
+## How to baseline a database so that future the database is never recreated 
+Steps: 
+1. Don't add new table. At the step where the current db is currently is in the same state create a baseline.
+For this create a folder for example prisma/migrations/0_init
+2. Run command npx prisma migrate diff --from-empty --to-schema prisma/schema.prisma --script > prisma/migrations/0_init/migration.sql
+3. Add Schema changes like adding new table like PageStat table in to schema.prisma and run command
+npx prisma migrate dev --name add_visitor_counter
+4. finally run npx prisma migrate deploy
 
 ## Step by Step instructions after buying a domain, adding your purchased domain to Vercel. to host the same website.
 Step 1: Add the Domain to Vercel

@@ -7,6 +7,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth"; 
 import WhatsAppCard from "@/components/WhatsAppCard";
 import EventRsvpButton from "@/components/EventRsvpButton";
+import VisitorStats from "@/components/VisitorStats"; 
 
 export default async function Home() {
   
@@ -191,7 +192,10 @@ export default async function Home() {
           
         </div>
       </section>
-
+      {/* ✨ 4. VISITOR STATS (NEW!) ✨ */}
+       <section className="max-w-6xl mx-auto pb-12">
+        <VisitorStats />
+      </section>
     </div>
   );
 }
