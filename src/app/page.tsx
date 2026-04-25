@@ -74,31 +74,73 @@ export default async function Home() {
     <div className="space-y-16 transition-colors duration-300">
       
       {/* 1. HERO SECTION */}
-      <section className="text-center py-12 bg-blue-50 dark:bg-slate-900/50 rounded-2xl shadow-sm border border-blue-100 dark:border-slate-800 mt-6 transition-colors">
-        <h1 className="text-4xl md:text-5xl font-extrabold text-blue-900 dark:text-blue-400 mb-6">
-          Herzlich Willkommen bei der <br />
-          <span className="text-blue-600 dark:text-blue-500">Siedlervereinigung Siemens Nürnberg e.V.</span>
-        </h1>
-        <p className="text-lg text-gray-700 dark:text-gray-300 max-w-3xl mx-auto px-4">
-          Wir sind Mitglied im Verband Wohneigentum Bezirksverband Mittelfranken e.V. und bestehen seit der Mitte der 1930er Jahre. Mit verschiedenen Veranstaltungen für unsere Mitglieder, Freunde und Bekannte halten wir ein aktives Vereinsleben aufrecht.
-        </p>
-        <div className="mt-8 flex flex-wrap justify-center gap-4">
-          <Link href="/about" className="bg-blue-600 dark:bg-blue-500 text-white px-8 py-3 rounded-lg font-bold shadow-md hover:bg-blue-500 dark:hover:bg-blue-400 transition">
-            Mehr über uns erfahren
-          </Link>
+      <section className="relative overflow-hidden py-12 lg:py-16 bg-blue-50 dark:bg-slate-900/50 rounded-3xl shadow-sm border border-blue-100 dark:border-slate-800 mt-6 transition-colors">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col lg:flex-row items-center gap-12">
+          
+          {/* Linke Spalte: Text & Buttons */}
+          <div className="text-center lg:text-left lg:w-1/2">
+            <h1 className="text-4xl md:text-5xl font-extrabold text-blue-900 dark:text-blue-400 mb-6 leading-tight">
+              Herzlich Willkommen bei der <br />
+              <span className="text-blue-600 dark:text-blue-500">Siedlervereinigung Siemens Nürnberg e.V.</span>
+            </h1>
+            <p className="text-lg text-gray-700 dark:text-gray-300 max-w-2xl mx-auto lg:mx-0 mb-8">
+              Wir sind Mitglied im Verband Wohneigentum Bezirksverband Mittelfranken e.V. und bestehen seit der Mitte der 1930er Jahre. Mit verschiedenen Veranstaltungen für unsere Mitglieder, Freunde und Bekannte halten wir ein aktives Vereinsleben in der Kettlersiedlung aufrecht.
+            </p>
+            
+            <div className="flex flex-wrap justify-center lg:justify-start gap-4">
+              <Link href="/about" className="bg-blue-600 dark:bg-blue-500 text-white px-6 py-3 rounded-lg font-bold shadow-md hover:bg-blue-500 transition">
+                Mehr erfahren
+              </Link>
+              
+              {/* Dynamischer Login / Artikel Button */}
+              {session ? (
+                <Link href="/blog/new" className="bg-green-600 dark:bg-green-500 text-white px-6 py-3 rounded-lg font-bold shadow-md hover:bg-green-500 transition flex items-center">
+                  <span className="mr-2">📝</span> Artikel schreiben
+                </Link>
+              ) : (
+                <Link href="/api/auth/signin" className="bg-blue-800 dark:bg-slate-800 text-white px-6 py-3 rounded-lg font-bold shadow hover:bg-blue-700 transition">
+                  Mitglieder Login
+                </Link>
+              )}
 
-          {session ? (
-            <Link href="/blog/new" className="bg-green-600 dark:bg-green-500 text-white px-8 py-3 rounded-lg font-bold shadow-md hover:bg-green-500 transition flex items-center">
-              <span className="mr-2">📝</span> Blog schreiben
-            </Link>
-          ) : (
-            <Link href="/api/auth/signin" className="bg-blue-800 dark:bg-slate-800 text-white px-8 py-3 rounded-lg font-bold shadow hover:bg-blue-700 transition">
-              Mitglieder Login
-            </Link>
-          )}
-          <a href="#kontakt" className="bg-white dark:bg-slate-900 text-blue-800 dark:text-blue-400 border-2 border-blue-800 dark:border-blue-600 px-8 py-3 rounded-lg font-bold shadow hover:bg-blue-50 dark:hover:bg-slate-800 transition">
-            Kontakt
-          </a>
+              <a href="#kontakt" className="bg-white dark:bg-slate-900 text-blue-800 dark:text-blue-400 border-2 border-blue-800 dark:border-blue-600 px-6 py-3 rounded-lg font-bold shadow hover:bg-blue-50 dark:hover:bg-slate-800 transition">
+                Kontakt
+              </a>
+            </div>
+          </div>
+
+          {/* Rechte Spalte: Google Maps Embed (Satelliten-Fotos) */}
+          <div className="lg:w-1/2 w-full">
+            <div className="bg-white dark:bg-slate-800 p-2 md:p-3 rounded-2xl shadow-xl border border-gray-200 dark:border-slate-700 transform lg:rotate-2 hover:rotate-0 transition-transform duration-500">
+              
+              <div className="relative w-full h-64 sm:h-80 rounded-xl overflow-hidden bg-gray-200 dark:bg-slate-700">
+                {/* 
+                  t=k erzwingt die Satelliten-Fotoansicht. 
+                  z=15 ist der perfekte Zoom-Faktor, um die ganze Siedlung zu sehen! 
+                */}
+                <iframe 
+                  src="https://maps.google.com/maps?q=Kettlersiedlung,%2090469%20N%C3%BCrnberg&t=k&z=15&ie=UTF8&iwloc=&output=embed" 
+                  width="100%" 
+                  height="100%" 
+                  style={{ border: 0 }} 
+                  allowFullScreen={true} 
+                  loading="lazy" 
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="absolute inset-0"
+                ></iframe>
+              </div>
+              
+              {/* Kleines Info-Schild unter der Karte */}
+              <div className="p-3 flex items-center justify-center lg:justify-start">
+                <MapPin className="w-5 h-5 text-red-500 mr-2 animate-bounce" />
+                <p className="text-gray-800 dark:text-gray-200 text-sm md:text-base">
+                  <span className="font-bold">Unsere Heimat:</span> Kettlersiedlung, 90469 Nürnberg
+                </p>
+              </div>
+
+            </div>
+          </div>
+          
         </div>
       </section>
 
