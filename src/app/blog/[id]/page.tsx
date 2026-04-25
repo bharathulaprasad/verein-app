@@ -31,7 +31,7 @@ export default async function ArticlePage({
       canEdit = true;
     } else {
       const dbUser = await prisma.user.findUnique({
-        where: { email: session.user.email }
+        where: { email: session.user.email as string }
       });
       if (dbUser?.role === "VORSTAND" || dbUser?.role === "ADMIN") {
         canEdit = true;
