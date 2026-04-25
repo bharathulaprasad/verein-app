@@ -22,10 +22,12 @@ export async function PUT(
     const userId = (session.user as any).id || session.user.email;
     const isAuthor = article.authorId === userId;
     
-    const boardMember = await prisma.boardMember.findFirst({ where: { email: session.user.email as string } });
-    const isVorsitzer = !!boardMember;
+    const dbUser = await prisma.user.findUnique({ 
+      where: { email: session.user.email as string } 
+    });
+    const isAdminOrVorstand = dbUser?.role === "VORSTAND" || dbUser?.role === "ADMIN";
 
-    if (!isAuthor && !isVorsitzer) {
+    if (!isAuthor && !isAdminOrVorstand) {
       return NextResponse.json({ success: false, error: "Keine Berechtigung zum Bearbeiten." }, { status: 403 });
     }
 
@@ -67,10 +69,12 @@ export async function DELETE(
     const userId = (session.user as any).id || session.user.email;
     const isAuthor = article.authorId === userId;
     
-    const boardMember = await prisma.boardMember.findFirst({ where: { email: session.user.email as string } });
-    const isVorsitzer = !!boardMember;
+    const dbUser = await prisma.user.findUnique({ 
+      where: { email: session.user.email as string } 
+    });
+    const isAdminOrVorstand = dbUser?.role === "VORSTAND" || dbUser?.role === "ADMIN";
 
-    if (!isAuthor && !isVorsitzer) {
+    if (!isAuthor && !isAdminOrVorstand) {
       return NextResponse.json({ success: false, error: "Keine Berechtigung zum Löschen." }, { status: 403 });
     }
 

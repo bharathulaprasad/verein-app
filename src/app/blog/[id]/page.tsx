@@ -30,12 +30,11 @@ export default async function ArticlePage({
     if (article.authorId === userId) {
       canEdit = true;
     } else {
-      const boardMember = await prisma.boardMember.findFirst({
+      const dbUser = await prisma.user.findUnique({
         where: { email: session.user.email as string }
       });
-      if (boardMember) {
+      if (dbUser?.role === "VORSTAND" || dbUser?.role === "ADMIN") {
         canEdit = true;
-      }
     }
   }
 
