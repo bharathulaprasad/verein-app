@@ -3,15 +3,23 @@ import prisma from '@/lib/prisma';
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
-export async function PUT(req: Request, { params }: { params: { id: string } }) {
+export async function PUT(
+  req: Request, 
+  // ✨ FIX 1: Tell TypeScript that params is a Promise
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
+    // ✨ FIX 2: Await the params before extracting the ID
+    const resolvedParams = await params;
+    const articleId = resolvedParams.id;
+
     const session = await getServerSession(authOptions);
     if (!session?.user) {
       return NextResponse.json({ success: false, error: "Nicht autorisiert" }, { status: 401 });
     }
 
-    // Find original article
-    const article = await prisma.article.findUnique({ where: { id: params.id } });
+    // Find original article using the new articleId
+    const article = await prisma.article.findUnique({ where: { id: articleId } });
     if (!article) return NextResponse.json({ success: false, error: "Artikel nicht gefunden" }, { status: 404 });
 
     // Authorization Check
@@ -28,7 +36,7 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
     // Update DB
     const body = await req.json();
     const updatedArticle = await prisma.article.update({
-      where: { id: params.id },
+      where: { id: articleId },
       data: {
         title: body.title,
         content: body.content,
