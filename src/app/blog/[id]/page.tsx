@@ -5,12 +5,19 @@ import { ArrowLeft, Edit } from "lucide-react";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
-export default async function ArticlePage({ params }: { params: { id: string } }) {
+export default async function ArticlePage({ 
+  params 
+}: { 
+  params: Promise<{ id: string }> 
+}) {
+  const resolvedParams = await params;
+  const articleId = resolvedParams.id;
+
   const session = await getServerSession(authOptions);
 
   // 1. Fetch the article
   const article = await prisma.article.findUnique({
-    where: { id: params.id },
+    where: { id: articleId },
   });
 
   if (!article) return notFound();
@@ -20,12 +27,9 @@ export default async function ArticlePage({ params }: { params: { id: string } }
   if (session?.user) {
     const userId = (session.user as any).id || session.user.email;
     
-    // Check A: Is the user the original author?
     if (article.authorId === userId) {
       canEdit = true;
     } else {
-      // Check B: Is the user a "Vorstand"? 
-      // We check if their email matches a BoardMember email in the DB
       const boardMember = await prisma.boardMember.findFirst({
         where: { email: session.user.email as string }
       });
@@ -42,7 +46,7 @@ export default async function ArticlePage({ params }: { params: { id: string } }
           <ArrowLeft className="w-4 h-4 mr-1" /> Zurück zur Startseite
         </Link>
 
-        {/* ✨ EDIT BUTTON (Only visible to Author or Vorstand) */}
+        {/* EDIT BUTTON (Only visible to Author or Vorstand) */}
         {canEdit && (
           <Link href={`/blog/${article.id}/edit`} className="bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-lg font-bold shadow transition flex items-center text-sm">
             <Edit className="w-4 h-4 mr-2" /> Artikel bearbeiten
