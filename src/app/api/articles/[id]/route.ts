@@ -45,3 +45,42 @@ export async function PUT(
     return NextResponse.json({ success: false, error: "Fehler beim Aktualisieren." }, { status: 500 });
   }
 }
+
+export async function DELETE(
+  req: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const resolvedParams = await params;
+    const articleId = resolvedParams.id;
+
+    const session = await getServerSession(authOptions);
+    if (!session?.user) {
+      return NextResponse.json({ success: false, error: "Nicht autorisiert" }, { status: 401 });
+    }
+
+    // Find original article
+    const article = await prisma.article.findUnique({ where: { id: articleId } });
+    if (!article) return NextResponse.json({ success: false, error: "Artikel nicht gefunden" }, { status: 404 });
+
+    // Authorization Check (Same as PUT)
+    const userId = (session.user as any).id || session.user.email;
+    const isAuthor = article.authorId === userId;
+    
+    const boardMember = await prisma.boardMember.findFirst({ where: { email: session.user.email as string } });
+    const isVorsitzer = !!boardMember;
+
+    if (!isAuthor && !isVorsitzer) {
+      return NextResponse.json({ success: false, error: "Keine Berechtigung zum Löschen." }, { status: 403 });
+    }
+
+    // ✨ DELETE the article from the database
+    await prisma.article.delete({
+      where: { id: articleId }
+    });
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    return NextResponse.json({ success: false, error: "Fehler beim Löschen." }, { status: 500 });
+  }
+}
