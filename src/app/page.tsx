@@ -9,6 +9,7 @@ import WhatsAppCard from "@/components/WhatsAppCard";
 import EventRsvpButton from "@/components/EventRsvpButton";
 import VisitorStats from "@/components/VisitorStats"; 
 import LocationCard from '@/components/LocationCard';
+import EventCarousel from '@/components/EventCarousel';
 
 export default async function Home() {
   
@@ -28,7 +29,7 @@ export default async function Home() {
   const upcomingEvents = await prisma.event.findMany({
     where: { date: { gte: new Date() } },
     orderBy: { date: "asc" },
-    take: 6,
+    // take: 6,
     include: {
       attendees: {
         include: {
@@ -120,81 +121,22 @@ export default async function Home() {
       </section>
 
       {/* 2. AKTUELLES & TERMINE (EVENTS) */}
-      <section id="aktuelles" className="max-w-5xl mx-auto">
+     <section id="aktuelles" className="max-w-7xl mx-auto px-6 lg:px-8 mt-20">
+        
+        {/* Überschrift */}
         <div className="flex items-center space-x-3 mb-8">
           <CalendarDays className="text-blue-600 dark:text-blue-400 w-8 h-8" />
           <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100">Aktuelles & Termine</h2>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6">
-          {/* Dynamic Events from Database */}
-          {/* Dynamic Events from Database */}
-          {upcomingEvents.length === 0 ? (
-            <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 p-6 rounded-lg shadow-sm flex items-center justify-center text-gray-500 dark:text-gray-400 transition-colors">
-              Derzeit keine weiteren Sonderveranstaltungen geplant.
-            </div>
-          ) : (
-            upcomingEvents.map((event) => {
-              
-              // ✨ CHECK IF CURRENT USER IS IN THE "ATTENDEES" LIST ✨
-              const userId = (session?.user as any)?.id;
-                const isParticipating = userId 
-                ? event.attendees.some((attendee: any) => attendee.userId === userId) 
-                : false;
-
-              return (
-                <div key={event.id} className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 p-6 rounded-lg shadow-sm transition-colors flex flex-col justify-between">
-                  <div>
-                    <h3 className="text-xl font-bold text-blue-900 dark:text-blue-400">{event.title}</h3>
-                    <p className="text-gray-600 dark:text-gray-400 mt-2 text-sm">{event.description}</p>
-                    <div className="mt-4 space-y-2 text-sm text-gray-700 dark:text-gray-300">
-                      <p className="flex items-center">
-                        <CalendarDays className="w-4 h-4 mr-2 text-blue-500 dark:text-blue-400" />
-                        {new Date(event.date).toLocaleDateString("de-DE", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute:'2-digit' })} Uhr
-                      </p>
-                      <p className="flex items-center">
-                        <MapPin className="w-4 h-4 mr-2 text-blue-500 dark:text-blue-400" />
-                        {event.location}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* ✨ RENDER THE RSVP BUTTON HERE ✨ */}
-                  <EventRsvpButton 
-                    eventId={event.id}
-                    initialIsParticipating={isParticipating}
-                    participantCount={event.attendees.length} // Pass the length of attendees
-                    isLoggedIn={!!session}
-                  />
-                  {/* ✨ NEW: VORSTAND / ADMIN ONLY - TEILNEHMERLISTE ✨ */}
-                  {isAdminOrVorstand && event.attendees.length > 0 && (
-                    <div className="mt-4 pt-4 border-t border-gray-200 dark:border-slate-800">
-                      {/* <details> creates a native, clickable HTML dropdown! */}
-                      <details className="group">
-                        <summary className="cursor-pointer text-sm font-bold text-amber-600 dark:text-amber-500 hover:text-amber-700 flex items-center outline-none">
-                          <span className="mr-2">📋</span>
-                          Teilnehmerliste ({event.attendees.length})
-                          <span className="ml-auto transition-transform group-open:rotate-180">▼</span>
-                        </summary>
-                        
-                        <ul className="mt-3 space-y-2 text-sm text-gray-700 dark:text-gray-300 bg-amber-50 dark:bg-amber-900/10 p-4 rounded-lg border border-amber-100 dark:border-amber-900/30 max-h-48 overflow-y-auto">
-                          {event.attendees.map((attendee: any) => (
-                            <li key={attendee.id} className="flex items-center">
-                              <span className="w-1.5 h-1.5 bg-amber-500 rounded-full mr-2"></span>
-                              {/* Safely get the name, depending on your exact DB structure */}
-                              {attendee.user?.name || attendee.userName || attendee.user?.email || "Unbekanntes Mitglied"}
-                            </li>
-                          ))}
-                        </ul>
-                      </details>
-                    </div>
-                  )}
-                  
-                </div>
-              );
-            })
-          )}
-        </div>
+        {/* Hier übergeben wir einfach die Daten an unser neues Carousel */}
+        <EventCarousel 
+          events={upcomingEvents}
+          userId={userId}
+          isLoggedIn={!!session}
+          isAdminOrVorstand={isAdminOrVorstand}
+        />
+        
       </section>
 
       {/* new 2.1 LATEST ARTICLES */}
