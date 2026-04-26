@@ -6,7 +6,7 @@ import { formatWhatsAppNumber } from "@/lib/utils";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth"; 
 import WhatsAppCard from "@/components/WhatsAppCard";
-import EventRsvpButton from "@/components/EventRsvpButton";
+import BoardCarousel from '@/components/BoardCarousel'; 
 import VisitorStats from "@/components/VisitorStats"; 
 import LocationCard from '@/components/LocationCard';
 import EventCarousel from '@/components/EventCarousel';
@@ -181,7 +181,7 @@ export default async function Home() {
       </section>
 
       {/* 3. KONTAKT & VORSTAND (Dynamic from DB) */}
-      <section id="kontakt" className="max-w-6xl mx-auto mt-16 pt-8 border-t border-gray-200 dark:border-slate-800 transition-colors">
+       <section id="kontakt" className="max-w-6xl mx-auto mt-16 pt-8 border-t border-gray-200 dark:border-slate-800 transition-colors">
         
         <div className="flex items-center space-x-3 mb-8">
           <Users className="text-blue-600 dark:text-blue-400 w-8 h-8" />
@@ -192,14 +192,14 @@ export default async function Home() {
           Haben Sie Fragen an die Siedlervereinigung? Nutzen Sie unser Kontaktformular oder melden Sie sich direkt bei einem unserer Vorstände. E-Mail: <a href={`mailto:${vereinInfo?.contactEmail || "svs_nbg@web.de"}`} className="text-blue-600 dark:text-blue-400 font-semibold hover:underline">{vereinInfo?.contactEmail || "svs_nbg@web.de"}</a>
         </p>
 
-        {/* ✨ WHATSAPP KARTE (Wird nur gerendert, wenn User EINGELOGGT ist UND eine Nummer existiert) */}
+        {/* ✨ WHATSAPP KARTE */}
         {session && (whatsappNumber1 || whatsappNumber2) && (
           <div className="grid md:grid-cols-2 gap-4 mb-8">
             {whatsappNumber1 && (
               <WhatsAppCard 
                 whatsappNumber={whatsappNumber1} 
                 chairmanName={chairmanName1} 
-                role={role1} // e.g., "1. Vorsitzender"
+                role={role1} 
               />
             )}
             
@@ -207,7 +207,7 @@ export default async function Home() {
               <WhatsAppCard 
                 whatsappNumber={whatsappNumber2} 
                 chairmanName={chairmanName2} 
-                role={role2} // e.g., "2. Vorsitzende"
+                role={role2} 
               />
             )}
           </div>
@@ -215,27 +215,14 @@ export default async function Home() {
 
         <div className="grid lg:grid-cols-2 gap-12 mt-8">
           
-          {/* Left Column: The New Contact Form */}
+          {/* Linke Spalte: Das Kontaktformular */}
           <div>
             <ContactForm />
           </div>
 
-          {/* Right Column: Board Members */}
-          <div className="space-y-6">
-            <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200 mb-4">Ihre Ansprechpartner</h3>
-            <div className="grid sm:grid-cols-2 gap-4">
-              {boardMembers.map((member) => (
-                <div key={member.id} className="bg-white dark:bg-slate-900 p-5 rounded-xl shadow-sm border border-gray-200 dark:border-slate-800 transition-colors">
-                  <h4 className="font-bold text-blue-900 dark:text-blue-400 text-sm uppercase tracking-wider">{member.role}</h4>
-                  <p className="text-lg font-semibold text-gray-900 dark:text-white mt-1">{member.name}</p>
-                  <div className="mt-3 space-y-1 text-sm text-gray-600 dark:text-gray-400">
-                    <p className="flex items-center"><Phone className="w-4 h-4 mr-2 text-slate-400" /> {member.phone}</p>
-                    <p className="flex items-center"><MapPin className="w-4 h-4 mr-2 text-slate-400" /> {member.address}</p>
-                    <p className="flex items-center"><Mail className="w-4 h-4 mr-2 text-slate-400" /> <a href={`mailto:${member.email}`} className="hover:text-blue-500 truncate">{member.email}</a></p>
-                  </div>
-                </div>
-              ))}
-            </div>
+          {/* Rechte Spalte: NEUES VORSTANDS-CAROUSEL */}
+          <div className="flex w-full overflow-hidden">
+            <BoardCarousel members={boardMembers} />
           </div>
           
         </div>
