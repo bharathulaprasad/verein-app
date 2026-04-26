@@ -9,13 +9,15 @@ interface EventRsvpButtonProps {
   initialIsParticipating: boolean;
   participantCount: number;
   isLoggedIn: boolean;
+  userRole?: string;
 }
 
 export default function EventRsvpButton({ 
   eventId, 
   initialIsParticipating, 
   participantCount,
-  isLoggedIn 
+  isLoggedIn ,
+  userRole
 }: EventRsvpButtonProps) {
   
   const [isPending, startTransition] = useTransition();
@@ -25,6 +27,10 @@ export default function EventRsvpButton({
   const handleToggle = () => {
     if (!isLoggedIn) {
       alert("Bitte loggen Sie sich ein, um sich für diesen Termin anzumelden.");
+      return;
+    }
+    if (userRole === "GUEST") {
+      alert("Gäste können sich leider nicht für Termine anmelden. Bitte aktualisieren Sie Ihre Zugriffsrechte. Bitte wenden Sie sich an den Vorstand.");
       return;
     }
 

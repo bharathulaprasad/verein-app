@@ -7,11 +7,12 @@ import EventRsvpButton from './EventRsvpButton';
 interface EventCarouselProps {
   events: any[]; 
   userId: string | undefined;
+  userRole?: string;
   isLoggedIn: boolean;
   isAdminOrVorstand: boolean;
 }
 
-export default function EventCarousel({ events, userId, isLoggedIn, isAdminOrVorstand }: EventCarouselProps) {
+export default function EventCarousel({ events, userId, userRole, isLoggedIn, isAdminOrVorstand }: EventCarouselProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -113,6 +114,7 @@ export default function EventCarousel({ events, userId, isLoggedIn, isAdminOrVor
                   initialIsParticipating={isParticipating}
                   participantCount={event.attendees.length}
                   isLoggedIn={isLoggedIn}
+                  userRole={userRole}
                 />
                 
                 {isAdminOrVorstand && event.attendees.length > 0 && (

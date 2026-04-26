@@ -16,6 +16,7 @@ export default async function Home() {
   
   const session = await getServerSession(authOptions);
   let isAdminOrVorstand = false;
+  let dbUser = null;
   const userId = (session?.user as any)?.id;
   if (session?.user?.email) {
     const dbUser = await prisma.user.findUnique({
@@ -135,6 +136,7 @@ export default async function Home() {
         <EventCarousel 
           events={upcomingEvents}
           userId={userId}
+          userRole={dbUser?.role}
           isLoggedIn={!!session}
           isAdminOrVorstand={isAdminOrVorstand}
         />

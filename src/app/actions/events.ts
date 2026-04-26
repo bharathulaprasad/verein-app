@@ -13,6 +13,11 @@ export async function toggleEventParticipation(eventId: string) {
   }
 
   const userId = (session?.user as any)?.id;
+  const userRole = (session.user as any).role;
+
+  if (userRole === "GUEST") {
+    throw new Error("Gäste können sich leider nicht für Termine anmelden.");
+  }
 
   // 1. Check if the user is already attending this specific event
   // We use findUnique with the composite key (eventId_userId)
