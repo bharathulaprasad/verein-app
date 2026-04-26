@@ -8,6 +8,7 @@ import { authOptions } from "@/lib/auth";
 import WhatsAppCard from "@/components/WhatsAppCard";
 import EventRsvpButton from "@/components/EventRsvpButton";
 import VisitorStats from "@/components/VisitorStats"; 
+import LocationCard from '@/components/LocationCard';
 
 export default async function Home() {
   
@@ -78,7 +79,7 @@ export default async function Home() {
       <section className="relative overflow-hidden py-12 lg:py-20 bg-blue-50 dark:bg-slate-900/50 rounded-3xl shadow-sm border border-blue-100 dark:border-slate-800 mt-6 transition-colors">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col lg:flex-row items-center gap-12 lg:gap-8">
           
-          {/* LINKE SPALTE: Text & Buttons (Jetzt etwas breiter: w-7/12) */}
+          {/* LINKE SPALTE: Text & Buttons */}
           <div className="w-full lg:w-7/12 text-center lg:text-left flex flex-col items-center lg:items-start">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-blue-900 dark:text-blue-400 mb-6 leading-tight">
               Herzlich Willkommen bei der <br />
@@ -94,7 +95,6 @@ export default async function Home() {
                 Mehr erfahren
               </Link>
               
-              {/* Dynamischer Button */}
               {session ? (
                 <Link href="/blog/new" className="bg-green-600 dark:bg-green-500 text-white px-6 py-3 rounded-lg font-bold shadow-md hover:bg-green-500 transition-colors flex items-center">
                   <span className="mr-2">📝</span> Artikel schreiben
@@ -111,47 +111,9 @@ export default async function Home() {
             </div>
           </div>
 
-          {/* RECHTE SPALTE: 20% kleinere 3D-Karte (Jetzt schmaler: w-5/12) */}
+          {/* RECHTE SPALTE: Ausgelagerte 3D-Karte (inkl. Wetter) */}
           <div className="w-full lg:w-5/12 flex justify-center mt-8 lg:mt-0">
-            
-            {/* max-w-sm und lg:max-w-[400px] limitieren die Größe exakt! */}
-            <div className="relative w-full max-w-sm lg:max-w-[400px] group [perspective:1000px] z-10">
-              
-              <div className="relative bg-white dark:bg-slate-800 p-2.5 rounded-2xl shadow-xl border border-gray-200 dark:border-slate-700 transition-all duration-500 ease-out [transform-style:preserve-3d] group-hover:[transform:rotateX(8deg)_rotateY(-12deg)_scale(1.02)]">
-                
-                {/* Höhe auf h-56 sm:h-64 lg:h-[300px] reduziert */}
-                <div className="relative w-full h-56 sm:h-64 lg:h-[300px] rounded-xl overflow-hidden bg-gray-200 dark:bg-slate-700 shadow-inner">
-                  <iframe 
-                    src="https://maps.google.com/maps?q=Kettlersiedlung,%2090469%20N%C3%BCrnberg&t=k&z=16&ie=UTF8&iwloc=&output=embed" 
-                    width="100%" 
-                    height="100%" 
-                    style={{ border: 0 }} 
-                    allowFullScreen={true} 
-                    loading="lazy" 
-                    referrerPolicy="no-referrer-when-downgrade"
-                    className="absolute inset-0 pointer-events-auto"
-                  ></iframe>
-                </div>
-                
-                {/* Info-Text (etwas kleiner gemacht mit text-sm) */}
-                <div className="p-3 flex items-center justify-center lg:justify-start">
-                  <MapPin className="w-4 h-4 text-blue-600 dark:text-blue-400 mr-2 animate-bounce" />
-                  <p className="text-gray-800 dark:text-gray-200 text-sm font-medium">
-                    Heimat: Kettlersiedlung, Nürnberg
-                  </p>
-                </div>
-
-                {/* 3D Pop-Out Badge */}
-                <div className="absolute -bottom-3 -right-3 bg-blue-600 dark:bg-blue-500 text-white py-1.5 px-4 rounded-xl shadow-lg font-bold text-sm md:text-base border-2 border-white dark:border-slate-800 transition-transform duration-500 ease-out [transform:translateZ(20px)] group-hover:[transform:translateZ(40px)_translateY(-5px)]">
-                  90469
-                </div>
-
-              </div>
-              
-              {/* Boden-Schatten angepasst */}
-              <div className="absolute -bottom-8 left-10 right-10 h-8 bg-black/10 dark:bg-black/30 blur-xl rounded-full transition-all duration-500 group-hover:opacity-70 group-hover:scale-90 -z-10"></div>
-
-            </div>
+            <LocationCard />
           </div>
           
         </div>
