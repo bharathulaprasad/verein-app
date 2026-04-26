@@ -10,7 +10,7 @@ interface Article {
   content: string;
   imageUrl: string | null;
   createdAt: Date | string;
-  authorName: string;
+  authorName: string | null;
 }
 
 interface ArticleCarouselProps {
@@ -109,7 +109,7 @@ export default function ArticleCarousel({ articles }: ArticleCarouselProps) {
                     {article.content}
                   </p>
                   <div className="text-sm text-gray-500 dark:text-gray-500 font-medium flex items-center mt-auto pt-4 border-t border-gray-100 dark:border-slate-800">
-                    Von {article.authorName}
+                    Von {article.authorName || "Unbekannt"}
                   </div>
                 </div>
               </Link>
