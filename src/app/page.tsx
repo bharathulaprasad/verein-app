@@ -10,6 +10,7 @@ import BoardCarousel from '@/components/BoardCarousel';
 import VisitorStats from "@/components/VisitorStats"; 
 import LocationCard from '@/components/LocationCard';
 import EventCarousel from '@/components/EventCarousel';
+import ArticleCarousel from "@/components/ArticleCarousel";
 
 export default async function Home() {
   
@@ -49,7 +50,7 @@ export default async function Home() {
   const latestArticles = await prisma.article.findMany({
     where: { isPublished: true },
     orderBy: { createdAt: "desc" },
-    take: 3,
+    //take: 3,
   });
 
   // ✨ WHATSAPP DATEN ABFRAGEN UND FORMATIEREN
@@ -141,44 +142,7 @@ export default async function Home() {
       </section>
 
       {/* new 2.1 LATEST ARTICLES */}
-      <section className="max-w-5xl mx-auto mt-16 pt-8 border-t border-gray-200 dark:border-slate-800 transition-colors">
-        <div className="flex items-center space-x-3 mb-8">
-          <span className="text-blue-600 dark:text-blue-400 text-3xl">📰</span>
-          <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100">Neuigkeiten & Berichte</h2>
-        </div>
-
-        {latestArticles.length === 0 ? (
-          <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 p-6 rounded-lg shadow-sm flex items-center justify-center text-gray-500 dark:text-gray-400 transition-colors">
-            Noch keine Artikel veröffentlicht.
-          </div>
-        ) : (
-          <div className="grid md:grid-cols-3 gap-6">
-            {latestArticles.map((article) => (
-              <Link href={`/blog/${article.id}`} key={article.id} className="group bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col h-full">
-                {article.imageUrl && (
-                  <div className="w-full h-48 bg-gray-200 dark:bg-slate-800 overflow-hidden">
-                    <img src={article.imageUrl} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                  </div>
-                )}
-                <div className="p-5 flex flex-col flex-grow">
-                  <p className="text-xs text-blue-600 dark:text-blue-400 font-semibold mb-2 uppercase tracking-wide">
-                    {new Date(article.createdAt).toLocaleDateString("de-DE")}
-                  </p>
-                  <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
-                    {article.title}
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-400 text-sm line-clamp-3 mb-4 flex-grow">
-                    {article.content}
-                  </p>
-                  <div className="text-sm text-gray-500 dark:text-gray-500 font-medium flex items-center mt-auto">
-                    Von {article.authorName}
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        )}
-      </section>
+      <ArticleCarousel articles={latestArticles} />
 
       {/* 3. KONTAKT & VORSTAND (Dynamic from DB) */}
        <section id="kontakt" className="max-w-6xl mx-auto mt-16 pt-8 border-t border-gray-200 dark:border-slate-800 transition-colors">
