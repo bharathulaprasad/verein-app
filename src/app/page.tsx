@@ -15,6 +15,7 @@ export default async function Home() {
   
   const session = await getServerSession(authOptions);
   let isAdminOrVorstand = false;
+  const userId = (session?.user as any)?.id;
   if (session?.user?.email) {
     const dbUser = await prisma.user.findUnique({
       where: { email: session.user.email as string },
