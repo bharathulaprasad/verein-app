@@ -15,16 +15,15 @@ import ArticleCarousel from "@/components/ArticleCarousel";
 export default async function Home() {
   
   const session = await getServerSession(authOptions);
-  let isAdminOrVorstand = false;
-  let dbUser = null;
-  const userId = (session?.user as any)?.id;
-  if (session?.user?.email) {
-    const dbUser = await prisma.user.findUnique({
-      where: { email: session.user.email as string },
-      select: { role: true }
-    });
-    isAdminOrVorstand = dbUser?.role === "VORSTAND" || dbUser?.role === "ADMIN";
-  }
+  
+  const dbUser = session?.user?.email
+    ? await prisma.user.findUnique({
+        where: { email: session.user.email },
+      })
+    : null;
+  const userId = dbUser?.id || (session?.user as any)?.id; 
+  const userRole = dbUser?.role; 
+  const isAdminOrVorstand = userRole === "VORSTAND" || userRole === "ADMIN";
   // ==========================================
   // 1. DATENBANK-ABFRAGEN (Alles oben!)
   // ==========================================
@@ -136,7 +135,7 @@ export default async function Home() {
         <EventCarousel 
           events={upcomingEvents}
           userId={userId}
-          userRole={dbUser?.role}
+          userRole={userRole}
           isLoggedIn={!!session}
           isAdminOrVorstand={isAdminOrVorstand}
         />
