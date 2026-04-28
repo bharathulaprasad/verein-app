@@ -90,7 +90,8 @@ export default async function Home() {
             </h1>
             
             <p className="text-lg text-gray-700 dark:text-gray-300 max-w-2xl mb-8 leading-relaxed">
-              Wir sind Mitglied im Verband Wohneigentum Bezirksverband Mittelfranken e.V. und bestehen seit der Mitte der 1930er Jahre. Mit verschiedenen Veranstaltungen für unsere Mitglieder, Freunde und Bekannte halten wir ein aktives Vereinsleben in der historischen <strong className="text-blue-800 dark:text-blue-400">Kettlersiedlung</strong> aufrecht.
+              {/*Wir sind Mitglied im Verband Wohneigentum Bezirksverband Mittelfranken e.V. und bestehen seit der Mitte der 1930er Jahre. Mit verschiedenen Veranstaltungen für unsere Mitglieder, Freunde und Bekannte halten wir ein aktives Vereinsleben in der historischen <strong className="text-blue-800 dark:text-blue-400">Kettlersiedlung</strong> aufrecht.*/}
+              {vereinInfo?.aboutText}
             </p>
             
             <div className="flex flex-wrap justify-center lg:justify-start gap-4">
