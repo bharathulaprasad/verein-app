@@ -26,7 +26,7 @@ export default function LocationCard() {
         <div className="p-3 flex items-center justify-center lg:justify-start">
           <MapPin className="w-4 h-4 text-blue-600 dark:text-blue-400 mr-2 animate-bounce" />
           <p className="text-gray-800 dark:text-gray-200 text-sm font-medium">
-            Heimat: Kettlersiedlung, Nürnberg
+            Heimat: 90469, Nürnberg
           </p>
         </div>
 
