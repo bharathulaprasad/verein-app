@@ -155,7 +155,9 @@ export default async function Home() {
         </div>
         
         <p className="text-gray-700 dark:text-gray-300 mb-4 max-w-3xl">
-          Haben Sie Fragen an die Siedlervereinigung? Nutzen Sie unser Kontaktformular oder melden Sie sich direkt bei einem unserer Vorstände. E-Mail: <a href={`mailto:${vereinInfo?.contactEmail || "svs_nbg@web.de"}`} className="text-blue-600 dark:text-blue-400 font-semibold hover:underline">{vereinInfo?.contactEmail || "svs_nbg@web.de"}</a>
+          Falls wir Ihr Interesse an unserer Siedlungsgemeinschaft geweckt haben, dann kontaktieren Sie uns doch einfach per E-Mail: 
+          <a href={`mailto:${vereinInfo?.contactEmail }`} className="text-blue-600 dark:text-blue-400 font-semibold hover:underline">{vereinInfo?.contactEmail }</a>
+          oder melden sich bei einem unserer Vorstände.
         </p>
 
         {/* ✨ WHATSAPP KARTE */}
