@@ -142,12 +142,20 @@ export default function EventCarousel({ events, userId, userRole, isLoggedIn, is
         })}
       </div>
 
-      {events.length > 1 && (
+       {events.length > 1 && (
         <div className="flex justify-center gap-2 mt-1">
           {events.map((_, index) => {
-            // Optional: Letzte Punkte auf dem PC ausblenden, da immer 3 Karten sichtbar sind
-            if (index > events.length - 3 && window?.innerWidth >= 1024) return null;
-            if (index > events.length - 2 && window?.innerWidth >= 640 && window?.innerWidth < 1024) return null;
+            
+            // ✨ FIX: We use Tailwind classes instead of window.innerWidth to avoid Next.js SSR crashes
+            let responsiveHideClass = "";
+            
+            if (index > events.length - 2) {
+              // Hides the very last dot on Tablets (sm) and Desktop (lg)
+              responsiveHideClass = "sm:hidden";
+            } else if (index > events.length - 3) {
+              // Hides the second-to-last dot ONLY on Desktop (lg)
+              responsiveHideClass = "lg:hidden";
+            }
 
             return (
               <button
@@ -158,7 +166,7 @@ export default function EventCarousel({ events, userId, userRole, isLoggedIn, is
                   activeIndex === index 
                     ? 'bg-blue-600 dark:bg-blue-400 w-6' 
                     : 'bg-gray-300 dark:bg-slate-700 w-2 hover:bg-blue-400 dark:hover:bg-blue-500'
-                }`}
+                } ${responsiveHideClass}`}
               />
             )
           })}

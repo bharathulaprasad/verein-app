@@ -1,4 +1,5 @@
 import { Sun, Cloud, CloudRain, Snowflake, Wind, LucideIcon } from 'lucide-react';
+import WeatherSoundAlert from './WeatherSoundAlert';
 
 interface WeatherInfo {
   text: string;
@@ -89,7 +90,7 @@ export default async function WeatherWidget() {
       `}</style>
 
       <div className="absolute -top-4 -left-2 sm:-left-6 bg-white/95 dark:bg-slate-800/95 backdrop-blur-md p-2.5 rounded-2xl shadow-lg border border-slate-100 dark:border-slate-700 transition-transform duration-500 ease-out z-20 flex flex-col gap-2 min-w-[200px] max-w-[220px]">
-        
+        <WeatherSoundAlert weatherCode={weatherCode} />
         {/* 1. COMPACT CURRENT WEATHER */}
         <div className="flex items-center gap-2.5 px-1">
           <div className={`${iconBg} ${iconColor} p-1.5 rounded-full shrink-0`}>

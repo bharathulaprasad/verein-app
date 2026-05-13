@@ -117,11 +117,13 @@ export default function ArticleCarousel({ articles }: ArticleCarouselProps) {
           </div>
 
           {/* Navigations-Punkte (Dots) */}
-          {articles.length > 2 && (
+           {articles.length > 2 && (
             <div className="flex justify-center gap-2 mt-2">
               {articles.map((_, index) => {
-                // Da 2 Artikel auf dem Desktop sichtbar sind, machen die letzten Punkte keinen Sinn
-                if (index > articles.length - 2 && window?.innerWidth >= 640) return null;
+                
+                // ✨ FIX: Wir nutzen Tailwind CSS (sm:hidden) anstelle von window.innerWidth
+                // Versteckt den letzten Punkt auf Bildschirmen ab 640px (Desktop/Tablet)
+                const hideOnDesktopClass = index > articles.length - 2 ? "sm:hidden" : "";
                 
                 return (
                   <button
@@ -132,7 +134,7 @@ export default function ArticleCarousel({ articles }: ArticleCarouselProps) {
                       activeIndex === index 
                         ? 'bg-blue-600 dark:bg-blue-400 w-8' 
                         : 'bg-gray-300 dark:bg-slate-700 w-2.5 hover:bg-blue-400 dark:hover:bg-blue-500'
-                    }`}
+                    } ${hideOnDesktopClass}`}
                   />
                 );
               })}

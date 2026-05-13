@@ -113,7 +113,9 @@ export default function BoardCarousel({ members }: BoardCarouselProps) {
         {members.length > 2 && (
           <div className="flex justify-center gap-2 mt-2">
             {members.map((_, index) => {
-              if (index > members.length - 2 && window?.innerWidth >= 640) return null;
+              
+              // ✨ FIX: Wieder Tailwind (sm:hidden) statt window.innerWidth nutzen
+              const hideOnDesktopClass = index > members.length - 2 ? "sm:hidden" : "";
               
               return (
                 <button
@@ -124,7 +126,7 @@ export default function BoardCarousel({ members }: BoardCarouselProps) {
                     activeIndex === index 
                       ? 'bg-blue-600 dark:bg-blue-400 w-8' 
                       : 'bg-gray-300 dark:bg-slate-700 w-2.5 hover:bg-blue-400 dark:hover:bg-blue-500'
-                  }`}
+                  } ${hideOnDesktopClass}`}
                 />
               )
             })}
