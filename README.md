@@ -136,3 +136,5 @@ Find your OAuth app credentials.
 Add your new domain to the Authorized JavaScript origins: https://www.yourdomain.com
 Add your new domain to the Authorized redirect URIs: https://www.yourdomain.com/api/auth/callback/google (replace google with your specific provider).
 After you do this, go to Vercel and Redeploy your app one last time so it picks up the new NEXTAUTH_URL. Your admin panel and custom domain will work perfectly!
+
+end of the document
