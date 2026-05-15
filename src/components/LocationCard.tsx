@@ -12,7 +12,7 @@ export default function LocationCard() {
 
         <div className="relative w-full h-56 sm:h-64 lg:h-[300px] rounded-xl overflow-hidden bg-gray-200 dark:bg-slate-700 shadow-inner">
           <iframe 
-            src="https://maps.google.com/maps?q=Kettlersiedlung,%2090469%20N%C3%BCrnberg&t=k&z=16&ie=UTF8&iwloc=&output=embed" 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1297.877960309995!2d11.10366638886994!3d49.406493500000004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x479f59febd61a5df%3A0x88318a041a9eb382!2sSiedlerfestplatz!5e0!3m2!1sen!2sde!4v1722332898858!5m2!1sen!2sde"
             width="100%" 
             height="100%" 
             style={{ border: 0 }} 
