@@ -25,6 +25,9 @@ export async function PUT(
     const dbUser = await prisma.user.findUnique({ 
       where: { email: session.user.email as string } 
     });
+    if (!dbUser) {
+      return NextResponse.json({ success: false, error: "Benutzer nicht gefunden" }, { status: 404 });
+    }
     const isAdminOrVorstand = dbUser?.role === "VORSTAND" || dbUser?.role === "ADMIN";
 
     if (!isAuthor && !isAdminOrVorstand) {
@@ -39,6 +42,8 @@ export async function PUT(
         content: body.content,
         imageUrl: body.imageUrl || null,
         isPublished: body.isPublished,
+        authorId: dbUser.id,
+        authorName: dbUser.name,
       }
     });
 
@@ -72,6 +77,9 @@ export async function DELETE(
     const dbUser = await prisma.user.findUnique({ 
       where: { email: session.user.email as string } 
     });
+    if (!dbUser) {
+      return NextResponse.json({ success: false, error: "Benutzer nicht gefunden" }, { status: 404 });
+    }
     const isAdminOrVorstand = dbUser?.role === "VORSTAND" || dbUser?.role === "ADMIN";
 
     if (!isAuthor && !isAdminOrVorstand) {
