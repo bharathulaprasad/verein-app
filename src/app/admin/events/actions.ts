@@ -85,3 +85,30 @@ export async function deleteEvent(id: string) {
   revalidatePath("/admin/events");
   revalidatePath("/");
 }
+
+export async function editEvent(id: string, formData: FormData) {
+  await checkAuth();
+
+  const title = formData.get("title") as string;
+  const dateString = formData.get("date") as string;
+  const location = formData.get("location") as string | null;
+  const description = formData.get("description") as string | null;
+
+  if (!title || !dateString) {
+    return { error: "Titel und Datum sind Pflichtfelder." };
+  }
+
+  await prisma.event.update({
+    where: { id },
+    data: {
+      title,
+      date: new Date(dateString),
+      location: location ?? undefined,
+      description: description ?? undefined,
+    },
+  });
+
+  revalidatePath("/admin/events");
+  revalidatePath("/");
+  return { success: true };
+}
