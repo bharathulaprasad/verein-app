@@ -10,6 +10,7 @@ import Image from 'next/image';
 import prisma from "@/lib/prisma";
 import SurpriseBackground from '@/components/SurpriseBackground';
 import LoginTracker from "@/components/LoginTracker";
+import RandomQuote from "@/components/RandomQuote";
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const session = await getServerSession(authOptions);
@@ -102,6 +103,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               </main>
              
             <footer className="bg-white/60 dark:bg-slate-900/60 border border-white/50 dark:border-slate-700/50 p-6 sm:p-8 rounded-2xl shadow-2xl transition-all duration-300">
+              <RandomQuote />
               <div className="container mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
 
                 {/* Copyright Text */}
