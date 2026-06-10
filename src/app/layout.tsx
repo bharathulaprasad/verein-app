@@ -12,6 +12,8 @@ import prisma from "@/lib/prisma";
 import SurpriseBackground from '@/components/SurpriseBackground';
 import LoginTracker from "@/components/LoginTracker";
 import RandomQuote from "@/components/RandomQuote";
+import fs from 'fs';
+import path from 'path';
 
 export const metadata: Metadata = {
   title: {
@@ -26,6 +28,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const userRole = (session?.user as any)?.role;
   const isAdminOrVorstand = userRole === "ADMIN" || userRole === "VORSTAND";
   let unreadCount = 0;
+
+  // Read version from package.json
+  const packageJsonPath = path.join(process.cwd(), 'package.json');
+  const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+  const appVersion = packageJson.version;
   if (isAdminOrVorstand) {
     unreadCount = await prisma.contactMessage.count({
       where: { isRead: false }
@@ -117,7 +124,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
                 {/* Copyright Text */}
                 <div className="text-sm text-center md:text-left">
-                  © {new Date().getFullYear()} Siedlervereinigung Siemens Nürnberg e.V.
+                  © {new Date().getFullYear()} Siedlervereinigung Siemens Nürnberg e.V. 
+                  <Link href="/changelog" className="ml-2 text-blue-600 dark:text-blue-400 hover:underline">
+                    v{appVersion}
+                  </Link>
                 </div>
 
                 {/* Legal Links */}
