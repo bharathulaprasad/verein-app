@@ -12,7 +12,7 @@ import prisma from "@/lib/prisma";
 import SurpriseBackground from '@/components/SurpriseBackground';
 import LoginTracker from "@/components/LoginTracker";
 import RandomQuote from "@/components/RandomQuote";
-import fs from 'fs';
+import fs from 'fs/promises';
 import path from 'path';
 
 export const metadata: Metadata = {
@@ -31,7 +31,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   // Read version from package.json
   const packageJsonPath = path.join(process.cwd(), 'package.json');
-  const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+  const packageJson = JSON.parse(await fs.readFile(packageJsonPath, 'utf8'));
   const appVersion = packageJson.version;
   if (isAdminOrVorstand) {
     unreadCount = await prisma.contactMessage.count({
