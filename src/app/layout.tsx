@@ -1,4 +1,5 @@
 import './globals.css';
+import type { Metadata } from 'next';
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth"; 
 import SessionProviderWrapper from "@/components/SessionProviderWrapper";
@@ -11,6 +12,14 @@ import prisma from "@/lib/prisma";
 import SurpriseBackground from '@/components/SurpriseBackground';
 import LoginTracker from "@/components/LoginTracker";
 import RandomQuote from "@/components/RandomQuote";
+
+export const metadata: Metadata = {
+  title: {
+    default: 'Siedlervereinigung Siemens Nürnberg e.V.',
+    template: '%s | SVS-NBG',
+  },
+  description: 'Website der Siedlervereinigung Siemens Nürnberg e.V.',
+};
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const session = await getServerSession(authOptions);

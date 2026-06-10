@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'About Us', // Will output as "About Us | My Awesome App"
-  description: 'Learn more about our team and how we solve [Siedlervereinigung Siemens Nürnberg e.V. svs-nbg.de].',
+  title: 'Über Uns',
+  description: 'Erfahren Sie mehr über die Siedlervereinigung Siemens Nürnberg e.V.',
 };
 
 export default function AboutPage() {
