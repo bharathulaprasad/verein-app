@@ -18,24 +18,28 @@ export default function ImpressumPage() {
             <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-3">Angaben gemäß § 5 TMG</h2>
             <p className="leading-relaxed">
               <strong>Siedlervereinigung Siemens Nürnberg e.V.</strong><br />
-              [Musterstraße 123]<br />
-              [90400 Nürnberg]
+              Herpersdorfer straße 1b<br />
+              90469 Nürnberg
             </p>
           </section>
 
           <section>
             <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-3">Vertreten durch den Vorstand:</h2>
             <p className="leading-relaxed">
-              1. Vorsitzende/r: [Vorname Nachname]<br />
-              2. Vorsitzende/r: [Vorname Nachname]<br />
-              Kassierer/in: [Vorname Nachname]
-            </p>
+              1. Vorsitzende/r: Thomas Konradt<br />
+              2. Vorsitzende/r: Carolin Heelein<br />
+              Kassierer/in:  Klaus Brendel
+              1. Schriftfüre/r: Klaus Händler
+              <br/>
+              2. Schriftfürer/in : 
+                 Madeleine Schulze-Erdei
+              </p>
           </section>
 
           <section>
             <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-3">Kontakt</h2>
             <p className="leading-relaxed">
-              Telefon: [0911 / 1234567]<br />
+              Telefon: +49 1523 4337378<br />
               E-Mail: <a href="mailto:info@svs-nbg.de" className="text-blue-600 dark:text-blue-400 hover:underline">info@svs-nbg.de</a>
             </p>
           </section>
@@ -52,9 +56,9 @@ export default function ImpressumPage() {
           <section>
             <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-3">Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</h2>
             <p className="leading-relaxed">
-              [Vorname Nachname]<br />
-              [Musterstraße 123]<br />
-              [90400 Nürnberg]
+             Thomas Konradt<br />
+              Herpersdorfer straße 1b<br />
+              90469 Nürnberg
             </p>
           </section>
 
