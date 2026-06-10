@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.0.0] - 2026-10-06
+## 2026-10-06
 
 ### Added
 - Initial release of the new SVS-NBG website.
