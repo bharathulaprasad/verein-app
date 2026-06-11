@@ -1,4 +1,4 @@
-import { Sun, Cloud, CloudRain, Snowflake, Wind, LucideIcon } from 'lucide-react';
+import { Sun, Cloud, CloudRain, Snowflake, Wind, LucideIcon, Moon } from 'lucide-react';
 import WeatherSoundAlert from './WeatherSoundAlert';
 
 interface WeatherInfo {
@@ -18,6 +18,8 @@ interface WeatherData {
     weather_code: number[];
     temperature_2m_max: number[];
     temperature_2m_min: number[];
+    sunrise: string[];
+    sunset: string[];
   };
 }
 
@@ -34,7 +36,7 @@ export default async function WeatherWidget() {
   
   try {
     const res = await fetch(
-      'https://api.open-meteo.com/v1/forecast?latitude=49.41&longitude=11.10&current=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=Europe%2FBerlin&forecast_days=7',
+      'https://api.open-meteo.com/v1/forecast?latitude=49.41&longitude=11.10&current=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=Europe%2FBerlin&forecast_days=7',
       { next: { revalidate: 1800 } } 
     );
     weatherData = await res.json();
@@ -110,6 +112,20 @@ export default async function WeatherWidget() {
                 {isIdealForSport ? "Sport Ideal" : "Sport Naja"}
               </span>
             </div>
+            
+            {/* New: Sunrise/Sunset */}
+            {weatherData?.daily?.sunrise?.[0] && weatherData?.daily?.sunset?.[0] && (
+              <div className="flex items-center gap-2 mt-2 text-[10px] text-slate-500 dark:text-slate-400">
+                <div className="flex items-center gap-1">
+                  <Sun className="w-3 h-3 text-yellow-500" />
+                  <span>{new Date(weatherData.daily.sunrise[0]).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <Moon className="w-3 h-3 text-blue-500" />
+                  <span>{new Date(weatherData.daily.sunset[0]).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}</span>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
