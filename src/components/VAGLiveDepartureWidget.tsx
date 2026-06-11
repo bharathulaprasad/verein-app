@@ -42,8 +42,8 @@ export default function VAGLiveDepartureWidget() {
           setAvailableStops(sortedStops);
           console.log("fetchAvailableStops: Sorted stops loaded. Example VGNKennung:", sortedStops[0]?.VGNKennung);
 
-          // Set the default stop after the list has been loaded
-          const defaultStop = sortedStops.find(s => s.VGNKennung === 1731);
+          // Set the default stop after the list has been loaded, explicitly typing 's'
+          const defaultStop = sortedStops.find((s: Stop) => s.VGNKennung === 1731);
           if (defaultStop) {
             console.log("fetchAvailableStops: Setting default selectedStopId to", defaultStop.VGNKennung);
             setSelectedStopId(defaultStop.VGNKennung);
