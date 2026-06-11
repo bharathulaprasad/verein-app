@@ -1,4 +1,5 @@
 import { MapPin } from 'lucide-react';
+import VAGLiveDepartureWidget from './VAGLiveDepartureWidget'; // Import the new VAG Live Departure Widget
 import WeatherWidget from './WeatherWidget'; 
 
 export default function LocationCard() {
@@ -30,6 +31,8 @@ export default function LocationCard() {
           </p>
         </div>
 
+        {/* VAG Live Departure Widget */}
+        <VAGLiveDepartureWidget />
         <div className="absolute -bottom-3 -right-3 bg-blue-600 dark:bg-blue-500 text-white py-1.5 px-4 rounded-xl shadow-lg font-bold text-sm md:text-base border-2 border-white dark:border-slate-800 transition-transform duration-500 ease-out [transform:translateZ(20px)] group-hover:[transform:translateZ(40px)_translateY(-5px)]">
           90469
         </div>

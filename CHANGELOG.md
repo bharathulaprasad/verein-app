@@ -1,16 +1,21 @@
-﻿_# Änderungsprotokoll_
+# Änderungsprotokoll
 
-_Alle nennenswerten Änderungen an diesem Projekt werden in dieser Datei dokumentiert._
+Alle nennenswerten Änderungen an diesem Projekt werden in dieser Datei dokumentiert.
 
-## _2026-06-10_
 
-### _Neu
 
-### _Hinzugefügt_
-- _Erstveröffentlichung der neuen SVS-NBG Webseite._
-- _Mitglieder-Login und persönlicher Bereich (Dashboard)._
-- _Terminkalender mit Anmeldefunktion._
-- _Artikelsystem für Neuigkeiten und Mitteilungen._
+## 2026-06-11
 
-### _Geändert_
-- _Migration vom alten System auf eine moderne Next.js-Anwendung._
+### Hinzugefügt
+- Live-Abfahrtszeiten des öffentlichen Nahverkehrs am Standort hinzugefügt.
+
+## 2026-06-10
+
+### Hinzugefügt
+- Erstveröffentlichung der neuen SVS-NBG Webseite.
+- Mitglieder-Login und persönlicher Bereich (Dashboard).
+- Terminkalender mit Anmeldefunktion.
+- Artikelsystem für Neuigkeiten und Mitteilungen.
+
+### Geändert
+- Migration vom alten System auf eine moderne Next.js-Anwendung.
