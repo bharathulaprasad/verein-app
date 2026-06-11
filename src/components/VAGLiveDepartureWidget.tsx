@@ -1,6 +1,7 @@
 "use client"; // Required if you are using Next.js App Router
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react'; // Import useRef
+import { XCircle } from 'lucide-react'; // Import XCircle icon
 
 interface Departure {
   Linienname: string;
@@ -25,6 +26,7 @@ export default function VAGLiveDepartureWidget() {
   const [stopSearch, setStopSearch] = useState('');
   const [loadingStops, setLoadingStops] = useState(true);
   const [specialInfo, setSpecialInfo] = useState<string[]>([]); // New state for special information
+  const inputRef = useRef<HTMLInputElement>(null); // Ref for the input element
   const [loadingDepartures, setLoadingDepartures] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -36,7 +38,10 @@ export default function VAGLiveDepartureWidget() {
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         const data = await res.json();
         if (data && Array.isArray(data.Haltestellen)) {
-          const sortedStops = data.Haltestellen.sort((a: Stop, b: Stop) =>
+          // Filter out stops that do not have the 'Produkte' property
+          const filteredStops = data.Haltestellen.filter((stop: Stop) => stop.Produkte);
+
+          const sortedStops = filteredStops.sort((a: Stop, b: Stop) =>
             a.Haltestellenname.localeCompare(b.Haltestellenname)
           );
           setAvailableStops(sortedStops);
@@ -118,6 +123,16 @@ export default function VAGLiveDepartureWidget() {
     }
   };
 
+  const handleClearSearch = () => {
+    setStopSearch('');
+    setSelectedStopId(null);
+    setDepartures([]); // Clear departures immediately
+    if (inputRef.current) inputRef.current.focus(); // Focus back on input
+  };
+
+  // Find the full object for the currently selected stop to display its products
+  const selectedStop = availableStops.find(stop => stop.VGNKennung === selectedStopId);
+
   return (
     <div className="p-4 bg-white dark:bg-slate-900 rounded-lg shadow-sm border border-gray-200 dark:border-slate-800 transition-colors">
       <h3 className="text-lg font-bold text-gray-800 dark:text-gray-100 mb-4">
@@ -134,17 +149,36 @@ export default function VAGLiveDepartureWidget() {
           <p className="text-gray-500 dark:text-gray-400 text-sm">Lade Haltestellen...</p>
         ) : (
           <>
-            <input
-              list="stops-datalist"
-              id="stop-select-input"
-              value={stopSearch}
-              onInput={handleStopInputChange}
-              placeholder="Haltestelle suchen..."
-              className="block w-full p-2 border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:text-white sm:text-sm"
-            />
+            <div className="relative">
+              <input
+                ref={inputRef} // Assign ref to the input
+                list="stops-datalist"
+                id="stop-select-input"
+                value={stopSearch}
+                onInput={handleStopInputChange}
+                placeholder="Haltestelle suchen..."
+                className="block w-full p-2 pr-8 border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:text-white sm:text-sm"
+              />
+              {stopSearch && ( // Only show clear button if there's text
+                <button
+                  type="button"
+                  onClick={handleClearSearch}
+                  className="absolute inset-y-0 right-0 pr-2 flex items-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                  aria-label="Suchfeld leeren"
+                >
+                  <XCircle className="w-4 h-4" />
+                </button>
+              )}
+            </div>
             <datalist id="stops-datalist">
               {availableStops.map((stop, index) => <option key={`${stop.VGNKennung}-${index}`} value={stop.Haltestellenname} />)}
             </datalist>
+            {/* New: Show available products for the selected stop */}
+            {selectedStop?.Produkte && (
+              <div className="text-xs text-slate-500 dark:text-slate-400 mt-1.5 flex items-center gap-1">
+                <span>Verfügbar: {selectedStop.Produkte}</span>
+              </div>
+            )}
           </>
         )}
       </div>
