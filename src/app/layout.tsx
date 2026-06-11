@@ -14,6 +14,13 @@ import LoginTracker from "@/components/LoginTracker";
 import RandomQuote from "@/components/RandomQuote";
 import fs from 'fs/promises';
 import path from 'path';
+import { 
+  Network, 
+  Gavel, 
+  Shield, 
+  AlertTriangle,
+  FileText
+} from 'lucide-react';
 
 export const metadata: Metadata = {
   title: {
@@ -132,21 +139,28 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
                 {/* Legal Links */}
                 <div className="flex flex-wrap justify-center gap-4 md:space-x-6 text-sm">
-                  <Link href="/sitemap" className="hover:text-white transition-colors">Sitemap</Link>
-                  <Link href="/impressum" className="hover:text-white transition-colors">Impressum</Link>
-                  <Link href="/datenschutz" className="hover:text-white transition-colors">Datenschutz</Link>
-                  <Link href="/disclaimer" className="hover:text-white transition-colors">
+                  <Link href="/sitemap" className="flex items-center gap-1.5 hover:text-white transition-colors">
+                    <Network className="w-4 h-4" /> Sitemap
+                  </Link>
+                  <Link href="/impressum" className="flex items-center gap-1.5 hover:text-white transition-colors">
+                    <Gavel className="w-4 h-4" /> Impressum
+                  </Link>
+                  <Link href="/datenschutz" className="flex items-center gap-1.5 hover:text-white transition-colors">
+                    <Shield className="w-4 h-4" /> Datenschutz
+                  </Link>
+                  <Link href="/disclaimer" className="flex items-center gap-1.5 hover:text-white transition-colors">
+                    <AlertTriangle className="w-4 h-4" />
                     Disclaimer
                   </Link>
 
                   {/* ✨ LINK TO YOUR PDF */}
-                  {/* Note: We use a standard <a> tag here, not <Link>, so the browser opens the PDF properly */}
                   <a
                     href="/disclaimer.pdf"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:text-white transition-colors flex items-center gap-1"
+                    className="flex items-center gap-1.5 hover:text-white transition-colors"
                   >
+                    <FileText className="w-4 h-4" />
                     Disclaimer (PDF)
                   </a>
                 </div>

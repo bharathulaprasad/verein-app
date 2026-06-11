@@ -1,6 +1,16 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Network as SitemapIcon } from 'lucide-react';
+import { 
+  Network as SitemapIcon,
+  Home,
+  Info,
+  CalendarDays,
+  Users,
+  History,
+  Gavel,
+  Shield,
+  AlertTriangle
+} from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Sitemap',
@@ -8,15 +18,15 @@ export const metadata: Metadata = {
 };
 
 export default function SitemapPage() {
-  const pages = [
-    { href: '/', title: 'Startseite' },
-    { href: '/about', title: 'Über Uns' },
-    { href: '/#aktuelles', title: 'Aktuelles & Termine' },
-    { href: '/#kontakt', title: 'Kontakt & Vorstand' },
-    { href: '/changelog', title: 'Änderungsprotokoll (Changelog)' },
-    { href: '/impressum', title: 'Impressum' },
-    { href: '/datenschutz', title: 'Datenschutz' },
-    { href: '/disclaimer', title: 'Disclaimer' },
+  const pages: { href: string; title: string; icon: React.ElementType }[] = [
+    { href: '/', title: 'Startseite', icon: Home },
+    { href: '/about', title: 'Über Uns', icon: Info },
+    { href: '/#aktuelles', title: 'Aktuelles & Termine', icon: CalendarDays },
+    { href: '/#kontakt', title: 'Kontakt & Vorstand', icon: Users },
+    { href: '/changelog', title: 'Änderungsprotokoll (Changelog)', icon: History },
+    { href: '/impressum', title: 'Impressum', icon: Gavel },
+    { href: '/datenschutz', title: 'Datenschutz', icon: Shield },
+    { href: '/disclaimer', title: 'Disclaimer', icon: AlertTriangle },
   ];
 
   return (
@@ -33,8 +43,9 @@ export default function SitemapPage() {
       <ul className="space-y-4">
         {pages.map((page) => (
           <li key={page.href}>
-            <Link href={page.href} className="text-xl text-blue-600 dark:text-blue-400 hover:underline font-medium">
-              {page.title}
+            <Link href={page.href} className="inline-flex items-center gap-3 text-xl text-blue-600 dark:text-blue-400 hover:underline font-medium group">
+              <page.icon className="w-6 h-6 text-slate-500 dark:text-slate-400 transition-colors group-hover:text-blue-600 dark:group-hover:text-blue-400" />
+              <span>{page.title}</span>
             </Link>
           </li>
         ))}
