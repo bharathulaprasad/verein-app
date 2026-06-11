@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://verein-app-pi.vercel.app/';
+  const baseUrl = 'https://svs-nbg.de/';
   
   return [
     {

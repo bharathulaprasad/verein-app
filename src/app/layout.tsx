@@ -132,6 +132,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
                 {/* Legal Links */}
                 <div className="flex flex-wrap justify-center gap-4 md:space-x-6 text-sm">
+                  <Link href="/sitemap" className="hover:text-white transition-colors">Sitemap</Link>
                   <Link href="/impressum" className="hover:text-white transition-colors">Impressum</Link>
                   <Link href="/datenschutz" className="hover:text-white transition-colors">Datenschutz</Link>
                   <Link href="/disclaimer" className="hover:text-white transition-colors">
