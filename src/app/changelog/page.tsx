@@ -83,8 +83,8 @@ export default async function ChangelogPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-2 text-sm">
                 {Object.entries(packageInfo.dependencies).sort().map(([name, version]) => (
                   <div key={name} className="font-mono flex justify-between">
-                    <span className="text-slate-800 dark:text-slate-200">{name}</span>
-                    <span className="text-slate-500 dark:text-slate-400">{version}</span>
+                    <span className="text-slate-800 dark:text-slate-200">{String(name)}</span>
+                    <span className="text-slate-500 dark:text-slate-400">{String(version)}</span>
                   </div>
                 ))}
               </div>
@@ -97,8 +97,8 @@ export default async function ChangelogPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-2 text-sm">
                 {Object.entries(packageInfo.devDependencies).sort().map(([name, version]) => (
                   <div key={name} className="font-mono flex justify-between">
-                    <span className="text-slate-800 dark:text-slate-200">{name}</span>
-                    <span className="text-slate-500 dark:text-slate-400">{version}</span>
+                    <span className="text-slate-800 dark:text-slate-200">{String(name)}</span>
+                    <span className="text-slate-500 dark:text-slate-400">{String(version)}</span>
                   </div>
                 ))}
               </div>
