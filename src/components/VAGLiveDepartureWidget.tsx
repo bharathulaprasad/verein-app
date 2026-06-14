@@ -1,7 +1,7 @@
 "use client"; // Required if you are using Next.js App Router
 
 import { useEffect, useState, useRef } from 'react'; // Import useRef
-import { XCircle } from 'lucide-react'; // Import XCircle icon
+import { XCircle, MapPin } from 'lucide-react'; // Import XCircle and MapPin icons
 
 interface Departure {
   Linienname: string;
@@ -25,6 +25,8 @@ export default function VAGLiveDepartureWidget() {
   const [selectedStopId, setSelectedStopId] = useState<number | null>(null);
   const [stopSearch, setStopSearch] = useState('');
   const [loadingStops, setLoadingStops] = useState(true);
+  const [nearestStops, setNearestStops] = useState<Stop[]>([]);
+  const [locationError, setLocationError] = useState<string | null>(null);
   const [specialInfo, setSpecialInfo] = useState<string[]>([]); // New state for special information
   const inputRef = useRef<HTMLInputElement>(null); // Ref for the input element
   const [loadingDepartures, setLoadingDepartures] = useState(true);
@@ -34,13 +36,12 @@ export default function VAGLiveDepartureWidget() {
   useEffect(() => {
     async function fetchAvailableStops() {
       try {
-        const res = await fetch(`https://start.vag.de/dm/api/haltestellen.json/vgn`);
+        const res = await fetch(`https://start.vag.de/dm/api/v1/haltestellen/VGN/`);
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         const data = await res.json();
         if (data && Array.isArray(data.Haltestellen)) {
-          // Filter out stops that do not have the 'Produkte' property
+          // Filter out stops that do not have the 'Produkte' property, as requested.
           const filteredStops = data.Haltestellen.filter((stop: Stop) => stop.Produkte);
-
           const sortedStops = filteredStops.sort((a: Stop, b: Stop) =>
             a.Haltestellenname.localeCompare(b.Haltestellenname)
           );
@@ -66,6 +67,53 @@ export default function VAGLiveDepartureWidget() {
     }
     fetchAvailableStops();
   }, []);
+
+  // New: Find nearest stop based on user's location
+  useEffect(() => {
+    if (availableStops.length === 0) return;
+
+    const getDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
+      const R = 6371e3; // metres
+      const φ1 = lat1 * Math.PI / 180;
+      const φ2 = lat2 * Math.PI / 180;
+      const Δφ = (lat2 - lat1) * Math.PI / 180;
+      const Δλ = (lon2 - lon1) * Math.PI / 180;
+      const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      return R * c; // in metres
+    };
+
+    const findNearest = (position: GeolocationPosition) => {
+      const { latitude, longitude } = position.coords;
+      const nearbyStops: (Stop & { distance: number })[] = [];
+      const maxDistance = 500; // Max distance in meters
+
+      for (const stop of availableStops) {
+        if (stop.Latitude && stop.Longitude) {
+          const distance = getDistance(latitude, longitude, stop.Latitude, stop.Longitude); // Calculate distance
+          if (distance <= maxDistance) {
+            nearbyStops.push({ ...stop, distance });
+          }
+        }
+      }
+
+      // Sort by distance (closest first) and set the state
+      setNearestStops(nearbyStops.sort((a, b) => a.distance - b.distance));
+
+      if (nearbyStops.length === 0) {
+        setLocationError("Keine Haltestelle in 500m gefunden.");
+      }
+    };
+
+    navigator.geolocation.getCurrentPosition(
+      findNearest,
+      (error) => {
+        console.warn(`Geolocation error: ${error.message}`);
+        setLocationError("Standortzugriff verweigert.");
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+    );
+  }, [availableStops]); // Rerun when stops are loaded
 
   // 2. Fetch departures whenever selectedStopId changes
   useEffect(() => {
@@ -183,6 +231,38 @@ export default function VAGLiveDepartureWidget() {
           </>
         )}
       </div>
+
+      {/* New: Nearest Stop Hint */}
+      {nearestStops.length > 0 && (
+        <div className="mb-4 p-2.5 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-lg text-sm">
+          <div className="flex items-center gap-2 mb-2">
+            <MapPin className="w-4 h-4 text-blue-500 dark:text-blue-400" />
+            <span className="font-medium text-blue-800 dark:text-blue-300">In Ihrer Nähe:</span>
+          </div>
+          <ul className="space-y-1">
+            {nearestStops.map(stop => (
+              <li key={stop.VGNKennung} className="flex items-center justify-between">
+                <span className="font-bold text-blue-900 dark:text-blue-200">{stop.Haltestellenname}</span>
+                <button
+                  onClick={() => {
+                    setSelectedStopId(stop.VGNKennung);
+                    setStopSearch(stop.Haltestellenname);
+                  }}
+                  className="text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline"
+                >
+                  Auswählen
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {locationError && nearestStops.length === 0 && (
+        <div className="mb-4 text-xs text-slate-500 dark:text-slate-400">
+          <MapPin className="w-3 h-3 inline mr-1" />
+          {locationError}
+        </div>
+      )}
 
       
 
