@@ -86,7 +86,7 @@ export default function VAGLiveDepartureWidget() {
         const res = await fetch(`https://start.vag.de/dm/api/abfahrten.json/vgn/${selectedStopId}`);
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         const data = await res.json();
-        setDepartures(data?.Abfahrten?.slice(0, 10) || []);
+        setDepartures(data?.Abfahrten?.slice(0, 5) || []);
         // New: Extract and set Sonderinformationen
         setSpecialInfo(data?.Sonderinformationen || []);
       } catch (err) {
@@ -192,7 +192,7 @@ export default function VAGLiveDepartureWidget() {
       ) : departures.length > 0 ? (
         <ul className="space-y-3">
           {departures.map((dep, index) => (
-            <li key={index} className="flex justify-between items-center">
+            <li key={`${dep.Linienname}-${dep.Richtungstext}-${dep.AbfahrtszeitSoll}-${index}`} className="flex justify-between items-center">
               <div className="flex items-center gap-3">
                 <span className="bg-red-500 text-white font-bold px-2 py-1 rounded text-sm">
                   {dep.Linienname}
@@ -201,8 +201,6 @@ export default function VAGLiveDepartureWidget() {
                   {dep.Richtungstext}
                 </span>
               </div>
-              <div className="text-right">
-                <div className="text-gray-900 dark:text-white font-bold">
               <div className="text-right tabular-nums">
                 <div className={`font-bold ${
                   dep.AbfahrtszeitIst !== dep.AbfahrtszeitSoll
