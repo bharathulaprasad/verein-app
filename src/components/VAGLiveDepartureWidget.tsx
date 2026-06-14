@@ -86,7 +86,7 @@ export default function VAGLiveDepartureWidget() {
         const res = await fetch(`https://start.vag.de/dm/api/abfahrten.json/vgn/${selectedStopId}`);
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         const data = await res.json();
-        setDepartures(data?.Abfahrten?.slice(0, 5) || []);
+        setDepartures(data?.Abfahrten?.slice(0, 10) || []);
         // New: Extract and set Sonderinformationen
         setSpecialInfo(data?.Sonderinformationen || []);
       } catch (err) {
@@ -127,6 +127,7 @@ export default function VAGLiveDepartureWidget() {
     setStopSearch('');
     setSelectedStopId(null);
     setDepartures([]); // Clear departures immediately
+    setSpecialInfo([]); // Also clear special info
     if (inputRef.current) inputRef.current.focus(); // Focus back on input
   };
 
@@ -202,11 +203,17 @@ export default function VAGLiveDepartureWidget() {
               </div>
               <div className="text-right">
                 <div className="text-gray-900 dark:text-white font-bold">
-                  {new Date(dep.AbfahrtszeitIst || dep.AbfahrtszeitSoll).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+              <div className="text-right tabular-nums">
+                <div className={`font-bold ${
+                  dep.AbfahrtszeitIst !== dep.AbfahrtszeitSoll
+                    ? 'text-red-500 dark:text-red-400'
+                    : 'text-green-600 dark:text-green-500'
+                }`}>
+                  {new Date(dep.AbfahrtszeitIst || dep.AbfahrtszeitSoll).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true })}
                 </div>
                 {dep.AbfahrtszeitIst !== dep.AbfahrtszeitSoll && (
                   <div className="text-xs text-red-500">
-                    Plan: {new Date(dep.AbfahrtszeitSoll).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                    Plan: {new Date(dep.AbfahrtszeitSoll).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true })}
                   </div>
                 )}
               </div>
