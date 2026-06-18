@@ -51,18 +51,19 @@ const formatDepartureTime = (departureTime: string, now: Date) => {
   const diffMs = departureDate.getTime() - now.getTime();
   const diffSeconds = Math.round(diffMs / 1000);
   const isBlinking = diffSeconds > 0 && diffSeconds <= 30;
+  const isImminent = diffSeconds <= 60; // New: True if within the next minute or now
 
   if (diffSeconds <= 0) {
-    return { relative: true, isNow: true, isBlinking: true };
+    return { relative: true, isNow: true, isBlinking: true, isImminent: true };
   }
 
   if (diffSeconds <= 10 * 60) { // 10 minutes
     const minutes = Math.floor(diffSeconds / 60);
     const seconds = diffSeconds % 60;
     if (minutes > 0) {
-      return { relative: true, display: `in ${minutes}m ${seconds}s`, isBlinking };
+      return { relative: true, display: `in ${minutes}m ${seconds}s`, isBlinking, isImminent };
     }
-    return { relative: true, display: `in ${seconds}s`, isBlinking };
+    return { relative: true, display: `in ${seconds}s`, isBlinking, isImminent };
   }
 
   // If more than 10 minutes, show absolute time in 12h format
@@ -71,7 +72,8 @@ const formatDepartureTime = (departureTime: string, now: Date) => {
     display: departureDate.toLocaleTimeString('de-DE', {
       hour: '2-digit', minute: '2-digit',second: "2-digit" , hour12: true
     }),
-    isBlinking: false
+    isBlinking: false,
+    isImminent: false
   };
 };
 
@@ -346,31 +348,30 @@ export default function VAGLiveDepartureWidget() {
 
             return (
               <li key={`${dep.Linienname}-${dep.Richtungstext}-${dep.AbfahrtszeitSoll}-${index}`} className={`flex justify-between items-center gap-2 p-2 -m-2 rounded-lg ${departureTime.isBlinking ? 'animate-pulse bg-blue-50 dark:bg-slate-800' : ''}`}>
-                <div className="flex items-center gap-3">
-                  {/* Line Icon */}
-                  {lineIcon && (
-                    <img
-                      src={lineIcon.src}
-                      alt={lineIcon.alt}
-                      className="w-8 h-4 object-contain shrink-0"
-                    />
-                  )}
-                  {/* Line Name */}
-                  <span className="font-bold text-center w-8 shrink-0">{dep.Linienname}</span>
-
+                <div className="flex items-center gap-2">
+                  {/* Line Number: Always visible */}
+                  <span className="font-bold text-left w-8 shrink-0 text-blue-700 dark:text-blue-400">{dep.Linienname}</span>
                   {/* Direction */}
-                  <span className="text-gray-700 dark:text-gray-200 font-medium truncate w-28 sm:w-32">
+                  <span className="text-gray-700 dark:text-gray-200 font-medium truncate w-32 sm:w-36">
                     {dep.Richtungstext}
                   </span>
                 </div>
-                <div className="text-right tabular-nums">
+                <div className="flex items-center justify-end gap-2 text-right tabular-nums">
+                  {/* Icon: Only visible if departure is imminent */}
+                  <div className="w-8 h-4 shrink-0">
+                    {lineIcon && departureTime.isImminent && (
+                      <img
+                        src={lineIcon.src}
+                        alt={lineIcon.alt}
+                        className="w-full h-full object-contain"
+                      />
+                    )}
+                  </div>
                   <div className={`font-bold ${
                     isDelayed && !departureTime.relative ? 'text-red-500 dark:text-red-400' : 'text-green-600 dark:text-green-500'
                   }`}>
                     {departureTime.isNow ? (
-                      <div className="flex items-center justify-end gap-1">
-                        <PersonStanding className="w-4 h-4" /> 
-                      </div>
+                      <PersonStanding className="w-5 h-5" />
                     ) : (
                       <>{departureTime.display}{!departureTime.relative && <span className="text-xs"> </span>}</>
                     )}
@@ -380,7 +381,7 @@ export default function VAGLiveDepartureWidget() {
                       {new Date(dep.AbfahrtszeitSoll).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit', second: "2-digit" , hour12: true })}
                     </div>
                   )}
-                </div>
+                </div> 
               </li>
             );
           })}
