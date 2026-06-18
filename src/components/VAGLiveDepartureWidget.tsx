@@ -49,26 +49,28 @@ const formatDepartureTime = (departureTime: string, now: Date) => {
   const departureDate = new Date(departureTime);
   const diffMs = departureDate.getTime() - now.getTime();
   const diffSeconds = Math.round(diffMs / 1000);
+  const isBlinking = diffSeconds > 0 && diffSeconds <= 30;
 
   if (diffSeconds <= 0) {
-    return { relative: true, display: "Sofort", isNow: true };
+    return { relative: true, isNow: true, isBlinking: true };
   }
 
   if (diffSeconds <= 10 * 60) { // 10 minutes
     const minutes = Math.floor(diffSeconds / 60);
     const seconds = diffSeconds % 60;
     if (minutes > 0) {
-      return { relative: true, display: `in ${minutes}m ${seconds}s` };
+      return { relative: true, display: `in ${minutes}m ${seconds}s`, isBlinking };
     }
-    return { relative: true, display: `in ${seconds}s` };
+    return { relative: true, display: `in ${seconds}s`, isBlinking };
   }
 
   // If more than 10 minutes, show absolute time in 24h format
   return {
     relative: false,
     display: departureDate.toLocaleTimeString('de-DE', {
-      hour: '2-digit', minute: '2-digit', hour12: true, second: '2-digit'
-    })
+      hour: '2-digit', minute: '2-digit'
+    }),
+    isBlinking: false
   };
 };
 
@@ -148,7 +150,7 @@ export default function VAGLiveDepartureWidget() {
     const findNearest = (position: GeolocationPosition) => {
       const { latitude, longitude } = position.coords;
       const nearbyStops: (Stop & { distance: number })[] = [];
-      const maxDistance = 1000; // Max distance in meters
+      const maxDistance = 300; // Max distance in meters
 
       for (const stop of availableStops) {
         if (stop.Latitude && stop.Longitude) {
@@ -339,7 +341,7 @@ export default function VAGLiveDepartureWidget() {
             const isDelayed = dep.AbfahrtszeitIst !== dep.AbfahrtszeitSoll;
 
             return (
-              <li key={`${dep.Linienname}-${dep.Richtungstext}-${dep.AbfahrtszeitSoll}-${index}`} className="flex justify-between items-center gap-2">
+              <li key={`${dep.Linienname}-${dep.Richtungstext}-${dep.AbfahrtszeitSoll}-${index}`} className={`flex justify-between items-center gap-2 p-2 -m-2 rounded-lg ${departureTime.isBlinking ? 'animate-pulse bg-blue-50 dark:bg-slate-800' : ''}`}>
                 <div className="flex items-center gap-3">
                   {/* Line Icon */}
                   {lineIcon && (
@@ -366,12 +368,12 @@ export default function VAGLiveDepartureWidget() {
                         <PersonStanding className="w-4 h-4" /> 
                       </div>
                     ) : (
-                      <>{departureTime.display}{!departureTime.relative && <span className="text-xs"> </span>}</>
+                      <>{departureTime.display}{!departureTime.relative && <span className="text-xs"> Uhr</span>}</>
                     )}
                   </div>
                   {isDelayed && !departureTime.relative && (
                     <div className="text-xs text-red-500 line-through">
-                      {new Date(dep.AbfahrtszeitSoll).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit', hour12: true, second: '2-digit' })} 
+                      {new Date(dep.AbfahrtszeitSoll).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}
                     </div>
                   )}
                 </div>
