@@ -57,20 +57,21 @@ const formatDepartureTime = (departureTime: string, now: Date) => {
     return { relative: true, isNow: true, isBlinking: true, isImminent: true };
   }
 
-  if (diffSeconds <= 10 * 60) { // 10 minutes
+  if (diffSeconds <= 20 * 60) { // 20 minutes
     const minutes = Math.floor(diffSeconds / 60);
     const seconds = diffSeconds % 60;
+    // If under a minute, show seconds. Otherwise, show minutes.
     if (minutes > 0) {
-      return { relative: true, display: `in ${minutes}m ${seconds}s`, isBlinking, isImminent };
+      return { relative: true, display: `in ${minutes}m`, isBlinking, isImminent }; // Shorter: remove seconds
     }
-    return { relative: true, display: `in ${seconds}s`, isBlinking, isImminent };
+    return { relative: true, display: `in ${seconds}s`, isBlinking, isImminent }; // Keep seconds if under a minute
   }
 
-  // If more than 10 minutes, show absolute time in 12h format
+  // If more than 20 minutes, show absolute time in 12h format
   return {
     relative: false,
     display: departureDate.toLocaleTimeString('de-DE', {
-      hour: '2-digit', minute: '2-digit',second: "2-digit" , hour12: true
+      hour: '2-digit', minute: '2-digit', hour12: true // Shorter: remove seconds
     }),
     isBlinking: false,
     isImminent: false
@@ -216,7 +217,7 @@ export default function VAGLiveDepartureWidget() {
     };
 
     fetchDepartures(); // Fetch immediately
-    const intervalId = setInterval(fetchDepartures, 30000); // Set up the refresh interval
+    const intervalId = setInterval(fetchDepartures, 10000); // Set up the refresh interval
     return () => clearInterval(intervalId); // Cleanup interval on re-run or unmount
   }, [selectedStopId]);
 
@@ -344,19 +345,22 @@ export default function VAGLiveDepartureWidget() {
           {departures.map((dep, index) => {
             const lineIcon = getLineIcon(dep.Linienname);
             const departureTime = formatDepartureTime(dep.AbfahrtszeitIst || dep.AbfahrtszeitSoll, now);
-            const isDelayed = dep.AbfahrtszeitIst !== dep.AbfahrtszeitSoll;
+            const isDelayed = dep.AbfahrtszeitIst !== dep.AbfahrtszeitSoll && !departureTime.relative;
+
+            // New: Define time format options. Show seconds if delayed.
+            const timeFormatOptions: Intl.DateTimeFormatOptions = { hour: '2-digit', minute: '2-digit', hour12: true, ...(isDelayed && { second: '2-digit' }) };
 
             return (
-              <li key={`${dep.Linienname}-${dep.Richtungstext}-${dep.AbfahrtszeitSoll}-${index}`} className={`flex justify-between items-center gap-2 p-2 -m-2 rounded-lg ${departureTime.isBlinking ? 'animate-pulse bg-blue-50 dark:bg-slate-800' : ''}`}>
-                <div className="flex items-center gap-2">
+              <li key={`${dep.Linienname}-${dep.Richtungstext}-${dep.AbfahrtszeitSoll}-${index}`} className={`flex justify-between items-center gap-2 p-2 rounded-lg ${departureTime.isBlinking ? 'animate-pulse bg-blue-50 dark:bg-slate-800' : ''}`}>
+                <div className="flex items-center gap-3 min-w-0">
                   {/* Line Number: Always visible */}
-                  <span className="font-bold text-left w-8 shrink-0 text-blue-700 dark:text-blue-400">{dep.Linienname}</span>
+                  <span className="font-bold text-left w-7 shrink-0 text-blue-700 dark:text-blue-400">{dep.Linienname}</span>
                   {/* Direction */}
-                  <span className="text-gray-700 dark:text-gray-200 font-medium truncate w-32 sm:w-36">
+                  <span className="text-gray-700 dark:text-gray-200 font-medium truncate">
                     {dep.Richtungstext}
                   </span>
                 </div>
-                <div className="flex items-center justify-end gap-2 text-right tabular-nums">
+                <div className="flex items-center justify-end gap-2 text-right tabular-nums shrink-0">
                   {/* Icon: Only visible if departure is imminent */}
                   <div className="w-8 h-4 shrink-0">
                     {lineIcon && departureTime.isImminent && (
@@ -368,17 +372,17 @@ export default function VAGLiveDepartureWidget() {
                     )}
                   </div>
                   <div className={`font-bold ${
-                    isDelayed && !departureTime.relative ? 'text-red-500 dark:text-red-400' : 'text-green-600 dark:text-green-500'
+                    isDelayed ? 'text-red-500 dark:text-red-400' : 'text-green-600 dark:text-green-500'
                   }`}>
                     {departureTime.isNow ? (
                       <PersonStanding className="w-5 h-5" />
                     ) : (
-                      <>{departureTime.display}{!departureTime.relative && <span className="text-xs"> </span>}</>
+                      <>{departureTime.relative ? departureTime.display : new Date(dep.AbfahrtszeitIst).toLocaleTimeString('de-DE', timeFormatOptions)}</>
                     )}
                   </div>
-                  {isDelayed && !departureTime.relative && (
+                  {isDelayed && (
                     <div className="text-xs text-red-500 line-through">
-                      {new Date(dep.AbfahrtszeitSoll).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit', second: "2-digit" , hour12: true })}
+                      {new Date(dep.AbfahrtszeitSoll).toLocaleTimeString('de-DE', timeFormatOptions)}
                     </div>
                   )}
                 </div> 
@@ -387,7 +391,7 @@ export default function VAGLiveDepartureWidget() {
           })}
         </ul>
       ) : (
-        stopSearch && <p className="text-gray-500 dark:text-gray-400 text-sm">Keine Abfahrten für diese Haltestelle gefunden.</p>
+        stopSearch && !loadingDepartures && <p className="text-gray-500 dark:text-gray-400 text-sm">Keine Abfahrten für diese Haltestelle gefunden.</p>
       )}
       {/* New: Display Sonderinformationen */}
       {specialInfo.length > 0 && (
