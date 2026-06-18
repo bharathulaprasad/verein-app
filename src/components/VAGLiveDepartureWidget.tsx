@@ -351,12 +351,12 @@ export default function VAGLiveDepartureWidget() {
             const timeFormatOptions: Intl.DateTimeFormatOptions = { hour: '2-digit', minute: '2-digit', hour12: true, ...(isDelayed && { second: '2-digit' }) };
 
             return (
-              <li key={`${dep.Linienname}-${dep.Richtungstext}-${dep.AbfahrtszeitSoll}-${index}`} className={`flex justify-between items-center gap-2 p-2 rounded-lg ${departureTime.isBlinking ? 'animate-pulse bg-blue-50 dark:bg-slate-800' : ''}`}>
+              <li key={`${dep.Linienname}-${dep.Richtungstext}-${dep.AbfahrtszeitSoll}-${index}`} className={`flex justify-between items-start gap-2 p-2 rounded-lg ${departureTime.isBlinking ? 'animate-pulse bg-blue-50 dark:bg-slate-800' : ''}`}>
                 <div className="flex items-center gap-3 min-w-0">
                   {/* Line Number: Always visible */}
                   <span className="font-bold text-left w-7 shrink-0 text-blue-700 dark:text-blue-400">{dep.Linienname}</span>
                   {/* Direction */}
-                  <span className="text-gray-700 dark:text-gray-200 font-medium truncate">
+                  <span className="text-gray-700 dark:text-gray-200 font-medium">
                     {dep.Richtungstext}
                   </span>
                 </div>
