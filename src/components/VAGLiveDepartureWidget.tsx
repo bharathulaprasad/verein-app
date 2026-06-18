@@ -92,6 +92,7 @@ export default function VAGLiveDepartureWidget() {
   const [error, setError] = useState<string | null>(null);
   const [now, setNow] = useState(new Date()); // New: State for current time
   const notifiedDeparturesRef = useRef(new Set<string>()); // New: Track sent notifications
+  const [isDesktop, setIsDesktop] = useState(false); // New: State to check for desktop environment
 
   // New: Effect to update the current time every second for the countdown
   useEffect(() => {
@@ -101,9 +102,15 @@ export default function VAGLiveDepartureWidget() {
     return () => clearInterval(timer);
   }, []);
 
-  // New: Request notification permission on mount
+  // New: Check for desktop and request notification permission on mount
   useEffect(() => {
-    if ('Notification' in window && Notification.permission !== 'granted') {
+    // This check runs only on the client
+    const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    const desktopCheck = !isMobile;
+    setIsDesktop(desktopCheck);
+
+    // Only request permission on desktop devices
+    if (desktopCheck && 'Notification' in window && Notification.permission !== 'granted') {
       Notification.requestPermission();
     }
   }, []);
@@ -231,7 +238,8 @@ export default function VAGLiveDepartureWidget() {
 
   // New: Effect to handle desktop notifications
   useEffect(() => {
-    if (Notification.permission !== 'granted' || departures.length === 0) return;
+    // Guard to ensure this only runs on desktop with permission
+    if (!isDesktop || Notification.permission !== 'granted' || departures.length === 0) return;
 
     departures.forEach(dep => {
       const departureDate = new Date(dep.AbfahrtszeitIst || dep.AbfahrtszeitSoll);
@@ -259,7 +267,7 @@ export default function VAGLiveDepartureWidget() {
         notifiedDeparturesRef.current.delete(departureKey);
       }
     });
-  }, [now, departures]); // This effect runs every second
+  }, [now, departures, isDesktop]); // This effect runs every second, now aware of device type
 
   // 3. Handle user input for the searchable list
   const handleStopInputChange = (event: React.FormEvent<HTMLInputElement>) => {
