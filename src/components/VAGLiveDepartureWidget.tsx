@@ -19,6 +19,59 @@ interface Stop {
   Produkte?: string; // Added optional property from API
 }
 
+// New: Function to determine the transport line icon
+const getLineIcon = (lineName: string) => {
+  const trimmedLineName = lineName.trim();
+  if (trimmedLineName.startsWith('U')) {
+    return { src: 'https://start.vag.de/desktop/img/vehicle_ubahn_black_66x32.png', alt: 'U-Bahn' };
+  }
+  if (trimmedLineName.startsWith('N')) {
+    // Nightliners are buses
+    return { src: 'https://start.vag.de/desktop/img/vehicle_bus_black_66x32.png', alt: 'Bus' };
+  }
+  if (trimmedLineName.startsWith('S') || trimmedLineName.startsWith('R')) {
+    // S-Bahn and Regional trains
+    return { src: 'https://start.vag.de/desktop/img/vehicle_tram_black_66x32.png', alt: 'S-Bahn' };
+  }
+  // Assuming trams are lines with numbers < 20
+  if (/^\d{1,2}$/.test(trimmedLineName) && parseInt(trimmedLineName, 10) < 20) {
+    return { src: 'https://start.vag.de/desktop/img/vehicle_tram_black_66x32.png', alt: 'Tram' };
+  }
+  // Default to bus for all other numbered lines
+  if (/^\d+$/.test(trimmedLineName)) {
+    return { src: 'https://start.vag.de/desktop/img/vehicle_bus_black_66x32.png', alt: 'Bus' };
+  }
+  return null; // No icon for unknown types
+};
+
+// New: Helper function to format departure times based on your logic
+const formatDepartureTime = (departureTime: string, now: Date) => {
+  const departureDate = new Date(departureTime);
+  const diffMs = departureDate.getTime() - now.getTime();
+  const diffSeconds = Math.round(diffMs / 1000);
+
+  if (diffSeconds <= 0) {
+    return { relative: true, display: "Sofort" };
+  }
+
+  if (diffSeconds <= 10 * 60) { // 10 minutes
+    const minutes = Math.floor(diffSeconds / 60);
+    const seconds = diffSeconds % 60;
+    if (minutes > 0) {
+      return { relative: true, display: `in ${minutes}m ${seconds}s` };
+    }
+    return { relative: true, display: `in ${seconds}s` };
+  }
+
+  // If more than 10 minutes, show absolute time in 24h format
+  return {
+    relative: false,
+    display: departureDate.toLocaleTimeString('de-DE', {
+      hour: '2-digit', minute: '2-digit'
+    })
+  };
+};
+
 export default function VAGLiveDepartureWidget() {
   const [departures, setDepartures] = useState<Departure[]>([]);
   const [availableStops, setAvailableStops] = useState<Stop[]>([]);
@@ -31,6 +84,15 @@ export default function VAGLiveDepartureWidget() {
   const inputRef = useRef<HTMLInputElement>(null); // Ref for the input element
   const [loadingDepartures, setLoadingDepartures] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [now, setNow] = useState(new Date()); // New: State for current time
+
+  // New: Effect to update the current time every second for the countdown
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setNow(new Date());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   // 1. Fetch all available stops once on component mount
   useEffect(() => {
@@ -86,7 +148,7 @@ export default function VAGLiveDepartureWidget() {
     const findNearest = (position: GeolocationPosition) => {
       const { latitude, longitude } = position.coords;
       const nearbyStops: (Stop & { distance: number })[] = [];
-      const maxDistance = 500; // Max distance in meters
+      const maxDistance = 1000; // Max distance in meters
 
       for (const stop of availableStops) {
         if (stop.Latitude && stop.Longitude) {
@@ -101,7 +163,7 @@ export default function VAGLiveDepartureWidget() {
       setNearestStops(nearbyStops.sort((a, b) => a.distance - b.distance));
 
       if (nearbyStops.length === 0) {
-        setLocationError("Keine Haltestelle in 500m gefunden.");
+        setLocationError("Keine Haltestelle in 1000m gefunden.");
       }
     };
 
@@ -134,7 +196,7 @@ export default function VAGLiveDepartureWidget() {
         const res = await fetch(`https://start.vag.de/dm/api/abfahrten.json/vgn/${selectedStopId}`);
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         const data = await res.json();
-        setDepartures(data?.Abfahrten?.slice(0, 4) || []);
+        setDepartures(data?.Abfahrten?.slice(0, 9) || []);
         // New: Extract and set Sonderinformationen
         setSpecialInfo(data?.Sonderinformationen || []);
       } catch (err) {
@@ -271,32 +333,46 @@ export default function VAGLiveDepartureWidget() {
         <p className="text-gray-500 dark:text-gray-400 text-sm">Lade Live-Daten...</p>
       ) : departures.length > 0 ? (
         <ul className="space-y-3">
-          {departures.map((dep, index) => (
-            <li key={`${dep.Linienname}-${dep.Richtungstext}-${dep.AbfahrtszeitSoll}-${index}`} className="flex justify-between items-center">
-              <div className="flex items-center gap-3">
-                <span className="bg-red-500 text-white font-bold px-2 py-1 rounded text-sm">
-                  {dep.Linienname}
-                </span>
-                <span className="text-gray-700 dark:text-gray-200 font-medium truncate w-32">
-                  {dep.Richtungstext}
-                </span>
-              </div>
-              <div className="text-right tabular-nums">
-                <div className={`font-bold ${
-                  dep.AbfahrtszeitIst !== dep.AbfahrtszeitSoll
-                    ? 'text-red-500 dark:text-red-400'
-                    : 'text-green-600 dark:text-green-500'
-                }`}>
-                  {new Date(dep.AbfahrtszeitIst || dep.AbfahrtszeitSoll).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true })}
+          {departures.map((dep, index) => {
+            const lineIcon = getLineIcon(dep.Linienname);
+            const departureTime = formatDepartureTime(dep.AbfahrtszeitIst || dep.AbfahrtszeitSoll, now);
+            const isDelayed = dep.AbfahrtszeitIst !== dep.AbfahrtszeitSoll;
+
+            return (
+              <li key={`${dep.Linienname}-${dep.Richtungstext}-${dep.AbfahrtszeitSoll}-${index}`} className="flex justify-between items-center gap-2">
+                <div className="flex items-center gap-3">
+                  {/* Line Icon */}
+                  {lineIcon && (
+                    <img
+                      src={lineIcon.src}
+                      alt={lineIcon.alt}
+                      className="w-8 h-4 object-contain shrink-0"
+                    />
+                  )}
+                  {/* Line Name */}
+                  <span className="font-bold text-center w-8 shrink-0">{dep.Linienname}</span>
+
+                  {/* Direction */}
+                  <span className="text-gray-700 dark:text-gray-200 font-medium truncate w-28 sm:w-32">
+                    {dep.Richtungstext}
+                  </span>
                 </div>
-                {dep.AbfahrtszeitIst !== dep.AbfahrtszeitSoll && (
-                  <div className="text-xs text-red-500">
-                    Plan: {new Date(dep.AbfahrtszeitSoll).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true })}
+                <div className="text-right tabular-nums">
+                  <div className={`font-bold ${
+                    isDelayed && !departureTime.relative ? 'text-red-500 dark:text-red-400' : 'text-green-600 dark:text-green-500'
+                  }`}>
+                    {departureTime.display}
+                    {!departureTime.relative && <span className="text-xs"> Uhr</span>}
                   </div>
-                )}
-              </div>
-            </li>
-          ))}
+                  {isDelayed && !departureTime.relative && (
+                    <div className="text-xs text-red-500 line-through">
+                      {new Date(dep.AbfahrtszeitSoll).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}
+                    </div>
+                  )}
+                </div>
+              </li>
+            );
+          })}
         </ul>
       ) : (
         stopSearch && <p className="text-gray-500 dark:text-gray-400 text-sm">Keine Abfahrten für diese Haltestelle gefunden.</p>
