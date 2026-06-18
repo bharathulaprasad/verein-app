@@ -91,6 +91,7 @@ export default function VAGLiveDepartureWidget() {
   const [loadingDepartures, setLoadingDepartures] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [now, setNow] = useState(new Date()); // New: State for current time
+  const notifiedDeparturesRef = useRef(new Set<string>()); // New: Track sent notifications
 
   // New: Effect to update the current time every second for the countdown
   useEffect(() => {
@@ -98,6 +99,13 @@ export default function VAGLiveDepartureWidget() {
       setNow(new Date());
     }, 1000);
     return () => clearInterval(timer);
+  }, []);
+
+  // New: Request notification permission on mount
+  useEffect(() => {
+    if ('Notification' in window && Notification.permission !== 'granted') {
+      Notification.requestPermission();
+    }
   }, []);
 
   // 1. Fetch all available stops once on component mount
@@ -220,6 +228,38 @@ export default function VAGLiveDepartureWidget() {
     const intervalId = setInterval(fetchDepartures, 10000); // Set up the refresh interval
     return () => clearInterval(intervalId); // Cleanup interval on re-run or unmount
   }, [selectedStopId]);
+
+  // New: Effect to handle desktop notifications
+  useEffect(() => {
+    if (Notification.permission !== 'granted' || departures.length === 0) return;
+
+    departures.forEach(dep => {
+      const departureDate = new Date(dep.AbfahrtszeitIst || dep.AbfahrtszeitSoll);
+      const diffMs = departureDate.getTime() - now.getTime();
+      const diffSeconds = Math.round(diffMs / 1000);
+
+      // Unique key for this specific departure instance
+      const departureKey = `${dep.Linienname}-${dep.Richtungstext}-${dep.AbfahrtszeitSoll}`;
+
+      // Trigger notification at exactly 30 seconds
+      if (diffSeconds === 30 && !notifiedDeparturesRef.current.has(departureKey)) {
+        const lineIcon = getLineIcon(dep.Linienname);
+
+        new Notification(`Abfahrt in 30 Sekunden!`, {
+          body: `Linie ${dep.Linienname} in Richtung ${dep.Richtungstext} fährt gleich ab.`,
+          icon: lineIcon?.src, // Use the line icon if available
+          silent: false,
+        });
+
+        notifiedDeparturesRef.current.add(departureKey);
+      }
+
+      // Clean up old notified departures to prevent the set from growing indefinitely
+      if (diffSeconds < 0 && notifiedDeparturesRef.current.has(departureKey)) {
+        notifiedDeparturesRef.current.delete(departureKey);
+      }
+    });
+  }, [now, departures]); // This effect runs every second
 
   // 3. Handle user input for the searchable list
   const handleStopInputChange = (event: React.FormEvent<HTMLInputElement>) => {
@@ -356,7 +396,7 @@ export default function VAGLiveDepartureWidget() {
                   {/* Line Number: Always visible */}
                   <span className="font-bold text-left w-7 shrink-0 text-blue-700 dark:text-blue-400">{dep.Linienname}</span>
                   {/* Direction */}
-                  <span className="text-gray-700 dark:text-gray-200 font-medium">
+                  <span className="text-gray-700 dark:text-gray-200">
                     {dep.Richtungstext}
                   </span>
                 </div>
@@ -371,20 +411,23 @@ export default function VAGLiveDepartureWidget() {
                       />
                     )}
                   </div>
-                  <div className={`font-bold ${
-                    isDelayed ? 'text-red-500 dark:text-red-400' : 'text-green-600 dark:text-green-500'
-                  }`}>
-                    {departureTime.isNow ? (
-                      <PersonStanding className="w-5 h-5" />
-                    ) : (
-                      <>{departureTime.relative ? departureTime.display : new Date(dep.AbfahrtszeitIst).toLocaleTimeString('de-DE', timeFormatOptions)}</>
+                  {/* New: Vertical group for departure times */}
+                  <div className="flex flex-col items-end">
+                    <div className={`font-bold ${
+                      isDelayed ? 'text-red-500 dark:text-red-400' : 'text-green-600 dark:text-green-500'
+                    }`}>
+                      {departureTime.isNow ? (
+                        <PersonStanding className="w-5 h-5" />
+                      ) : (
+                        <>{departureTime.relative ? departureTime.display : new Date(dep.AbfahrtszeitIst).toLocaleTimeString('de-DE', timeFormatOptions)}</>
+                      )}
+                    </div>
+                    {isDelayed && (
+                      <div className="text-xs text-red-500 line-through">
+                        {new Date(dep.AbfahrtszeitSoll).toLocaleTimeString('de-DE', timeFormatOptions)}
+                      </div>
                     )}
                   </div>
-                  {isDelayed && (
-                    <div className="text-xs text-red-500 line-through">
-                      {new Date(dep.AbfahrtszeitSoll).toLocaleTimeString('de-DE', timeFormatOptions)}
-                    </div>
-                  )}
                 </div> 
               </li>
             );
