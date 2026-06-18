@@ -67,7 +67,7 @@ const formatDepartureTime = (departureTime: string, now: Date) => {
   return {
     relative: false,
     display: departureDate.toLocaleTimeString('de-DE', {
-      hour: '2-digit', minute: '2-digit'
+      hour: '2-digit', minute: '2-digit', hour12: true, second: '2-digit'
     })
   };
 };
@@ -366,7 +366,7 @@ export default function VAGLiveDepartureWidget() {
                   </div>
                   {isDelayed && !departureTime.relative && (
                     <div className="text-xs text-red-500 line-through">
-                      {new Date(dep.AbfahrtszeitSoll).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}
+                      {new Date(dep.AbfahrtszeitSoll).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit', hour12: true, second: '2-digit' })} Uhr
                     </div>
                   )}
                 </div>
