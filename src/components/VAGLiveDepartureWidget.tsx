@@ -1,7 +1,7 @@
 "use client"; // Required if you are using Next.js App Router
 
 import { useEffect, useState, useRef } from 'react'; // Import useRef
-import { XCircle, MapPin } from 'lucide-react'; // Import XCircle and MapPin icons
+import { XCircle, MapPin, PersonStanding } from 'lucide-react'; // Import PersonStanding icon
 
 interface Departure {
   Linienname: string;
@@ -51,7 +51,7 @@ const formatDepartureTime = (departureTime: string, now: Date) => {
   const diffSeconds = Math.round(diffMs / 1000);
 
   if (diffSeconds <= 0) {
-    return { relative: true, display: "Sofort" };
+    return { relative: true, display: "Sofort", isNow: true };
   }
 
   if (diffSeconds <= 10 * 60) { // 10 minutes
@@ -361,8 +361,13 @@ export default function VAGLiveDepartureWidget() {
                   <div className={`font-bold ${
                     isDelayed && !departureTime.relative ? 'text-red-500 dark:text-red-400' : 'text-green-600 dark:text-green-500'
                   }`}>
-                    {departureTime.display}
-                    {!departureTime.relative && <span className="text-xs"> </span>}
+                    {departureTime.isNow ? (
+                      <div className="flex items-center justify-end gap-1">
+                        <PersonStanding className="w-4 h-4" /> 
+                      </div>
+                    ) : (
+                      <>{departureTime.display}{!departureTime.relative && <span className="text-xs"> </span>}</>
+                    )}
                   </div>
                   {isDelayed && !departureTime.relative && (
                     <div className="text-xs text-red-500 line-through">
