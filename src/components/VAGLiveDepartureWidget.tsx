@@ -17,6 +17,7 @@ interface Stop {
   Latitude: number;
   Longitude: number;
   Produkte?: string; // Added optional property from API
+  distance?: number; // New: Optional property for nearest stops
 }
 
 // New: Function to determine the transport line icon
@@ -80,7 +81,7 @@ export default function VAGLiveDepartureWidget() {
   const [selectedStopId, setSelectedStopId] = useState<number | null>(null);
   const [stopSearch, setStopSearch] = useState('');
   const [loadingStops, setLoadingStops] = useState(true);
-  const [nearestStops, setNearestStops] = useState<Stop[]>([]);
+  const [nearestStops, setNearestStops] = useState<(Stop & { distance: number })[]>([]);
   const [locationError, setLocationError] = useState<string | null>(null);
   const [specialInfo, setSpecialInfo] = useState<string[]>([]); // New state for special information
   const inputRef = useRef<HTMLInputElement>(null); // Ref for the input element
@@ -149,8 +150,8 @@ export default function VAGLiveDepartureWidget() {
 
     const findNearest = (position: GeolocationPosition) => {
       const { latitude, longitude } = position.coords;
-      const nearbyStops: (Stop & { distance: number })[] = [];
-      const maxDistance = 300; // Max distance in meters
+      const nearbyStops: (Stop & { distance: number })[] = []; // This type is correct
+      const maxDistance = 900; // Max distance in meters
 
       for (const stop of availableStops) {
         if (stop.Latitude && stop.Longitude) {
@@ -162,7 +163,7 @@ export default function VAGLiveDepartureWidget() {
       }
 
       // Sort by distance (closest first) and set the state
-      setNearestStops(nearbyStops.sort((a, b) => a.distance - b.distance));
+      setNearestStops(nearbyStops.sort((a, b) => a.distance - b.distance)); // Now this matches the state type
 
       if (nearbyStops.length === 0) {
         setLocationError("Keine Haltestelle in 1000m gefunden.");
@@ -305,8 +306,11 @@ export default function VAGLiveDepartureWidget() {
           </div>
           <ul className="space-y-1">
             {nearestStops.map(stop => (
-              <li key={stop.VGNKennung} className="flex items-center justify-between">
-                <span className="font-bold text-blue-900 dark:text-blue-200">{stop.Haltestellenname}</span>
+              <li key={stop.VGNKennung} className="flex items-center justify-between gap-2">
+                <div className="flex items-baseline gap-2">
+                  <span className="font-bold text-blue-900 dark:text-blue-200">{stop.Haltestellenname}</span>
+                  <span className="text-xs text-slate-500 dark:text-slate-400">ca. {Math.round(stop.distance)}m</span>
+                </div>
                 <button
                   onClick={() => {
                     setSelectedStopId(stop.VGNKennung);
