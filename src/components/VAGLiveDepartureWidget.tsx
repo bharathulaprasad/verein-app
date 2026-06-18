@@ -362,11 +362,11 @@ export default function VAGLiveDepartureWidget() {
                     isDelayed && !departureTime.relative ? 'text-red-500 dark:text-red-400' : 'text-green-600 dark:text-green-500'
                   }`}>
                     {departureTime.display}
-                    {!departureTime.relative && <span className="text-xs"> Uhr</span>}
+                    {!departureTime.relative && <span className="text-xs"> </span>}
                   </div>
                   {isDelayed && !departureTime.relative && (
                     <div className="text-xs text-red-500 line-through">
-                      {new Date(dep.AbfahrtszeitSoll).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit', hour12: true, second: '2-digit' })} Uhr
+                      {new Date(dep.AbfahrtszeitSoll).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit', hour12: true, second: '2-digit' })} 
                     </div>
                   )}
                 </div>
