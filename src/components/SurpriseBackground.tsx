@@ -12,10 +12,10 @@ export default function SurpriseBackground() {
     // 2. Pick your favorite random image provider:
 
     // OPTION A: Completely 100% random anything (Uncomment this to use)
-    // const randomUrl = `https://picsum.photos/1920/1080?random=${cacheBuster}`
+    const randomUrl = `https://picsum.photos/1920/1080?random=${cacheBuster}`
 
     // OPTION B: Random, but restricted to nice themes like "nature" or "landscape" (Recommended)
-    const randomUrl = `https://loremflickr.com/1920/1080/nuremberg,germany?random=${cacheBuster}`
+    /// const randomUrl = `https://source.unsplash.com/1920x1080/?nuremberg,germany&${cacheBuster}`
 
     // Set the image
     setBgImage(randomUrl)
