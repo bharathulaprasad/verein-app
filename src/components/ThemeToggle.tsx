@@ -1,7 +1,7 @@
 "use client";
 
 import { useTheme } from "./ThemeProvider"; // <-- Import from our own file!
-import { useEffect, useState } from "react";
+import { useEffect, useState, type MouseEvent } from "react";
 import { Sun, Moon } from "lucide-react"; // Make sure lucide-react is installed
 
 export default function ThemeToggle() {
@@ -20,9 +20,52 @@ export default function ThemeToggle() {
 
   const isDark = theme === "dark";
 
+  const toggleTheme = (event: MouseEvent<HTMLButtonElement>) => {
+    const isAppearanceTransition =
+      // @ts-expect-error view-transitions-api is not in all browsers
+      document.startViewTransition &&
+      !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (!isAppearanceTransition) {
+      setTheme(isDark ? "light" : "dark");
+      return;
+    }
+
+    const x = event.clientX;
+    const y = event.clientY;
+    const endRadius = Math.hypot(
+      Math.max(x, innerWidth - x),
+      Math.max(y, innerHeight - y)
+    );
+
+    // @ts-expect-error
+    const transition = document.startViewTransition(() => {
+      setTheme(isDark ? "light" : "dark");
+    });
+
+    transition.ready.then(() => {
+      const clipPath = [
+        `circle(0px at ${x}px ${y}px)`,
+        `circle(${endRadius}px at ${x}px ${y}px)`,
+      ];
+      document.documentElement.animate(
+        {
+          clipPath: isDark ? [...clipPath].reverse() : clipPath,
+        },
+        {
+          duration: 500,
+          easing: "ease-in-out",
+          pseudoElement: isDark
+            ? "::view-transition-old(root)"
+            : "::view-transition-new(root)",
+        }
+      );
+    });
+  };
+
   return (
     <button
-      onClick={() => setTheme(isDark ? "light" : "dark")}
+      onClick={toggleTheme}
       className="p-2 sm:px-3 sm:py-2 rounded-lg bg-blue-800 dark:bg-slate-800 text-blue-100 dark:text-slate-300 hover:bg-blue-700 dark:hover:bg-slate-700 transition-colors flex items-center gap-2"
       
       // ✨ 1. THE HOVER HINT (NATIVE TOOLTIP)

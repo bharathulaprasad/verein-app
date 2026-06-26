@@ -19,3 +19,23 @@
     font-family: Arial, Helvetica, sans-serif;
   }
 }
+
+/* View Transition Styles */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* Dark to light */
+::view-transition-old(root) {
+  z-index: 9999;
+}
+::view-transition-new(root) {
+  z-index: 1;
+}
+
+/* Light to dark */
+.dark::view-transition-new(root) {
+  z-index: 9999;
+}
