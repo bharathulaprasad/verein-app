@@ -22,8 +22,7 @@ export default function ThemeToggle() {
 
   const toggleTheme = (event: MouseEvent<HTMLButtonElement>) => {
     const isAppearanceTransition =
-      // @ts-expect-error view-transitions-api is not in all browsers
-      document.startViewTransition &&
+      typeof document.startViewTransition === "function" &&
       !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     if (!isAppearanceTransition) {
