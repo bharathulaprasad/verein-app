@@ -38,7 +38,6 @@ export default function ThemeToggle() {
       Math.max(y, innerHeight - y)
     );
 
-    // @ts-expect-error
     const transition = document.startViewTransition(() => {
       setTheme(isDark ? "light" : "dark");
     });
