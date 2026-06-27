@@ -1,6 +1,7 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { getServerSession } from "next-auth";
+import Script from 'next/script';
 import { authOptions } from "@/lib/auth"; 
 import SessionProviderWrapper from "@/components/SessionProviderWrapper";
 import { ThemeProvider } from "@/components/ThemeProvider";
@@ -47,6 +48,15 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   }
   return (
     <html lang="de" suppressHydrationWarning>
+      <head>
+        {/* Google AdSense Script */}
+        <Script
+          async
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_GOOGLE_ADSENSE_ID}`}
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
+      </head>
       <body className="bg-slate-50 text-slate-900 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-600">
         <LoginTracker isLoggedIn={!!session} />
         <ThemeProvider>

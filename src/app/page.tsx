@@ -11,6 +11,7 @@ import VisitorStats from "@/components/VisitorStats";
 import LocationCard from '@/components/LocationCard';
 import EventCarousel from '@/components/EventCarousel';
 import ArticleCarousel from "@/components/ArticleCarousel";
+import Adsense from "@/components/Adsense";
 
 export default async function Home() {
   
@@ -193,6 +194,15 @@ export default async function Home() {
             <BoardCarousel members={boardMembers} />
           </div>
           
+        </div>
+      </section>
+
+      {/* 4. GOOGLE AD WIDGET */}
+      <section className="max-w-6xl mx-auto">
+        <div className="bg-gray-100 dark:bg-slate-800/50 p-4 rounded-lg text-center">
+          <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-2">Werbung</h3>
+          {/* Replace 'YOUR_AD_SLOT_ID' with the actual ID from your AdSense account */}
+          <Adsense adSlot="8266099873" />
         </div>
       </section>
       {/* ✨ 4. VISITOR STATS (NEW!) ✨ */}
