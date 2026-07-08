@@ -18,7 +18,7 @@ export default function ImpressumPage() {
             <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-3">Angaben gemäß § 5 TMG</h2>
             <p className="leading-relaxed">
               <strong>Siedlervereinigung Siemens Nürnberg e.V.</strong><br />
-              Herpersdorfer straße 1b<br />
+              Herpersdorfer Straße 1b<br />
               90469 Nürnberg
             </p>
           </section>
@@ -28,7 +28,7 @@ export default function ImpressumPage() {
             <p className="leading-relaxed">
               1. Vorsitzende/r: Thomas Konradt<br />
               2. Vorsitzende/r: Carolin Heelein<br />
-              Kassierer/in:  Klaus Brendel
+              Kassierer/in:  Klaus Brendel <br />
               1. Schriftfüre/r: Klaus Händler
               <br/>
               2. Schriftfürer/in : 
@@ -40,7 +40,7 @@ export default function ImpressumPage() {
             <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-3">Kontakt</h2>
             <p className="leading-relaxed">
               Telefon: +49 1523 4337378<br />
-              E-Mail: <a href="mailto:info@svs-nbg.de" className="text-blue-600 dark:text-blue-400 hover:underline">info@svs-nbg.de</a>
+              E-Mail: <a href="mailto:svs_nbg@web.de" className="text-blue-600 dark:text-blue-400 hover:underline">svs_nbg@web.de</a>
             </p>
           </section>
 
@@ -49,7 +49,7 @@ export default function ImpressumPage() {
             <p className="leading-relaxed">
               Eintragung im Vereinsregister.<br />
               Registergericht: [Amtsgericht Nürnberg]<br />
-              Registernummer: [VR 12345]
+              Registernummer: [VR 201735]
             </p>
           </section>
 
