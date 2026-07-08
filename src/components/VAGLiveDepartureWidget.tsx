@@ -217,7 +217,7 @@ export default function VAGLiveDepartureWidget() {
         const res = await fetch(`https://start.vag.de/dm/api/abfahrten.json/vgn/${selectedStopId}`);
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         const data = await res.json();
-        setDepartures(data?.Abfahrten?.slice(0, 9) || []);
+        setDepartures(data?.Abfahrten?.slice(0, 4) || []);
         // New: Extract and set Sonderinformationen
         setSpecialInfo(data?.Sonderinformationen || []);
       } catch (err) {
