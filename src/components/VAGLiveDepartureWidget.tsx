@@ -1,6 +1,6 @@
 "use client"; // Required if you are using Next.js App Router
 
-import { useEffect, useState, useRef } from 'react'; // Import useRef
+import { useEffect, useState, useRef, useMemo } from 'react'; // Import useMemo
 import { XCircle, MapPin, PersonStanding } from 'lucide-react'; // Import PersonStanding icon
 
 interface Departure {
@@ -445,16 +445,23 @@ export default function VAGLiveDepartureWidget() {
         stopSearch && !loadingDepartures && <p className="text-gray-500 dark:text-gray-400 text-sm">Keine Abfahrten für diese Haltestelle gefunden.</p>
       )}
       {/* New: Display Sonderinformationen */}
-      {specialInfo.length > 0 && (
-        <div className="mt-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg text-sm text-yellow-800 dark:text-yellow-200">
-          <h4 className="font-bold mb-1">Sonderinformationen:</h4>
-          <ul className="list-disc list-inside space-y-1">
-            {specialInfo.map((info, idx) => (
-              <li key={idx}>{info}</li>
-            ))}
-          </ul>
+      {specialInfo.length > 0 &&
+        <div className="mt-4 p-2 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg text-sm text-yellow-800 dark:text-yellow-200 overflow-hidden">
+          <div className="flex items-center">
+            <span className="font-bold shrink-0 mr-3">Info:</span>
+            <div className="relative flex-auto overflow-hidden h-5">
+              <p
+                className="absolute whitespace-nowrap animate-marquee"
+                style={{
+                  animationDuration: `${specialInfo.join(' ').length / 10}s`, // Adjust speed based on text length
+                }}
+              >
+                {specialInfo.join(' • ')}
+              </p>
+            </div>
+          </div>
         </div>
-      )}
+      }
     </div >
   );
 }
