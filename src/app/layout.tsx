@@ -8,6 +8,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import ThemeToggle from "@/components/ThemeToggle";
 import CookieBanner from "@/components/CookieBanner";
 import Link from 'next/link';
+import RadioPlayer from "@/components/RadioPlayer"; // Import the new RadioPlayer
 import Image from 'next/image';
 import prisma from "@/lib/prisma";
 import SurpriseBackground from '@/components/SurpriseBackground';
@@ -180,6 +181,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
             {/* INSERT THE COOKIE BANNER */}
             <CookieBanner />
+
+            {/* Add the floating player here */}
+            <RadioPlayer /> 
 
           </SessionProviderWrapper>
         </ThemeProvider>
