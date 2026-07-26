@@ -18,7 +18,7 @@ export default function ImpressumPage() {
             <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-3">Angaben gemäß § 5 TMG</h2>
             <p className="leading-relaxed">
               <strong>Siedlervereinigung Siemens Nürnberg e.V.</strong><br />
-              Herpersdorfer Straße 1b<br />
+              Herpersdorfer Str. 1b<br />
               90469 Nürnberg
             </p>
           </section>
@@ -57,7 +57,7 @@ export default function ImpressumPage() {
             <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-3">Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</h2>
             <p className="leading-relaxed">
              Thomas Konradt<br />
-              Herpersdorfer straße 1b<br />
+              Herpersdorfer Str. 1b<br />
               90469 Nürnberg
             </p>
           </section>
