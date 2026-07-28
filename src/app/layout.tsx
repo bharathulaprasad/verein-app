@@ -111,7 +111,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                       </Link>
                     </>
                   )}
-
+                  {/* ONLY SHOW Rundschreiben LINK IF USER IS MEMBER OR ADMIN OR VORSTAND but not Guests */}
+                  {((session?.user as any)?.role === "ADMIN" || (session?.user as any)?.role === "VORSTAND" || (session?.user as any)?.role === "MEMBER") && (
+                    <>
+                      <Link href="/rundschreiben" className="text-amber-400 hover:text-blue-300 dark:hover:text-blue-400 font-medium transition-colors">
+                        Monatliche Rundschreiben
+                      </Link>
+                    </>
+                  )}
                   {/* Login / Logout Logic */}
                   {session ? (
                     <>

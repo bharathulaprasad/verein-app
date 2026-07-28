@@ -2,6 +2,9 @@
 
 Alle nennenswerten Änderungen an diesem Projekt werden in dieser Datei dokumentiert.
 
+## 2026-07-28
+### Hinzugefügt Rundschrieben 
+
 ## 2026-07-27
 Der Radio-Player wurde als Plugin hinzugefügt und ist verschiebbar.
 
