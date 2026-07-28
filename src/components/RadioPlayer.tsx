@@ -62,7 +62,7 @@ export default function RadioPlayer() {
     if (playerRef.current) {
       const rect = playerRef.current.getBoundingClientRect();
       setPosition({
-        x: window.innerWidth - rect.width - 16, // 16px from right (corresponds to right-4)
+        x: (window.innerWidth - rect.width) / 2, // Centered horizontally
         y: window.innerHeight - rect.height - 16, // 16px from bottom (corresponds to bottom-4)
       });
     }
