@@ -58,6 +58,9 @@ export default function DisclaimerPage() {
                             widersprochen. Es sei denn, der Anbieter hat zuvor seine schriftliche Einwilligung erteilt.
                             Der Anbieter behält sich rechtliche Schritte für den Fall der unverlangten Zusendung von Werbe
                             informationen vor.
+
+
+                            SVS NBG e.V.                                                                          Stand: Juli 2026
                         </p>
                     </section>
 
