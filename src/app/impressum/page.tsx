@@ -29,9 +29,9 @@ export default function ImpressumPage() {
               1. Vorsitzender: Thomas Konradt<br />
               2. Vorsitzende: Carolin Heelein<br />
               Kassierer: Klaus Brendel <br />
-              1. Schriftfürer: Klaus Händler
+              1. Schriftführer: Klaus Händler
               <br/>
-              2. Schriftfürerin: Madeleine Schulze-Erdei
+              2. Schriftführerin: Madeleine Schulze-Erdei
               </p>
           </section>
 

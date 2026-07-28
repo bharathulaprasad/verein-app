@@ -85,7 +85,7 @@ export default async function Home() {
           
           {/* LINKE SPALTE: Text & Buttons */}
           <div className="w-full lg:w-7/12 text-center lg:text-left flex flex-col items-center lg:items-start">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-blue-900 dark:text-blue-400 mb-6 leading-tight">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-blue-900 dark:text-blue-400 mb-6 leading-tight">
               Herzlich Willkommen bei der <br />
               <span className="text-blue-600 dark:text-blue-500">Siedlervereinigung Siemens Nürnberg e.V.</span>
             </h1>
