@@ -103,7 +103,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                       </Link>
                     </>
                   )}
-                  {((session?.user as any)?.role === "ADMIN" ) && (
+                  {((session?.user as any)?.role === "ADMIN"  || (session?.user as any)?.role === "VORSTAND")  && (
                     <>
                       
                       <Link href="/admin/users" className="text-amber-400 hover:text-blue-300 dark:hover:text-blue-400 font-medium transition-colors">
