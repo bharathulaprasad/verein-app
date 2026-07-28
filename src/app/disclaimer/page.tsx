@@ -55,15 +55,15 @@ export default function DisclaimerPage() {
                             kann. Der Anbieter übernimmt keine Haftung für die durch solche Sicherheitslücken entstandenen
                             Schäden.
                             Der Verwendung der Kontaktdaten durch Dritte zur gewerblichen Nutzung wird ausdrücklich
-                            widersprochen. Es sei denn, der Anbieter hat zuvor seine schriftliche Einwilligung erteilt.
-                            Der Anbieter behält sich rechtliche Schritte für den Fall der unverlangten Zusendung von Werbe
-                            informationen vor.
-
-
-                            SVS NBG e.V.                                                                          Stand: Juli 2026
+                            widersprochen. Es sei denn, der Anbieter hat zuvor seine schriftliche Einwilligung erteilt. Der
+                            Anbieter behält sich rechtliche Schritte für den Fall der unverlangten Zusendung von
+                            Werbeinformationen vor.
                         </p>
                     </section>
-
+                </div>
+                <div className="mt-10 pt-6 border-t border-slate-200 dark:border-slate-700 flex justify-between items-center text-sm text-slate-500 dark:text-slate-400">
+                    <span>SVS NBG e.V.</span>
+                    <span>Stand: Juli 2026</span>
                 </div>
             </div>
         </div>
