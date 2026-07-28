@@ -26,13 +26,12 @@ export default function ImpressumPage() {
           <section>
             <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-3">Vertreten durch den Vorstand:</h2>
             <p className="leading-relaxed">
-              1. Vorsitzende/r: Thomas Konradt<br />
-              2. Vorsitzende/r: Carolin Heelein<br />
-              Kassierer/in:  Klaus Brendel <br />
-              1. Schriftfüre/r: Klaus Händler
+              1. Vorsitzender: Thomas Konradt<br />
+              2. Vorsitzende: Carolin Heelein<br />
+              Kassierer: Klaus Brendel <br />
+              1. Schriftfürer: Klaus Händler
               <br/>
-              2. Schriftfürer/in : 
-                 Madeleine Schulze-Erdei
+              2. Schriftfürerin: Madeleine Schulze-Erdei
               </p>
           </section>
 
