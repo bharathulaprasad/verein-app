@@ -6,7 +6,7 @@ import stations from '@/data/radio-stations.json';
 
 export default function RadioPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [currentStationIndex, setCurrentStationIndex] = useState(7); // Default to Tagesschau Live
+  const [currentStationIndex, setCurrentStationIndex] = useState(6); // Default to Tagesschau Live
   const [isDragging, setIsDragging] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
