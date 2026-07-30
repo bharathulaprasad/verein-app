@@ -5,7 +5,7 @@ import { Play, Pause, Radio, ChevronLeft, ChevronRight, GripVertical } from 'luc
 import stations from '@/data/radio-stations.json';
 
 export default function RadioPlayer() {
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true); // Set to true to autoplay
   const [currentStationIndex, setCurrentStationIndex] = useState(6); // Default to Tagesschau Live
   const [isDragging, setIsDragging] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -32,7 +32,7 @@ export default function RadioPlayer() {
     if (audioRef.current) {
       const wasPlaying = !audioRef.current.paused;
       audioRef.current.src = currentStation.url;
-      if (wasPlaying || isPlaying) {
+      if (wasPlaying) { // Only attempt to play if it was already playing
         audioRef.current.play().catch(error => {
           console.error("Audio play failed:", error);
           setIsPlaying(false);
