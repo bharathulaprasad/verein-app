@@ -24,6 +24,10 @@
     "url": "https://dispatcher.rndfnk.com/br/br3/live/mp3/mid"
   },
   {
+    "name": "Tagesschau Live",
+    "url": "https://tagesschau-live.ard-mcdn.de/tagesschau/live/hls/de/masteraudio1.m3u8"
+  },
+  {
     "name": "BR-Klassik",
     "url": "https://dispatcher.rndfnk.com/br/brklassik/live/mp3/mid"
   },
@@ -74,5 +78,12 @@
   {
     "name": "Al Jazeera News English",
     "url": "https://live-hls-web-aje-gcp.thehlive.com/VOICE-AJE/index.m3u8"
+  },
+  {
+    "name": "DW News",
+    "url": "https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/index.m3u8"
   }
+
+
+  
 ]
