@@ -2,49 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { Play, Pause, Radio, ChevronLeft, ChevronRight, GripVertical } from 'lucide-react';
-
-const stations = [
-  {
-    name: "DLF",
-    url: "https://st01.sslstream.dlf.de/dlf/01/128/mp3/stream.mp3"
-  },
-  {
-    name: "DLF Kultur",
-    url: "https://st02.sslstream.dlf.de/dlf/02/128/mp3/stream.mp3"
-  },
-  {
-    name: "DLF Nova",
-    url: "https://st03.sslstream.dlf.de/dlf/03/128/mp3/stream.mp3"
-  },
-  {
-    "name": "Bayern 1",
-    "url": "https://dispatcher.rndfnk.com/br/br1/obb/mp3/mid"
-  },
-  {
-    "name": "Bayern 2",
-    "url": "https://dispatcher.rndfnk.com/br/br2/live/mp3/mid"
-  },
-  {
-    "name": "Bayern 3",
-    "url": "https://dispatcher.rndfnk.com/br/br3/live/mp3/mid"
-  },
-  {
-    "name": "BR-Klassik",
-    "url": "https://dispatcher.rndfnk.com/br/brklassik/live/mp3/mid"
-  },
-  {
-    "name": "BR24",
-    "url": "https://dispatcher.rndfnk.com/br/br24/live/mp3/mid"
-  },
-  {
-    "name": "BR Schlager",
-    "url": "https://dispatcher.rndfnk.com/br/brschlager/live/mp3/mid"
-  },
-  {
-    "name": "BR Heimat",
-    "url": "https://dispatcher.rndfnk.com/br/brheimat/live/mp3/mid"
-  }
-];
+import stations from '@/data/radio-stations.json';
 
 export default function RadioPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);

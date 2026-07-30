@@ -1,0 +1,70 @@
+[
+  {
+    "name": "DLF",
+    "url": "https://st01.sslstream.dlf.de/dlf/01/128/mp3/stream.mp3"
+  },
+  {
+    "name": "DLF Kultur",
+    "url": "https://st02.sslstream.dlf.de/dlf/02/128/mp3/stream.mp3"
+  },
+  {
+    "name": "DLF Nova",
+    "url": "https://st03.sslstream.dlf.de/dlf/03/128/mp3/stream.mp3"
+  },
+  {
+    "name": "Bayern 1",
+    "url": "https://dispatcher.rndfnk.com/br/br1/obb/mp3/mid"
+  },
+  {
+    "name": "Bayern 2",
+    "url": "https://dispatcher.rndfnk.com/br/br2/live/mp3/mid"
+  },
+  {
+    "name": "Bayern 3",
+    "url": "https://dispatcher.rndfnk.com/br/br3/live/mp3/mid"
+  },
+  {
+    "name": "BR-Klassik",
+    "url": "https://dispatcher.rndfnk.com/br/brklassik/live/mp3/mid"
+  },
+  {
+    "name": "BR24",
+    "url": "https://dispatcher.rndfnk.com/br/br24/live/mp3/mid"
+  },
+  {
+    "name": "BR Schlager",
+    "url": "https://dispatcher.rndfnk.com/br/brschlager/live/mp3/mid"
+  },
+  {
+    "name": "BR Heimat",
+    "url": "https://dispatcher.rndfnk.com/br/brheimat/live/mp3/mid"
+  },
+  {
+    "name": "RTÉ Radio 1 (News, Talk, Music mix) English",
+    "url": "https://av.rasset.ie/av/live/radio/radio1.m3u8"
+  },
+  {
+    "name": "BBC World News Stream English",
+    "url": "https://stream.live.vc.bbcmedia.co.uk/bbc_world_service"
+  },
+  {
+    "name": "American Forces Network Bavaria (Munich/Vilseck)",
+    "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/AFNE_BAV.mp3"
+  },
+  {
+    "name": "1LIVE PULS Alternative / Youth German",
+    "url": "https://wdr-1live-live.icecastssl.wdr.de/wdr/1live/live/mp3/128/stream.mp3"
+  },
+  {
+    "name": "Star FM Nürnberg",
+    "url": "https://stream.starfm.de/nbg/mp3-192/iradio"
+  },
+  {
+    "name": "Afk Max 106.5 FM",
+    "url": "https://stream.afkmax.de/afkmax-hq.mp3"
+  },
+  {
+    "name": "Radio Nergy Nürnberg",
+    "url": "https://edge05.streamonkey.net/energy-nuernberg?aggregator=shorty"
+  }
+  ]
