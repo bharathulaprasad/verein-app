@@ -41,19 +41,17 @@ export default function SitemapPage() {
         Finden Sie hier eine Übersicht aller wichtigen Seiten unserer Webseite.
       </p>
       <ul className="space-y-4">
-        {pages.map((page) => (
-          (() => {
-            const Icon = page.icon; // Assign to a capitalized variable
-            return (
-              <li key={page.href}>
-                <Link href={page.href} className="inline-flex items-center gap-3 text-xl text-blue-600 dark:text-blue-400 hover:underline font-medium group">
-                  <Icon className="w-6 h-6 text-slate-500 dark:text-slate-400 transition-colors group-hover:text-blue-600 dark:group-hover:text-blue-400" />
-                  <span>{page.title}</span>
-                </Link>
-              </li>
-            );
-          })()
-        ))}
+        {pages.map((page) => {
+          const Icon = page.icon; // Assign to a capitalized variable before returning JSX
+          return (
+            <li key={page.href}>
+              <Link href={page.href} className="inline-flex items-center gap-3 text-xl text-blue-600 dark:text-blue-400 hover:underline font-medium group">
+                <Icon className="w-6 h-6 text-slate-500 dark:text-slate-400 transition-colors group-hover:text-blue-600 dark:group-hover:text-blue-400" />
+                <span>{page.title}</span>
+              </Link>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
