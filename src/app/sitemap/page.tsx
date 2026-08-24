@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import type { LucideIcon } from 'lucide-react';
 import { 
   Network as SitemapIcon,
   Home,
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
 };
 
 export default function SitemapPage() {
-  const pages: { href: string; title: string; icon: React.ElementType }[] = [
+  const pages: { href: string; title: string; icon: LucideIcon }[] = [
     { href: '/', title: 'Startseite', icon: Home },
     { href: '/about', title: 'Über Uns', icon: Info },
     { href: '/#aktuelles', title: 'Aktuelles & Termine', icon: CalendarDays },
@@ -42,11 +43,11 @@ export default function SitemapPage() {
       </p>
       <ul className="space-y-4">
         {pages.map((page) => {
-          const Icon = page.icon; // Assign to a capitalized variable before returning JSX
+          
           return (
             <li key={page.href}>
               <Link href={page.href} className="inline-flex items-center gap-3 text-xl text-blue-600 dark:text-blue-400 hover:underline font-medium group">
-                <Icon className="w-6 h-6 text-slate-500 dark:text-slate-400 transition-colors group-hover:text-blue-600 dark:group-hover:text-blue-400" />
+                <page.icon />
                 <span>{page.title}</span>
               </Link>
             </li>
