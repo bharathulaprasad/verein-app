@@ -1,5 +1,6 @@
 import './globals.css';
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import { getServerSession } from "next-auth";
 import Script from 'next/script';
 import { authOptions } from "@/lib/auth"; 
@@ -76,7 +77,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <LoginTracker isLoggedIn={!!session} />
         
         {/* ✨ Conditionally render the seasonal/event animation */}
-        {eventType && <SpecialEffects type={eventType} />}
+        <Suspense fallback={null}>
+          {eventType && <SpecialEffects type={eventType} />}
+        </Suspense>
         <ThemeProvider>
           <SessionProviderWrapper session={session}>
             
