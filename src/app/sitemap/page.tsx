@@ -44,7 +44,7 @@ export default function SitemapPage() {
         {pages.map((page) => (
           <li key={page.href}>
             <Link href={page.href} className="inline-flex items-center gap-3 text-xl text-blue-600 dark:text-blue-400 hover:underline font-medium group">
-              <page.icon className="w-6 h-6 text-slate-500 dark:text-slate-400 transition-colors group-hover:text-blue-600 dark:group-hover:text-blue-400" />
+              <page.icon className="w-6 h-6 text-blue-600 dark:text-blue-400 group-hover:text-blue-800 dark:group-hover:text-blue-300 transition-colors" />
               <span>{page.title}</span>
             </Link>
           </li>
