@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: '/private/', // Hide paths you don't want on Google
     },
-    sitemap: 'https://verein-app-pi.vercel.app/sitemap.xml',
+    sitemap: 'https://svs-nbg.de/sitemap.xml',
   };
 }
