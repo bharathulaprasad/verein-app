@@ -14,6 +14,7 @@ import prisma from "@/lib/prisma";
 import SurpriseBackground from '@/components/SurpriseBackground';
 import LoginTracker from "@/components/LoginTracker";
 import RandomQuote from "@/components/RandomQuote";
+import SpecialEffects, { EffectType } from '@/components/SpecialEffects'; // ✨ Import the new effects component
 import fs from 'fs/promises';
 import path from 'path';
 import { 
@@ -47,19 +48,35 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       where: { isRead: false }
     });
   }
+
+  // ✨ Seasonal & Special Event Logic
+  const today = new Date();
+  let eventType: EffectType | null = null;
+  const month = today.getMonth(); // 0-11 (Jan-Dec)
+  const day = today.getDate();
+
+  
+  if (month > 3 && month < 9) { // June or July
+    eventType = 'sun';
+  }
+  else if (month > 9 && month < 11) { // December or January
+    eventType = 'rain';
+  }
+  else if (month > 0 && month < 2) { // March or April
+    eventType = 'snow';
+  }
+  else  { 
+    eventType = 'confetti';
+  }
+
   return (
     <html lang="de" suppressHydrationWarning>
-      <head>
-        {/* Google AdSense Script */}
-        <Script
-          async
-          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_GOOGLE_ADSENSE_ID}`}
-          crossOrigin="anonymous"
-          strategy="afterInteractive"
-        />
-      </head>
+      
       <body className="bg-slate-50 text-slate-900 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-600">
         <LoginTracker isLoggedIn={!!session} />
+        
+        {/* ✨ Conditionally render the seasonal/event animation */}
+        {eventType && <SpecialEffects type={eventType} />}
         <ThemeProvider>
           <SessionProviderWrapper session={session}>
             
