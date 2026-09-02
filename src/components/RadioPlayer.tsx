@@ -5,14 +5,14 @@ import { Play, Pause, Radio, ChevronLeft, ChevronRight, GripVertical } from 'luc
 import stations from '@/data/radio-stations.json';
 
 export default function RadioPlayer() {
-  const [isPlaying, setIsPlaying] = useState(true); // Set to true to autoplay
-  const [browserReady, setBrowserReady] = useState(false); // For autoplay policy
+  const [isPlaying, setIsPlaying] = useState(true);
   const [currentStationIndex, setCurrentStationIndex] = useState(6); // Default to Tagesschau Live
   const [isDragging, setIsDragging] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const playerRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
+
   const currentStation = stations[currentStationIndex];
 
   // Set initial position on mount
@@ -26,39 +26,34 @@ export default function RadioPlayer() {
     }
   }, []);
 
-  // Wait for user to interact with the page once to bypass browser audio block
+  // Effect to handle changing station URL and playing audio
   useEffect(() => {
-    const handleInteraction = () => setBrowserReady(true);
-    window.addEventListener('click', handleInteraction, { once: true });
-    return () => window.removeEventListener('click', handleInteraction);
-  }, []);
-
-  // Effect to handle audio source, play/pause state, and autoplay
-  useEffect(() => {
-    if (!audioRef.current) return;
-
-    const audio = audioRef.current;
-
-    // Update source if it's different
-    if (audio.src !== currentStation.url) {
-      audio.src = currentStation.url;
-    }
-
-    if (isPlaying && browserReady) {
-      // Attempt to play only if isPlaying is true and the browser is ready
-      const playPromise = audio.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(error => {
-          // Autoplay was prevented.
-          console.warn("Radio autoplay blocked by browser:", error);
-          // Set isPlaying to false so the UI shows the play button.
+    // This effect should only handle audio source changes, not play/pause state.
+    if (audioRef.current) {
+      const wasPlaying = !audioRef.current.paused;
+      audioRef.current.src = currentStation.url;
+      if (wasPlaying || isPlaying) {
+        audioRef.current.play().catch(error => {
+          console.error("Audio play failed:", error);
           setIsPlaying(false);
         });
       }
-    } else {
-      audio.pause();
     }
-  }, [isPlaying, currentStation.url, browserReady]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentStation.url]); // Re-run only when station URL changes
+
+  // Effect to handle manual play/pause button clicks
+  useEffect(() => {
+    if (!audioRef.current) return;
+    if (isPlaying) {
+      audioRef.current?.play().catch(error => {
+        console.error("Audio play failed:", error);
+        setIsPlaying(false);
+      });
+    } else {
+      audioRef.current?.pause();
+    }
+  }, [isPlaying]); // Re-run only when isPlaying state changes
 
   // Effects for dragging logic
   useEffect(() => {
