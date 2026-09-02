@@ -20,6 +20,8 @@ interface Stop {
   distance?: number; // New: Optional property for nearest stops
 }
 
+
+
 // New: Function to determine the transport line icon
 const getLineIcon = (lineName: string) => {
   const trimmedLineName = lineName.trim();
@@ -213,7 +215,9 @@ export default function VAGLiveDepartureWidget() {
       setError(null);
       try {
         // Log the exact URL being constructed
-        console.log("useEffect[selectedStopId]: Fetch URL:", `https://start.vag.de/dm/api/abfahrten.json/vgn/${selectedStopId}`);
+        if (process.env.NEXT_PUBLIC_DEBUG) {
+          console.log("useEffect[selectedStopId]: Fetch URL:", `https://start.vag.de/dm/api/abfahrten.json/vgn/${selectedStopId}`);
+        }
         const res = await fetch(`https://start.vag.de/dm/api/abfahrten.json/vgn/${selectedStopId}`);
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         const data = await res.json();
